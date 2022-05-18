@@ -29,11 +29,7 @@ class CalendarFragment : Fragment() {
 
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textDashboard
-        calendarViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        binding.calendarView.isShowDaysOfWeekTitle = false
         return root
     }
 

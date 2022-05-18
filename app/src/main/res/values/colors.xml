@@ -17,5 +17,7 @@
     <color name="line_black">#191919</color>
     <color name="line_grey">#DBDBDB</color>
     <color name="line_white">#EDEDED</color>
+    <color name="brand_light">#646F9E</color>
+    <color name="brand_dark">#082245</color>
 
 </resources>
