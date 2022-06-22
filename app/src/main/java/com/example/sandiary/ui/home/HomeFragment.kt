@@ -1,5 +1,6 @@
 package com.example.sandiary.ui.home
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,10 +14,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sandiary.R
 import com.example.sandiary.Util
+import com.example.sandiary.WriteActivity
 import com.example.sandiary.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-
+    //lateinit var binding : FragmentHomeBinding
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
 
@@ -33,7 +35,10 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+//        binding = FragmentHomeBinding.inflate(inflater,container,false)
+        binding.homeWritingBox1Iv.setOnClickListener {
+            startActivity(Intent(activity, WriteActivity::class.java))
+        }
         val dateTv = binding.homeDateTv
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
