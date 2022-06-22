@@ -5,16 +5,16 @@ import android.os.Build
 import android.view.WindowManager
 import androidx.core.view.WindowCompat
 
-class Util {
-    fun Activity.setStatusBarTransparent() {
-        window.apply {
-            setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
+object Util{
+    fun Activity.setWindowFlag(bits: Int, on: Boolean) {
+        val win = window
+        val winParams = win.attributes
+        if (on) {
+            winParams.flags = winParams.flags or bits
+        } else {
+            winParams.flags = winParams.flags and bits.inv()
         }
-        if(Build.VERSION.SDK_INT >= 30) {	// API 30 에 적용
-            WindowCompat.setDecorFitsSystemWindows(window, false)
-        }
+        win.attributes = winParams
     }
+
 }

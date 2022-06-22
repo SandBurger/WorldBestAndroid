@@ -2,30 +2,64 @@ package com.example.sandiary
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivityMainBinding
+import com.example.sandiary.ui.calendar.CalendarFragment
+import com.example.sandiary.ui.home.HomeFragment
+import com.example.sandiary.ui.settings.SettingsFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
-
+    private var runnable : Runnable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        statusBar()
+        binding.navView.setOnNavigationItemSelectedListener(this)
 
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.navigation_calendar -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, CalendarFragment()).commit()
+                return true
+            }
+            R.id.navigation_home -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, HomeFragment()).commit()
+                return true
+
+            }
+            R.id.navigation_settings -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, SettingsFragment()).commit()
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun statusBar(){
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
         }
@@ -36,21 +70,8 @@ class MainActivity : AppCompatActivity() {
             setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
             window.statusBarColor = Color.TRANSPARENT
         }
-        val navView: BottomNavigationView = binding.navView
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-
-        navView.setupWithNavController(navController)
     }
-    private fun setWindowFlag(bits: Int, on: Boolean) {
-        val win = window
-        val winParams = win.attributes
-        if (on) {
-            winParams.flags = winParams.flags or bits
-        } else {
-            winParams.flags = winParams.flags and bits.inv()
-        }
-        win.attributes = winParams
-    }
+
+
 
 }

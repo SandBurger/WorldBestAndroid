@@ -11,12 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sandiary.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
-
+//    lateinit var binding : FragmentSettingsBinding
     private lateinit var settingsViewModel: SettingsViewModel
     private var _binding: FragmentSettingsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+//
+//    // This property is only valid between onCreateView and
+//    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,7 +26,7 @@ class SettingsFragment : Fragment() {
     ): View? {
         settingsViewModel =
             ViewModelProvider(this).get(SettingsViewModel::class.java)
-
+//        binding = FragmentSettingsBinding.inflate(inflater,container,false)
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -34,11 +34,11 @@ class SettingsFragment : Fragment() {
         settingsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
-        return root
+        return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        //_binding = null
     }
 }
