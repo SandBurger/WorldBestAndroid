@@ -3,16 +3,16 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_active"
-        android:title="@string/title_home" />
+        android:icon="@drawable/ic_home_inactive"
+        android:title="홈" />
     <item
         android:id="@+id/navigation_calendar"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="Calendar" />
+        android:icon="@drawable/ic_calendar_inactive"
+        android:title="캘린더" />
     <item
         android:id="@+id/navigation_settings"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="settings" />
+        android:icon="@drawable/ic_setting_inactive"
+        android:title="설정" />
 
 
 </menu>
