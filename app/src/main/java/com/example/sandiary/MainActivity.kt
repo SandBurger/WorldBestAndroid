@@ -22,6 +22,7 @@ import com.example.sandiary.databinding.ActivityMainBinding
 import com.example.sandiary.ui.calendar.CalendarFragment
 import com.example.sandiary.ui.home.HomeFragment
 import com.example.sandiary.ui.settings.SettingsFragment
+import com.google.android.material.navigation.NavigationBarItemView
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -58,6 +59,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
         return false
     }
+
+
 
     private fun statusBar(){
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
