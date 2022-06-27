@@ -57,11 +57,11 @@ class AddScheduleFragment : Fragment() {
                 val day = dateFormat[2]
                 val year = dateFormat[5]
                 Log.d("test2", date)
-                binding.addScheduleStartDayTv.text = "${year}.${month}.${day}(${dayOfWeek})"
+                val startDay = "${year}.${month}.${day}(${dayOfWeek})"
+                binding.addScheduleStartDayTv.text = startDay
             }
             ChangeCalendar(binding.addScheduleStartCalendarCv)
         }
-
 
         binding.addScheduleEndDayTv.setOnClickListener {
             if(binding.addScheduleEndCalendarCv.selectedDays.isNotEmpty()) {
@@ -80,6 +80,7 @@ class AddScheduleFragment : Fragment() {
         return root
     }
     private fun ChangeCalendar(calendarView: CalendarView){
+        Log.d("tst", "tst")
         if(calendarView == binding.addScheduleStartCalendarCv){
             if(calendarView.visibility == View.VISIBLE){
                 calendarView.visibility = View.GONE
