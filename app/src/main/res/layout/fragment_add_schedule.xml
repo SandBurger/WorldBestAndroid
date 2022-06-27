@@ -111,14 +111,41 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@id/add_schedule_start_tv"
         app:layout_constraintStart_toEndOf="@id/add_schedule_start_tv"/>
-    <com.applikeysolutions.cosmocalendar.view.CalendarView
-        android:id="@+id/add_schedule_start_calendar_cv"
+    <TextView
+        android:id="@+id/add_schedule_start_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:text="오전 06:00"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_start_day_tv"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_schedule_start_lo"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:visibility="gone"
-        app:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_start_tv"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_start_day_tv"
+        app:layout_constraintStart_toStartOf="parent">
+        <TimePicker
+            android:id="@+id/add_schedule_start_time_picker_tp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <com.applikeysolutions.cosmocalendar.view.CalendarView
+            android:id="@+id/add_schedule_start_calendar_cv"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:visibility="gone"
+            app:firstDayOfTheWeek="sunday"
+            app:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/add_schedule_end_tv"
         android:layout_width="wrap_content"
@@ -127,7 +154,7 @@
         android:text="종료일"
         android:textColor="@color/black"
         android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_start_calendar_cv"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_start_lo"
         app:layout_constraintStart_toStartOf="@id/add_schedule_start_tv"/>
     <TextView
         android:id="@+id/add_schedule_end_day_tv"
@@ -140,5 +167,40 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="@id/add_schedule_end_tv"
         app:layout_constraintStart_toEndOf="@id/add_schedule_end_tv"/>
+    <TextView
+        android:id="@+id/add_schedule_end_time_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:text="오전 06:00"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_end_day_tv"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_schedule_end_lo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_end_day_tv"
+        app:layout_constraintStart_toStartOf="parent">
+        <com.applikeysolutions.cosmocalendar.view.CalendarView
+            android:id="@+id/add_schedule_end_calendar_cv"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:visibility="gone"
+            app:firstDayOfTheWeek="sunday"
+            app:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <TimePicker
+            android:id="@+id/add_schedule_end_time_picker_tp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
