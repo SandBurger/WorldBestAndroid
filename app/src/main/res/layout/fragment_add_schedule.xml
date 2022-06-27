@@ -190,7 +190,7 @@
             android:visibility="gone"
             app:firstDayOfTheWeek="sunday"
             app:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <TimePicker
             android:id="@+id/add_schedule_end_time_picker_tp"
@@ -200,7 +200,5 @@
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
