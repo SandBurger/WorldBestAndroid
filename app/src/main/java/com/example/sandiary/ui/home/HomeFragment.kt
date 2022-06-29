@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sandiary.R
+import com.example.sandiary.SeeAllActivity
 import com.example.sandiary.Util
 import com.example.sandiary.WriteActivity
 import com.example.sandiary.databinding.FragmentHomeBinding
@@ -38,6 +39,12 @@ class HomeFragment : Fragment() {
 //        binding = FragmentHomeBinding.inflate(inflater,container,false)
         binding.homeWritingBox1Iv.setOnClickListener {
             startActivity(Intent(activity, WriteActivity::class.java))
+        }
+        binding.homeWritingBox2Iv.setOnClickListener {
+            startActivity(Intent(activity, WriteActivity::class.java))
+        }
+        binding.homeGatherBtn.setOnClickListener {
+            startActivity(Intent(activity, SeeAllActivity::class.java))
         }
         val dateTv = binding.homeDateTv
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
