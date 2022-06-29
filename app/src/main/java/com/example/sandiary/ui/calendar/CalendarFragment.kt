@@ -37,13 +37,12 @@ class CalendarFragment : Fragment() {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, AddScheduleFragment()).commit()
         }
-        binding.calendarView.isShowDaysOfWeekTitle = false
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        Log.d("das","das",)
     }
 }

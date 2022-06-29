@@ -12,6 +12,7 @@
     <color name="font_white">#999999</color>
     <color name="brand">#F7DE74</color>
     <color name="error">#FF3120</color>
+    <color name="cardview_grey">#D5D5D5</color>
     <color name="background_grey">#F1F1F5</color>
     <color name="background_white">#F8F8FA</color>
     <color name="line_black">#191919</color>
