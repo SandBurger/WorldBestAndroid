@@ -1,22 +1,43 @@
 package com.example.sandiary.ui
 
+import android.content.ClipData
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sandiary.Diary
 import com.example.sandiary.databinding.ItemDiaryBinding
 
-class SeeAllRVAdapter() : RecyclerView.Adapter<SeeAllRVAdapter.ViewHolder>() {
-
+class SeeAllRVAdapter(val diaryList : ArrayList<Diary>) : RecyclerView.Adapter<SeeAllRVAdapter.ViewHolder>() {
+    lateinit var context: Context
+    private lateinit var itemClickListener : ItemClickListener
+    interface ItemClickListener{
+        fun onClick(diary: Diary)
+    }
+//    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+//        super.onAttachedToRecyclerView(recyclerView)
+//        context = recyclerView.context
+//    }
+    fun itemClickListener(mitemClickListener: ItemClickListener){
+        itemClickListener = mitemClickListener
+    }
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return diaryList.size
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        val binding : ItemDiaryBinding = ItemDiaryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(diaryList[position])
+        holder.binding.itemDiarySettingIb.setOnClickListener {
+            itemClickListener.onClick(diaryList[position])
+        }
     }
     inner class ViewHolder(val binding : ItemDiaryBinding) : RecyclerView.ViewHolder(binding.root){
-
+        fun bind(diary : Diary){
+            binding.itemDiaryDiaryTv.text = diary.story
+        }
     }
 }
 
