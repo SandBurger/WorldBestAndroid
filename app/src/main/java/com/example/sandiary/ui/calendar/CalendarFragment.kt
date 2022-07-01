@@ -1,5 +1,7 @@
 package com.example.sandiary.ui.calendar
 
+import android.graphics.Color
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,8 @@ import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentCalendarBinding
 import com.example.sandiary.ui.schedule.AddScheduleFragment
 import android.util.Log
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
 
@@ -27,18 +31,46 @@ class CalendarFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("das1","dasda")
         //binding = FragmentCalendarBinding.inflate(inflater, container, false)
         calendarViewModel =
             ViewModelProvider(this).get(CalendarViewModel::class.java)
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val localDate = LocalDate.now()
+        val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM"))
+        binding.seeAllDateTv.text = date
+
+        binding.calendarCalendarCv.setOnMonthChangeListener {
+            Log.d("month", "${it.monthName}")
+            val date = it.monthName.split(' ')
+            val text = "${date[1]}.${getMonth(date[0])}"
+            binding.seeAllDateTv.setText(text)
+        }
         binding.calendarFloatingBtn.setOnClickListener{
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, AddScheduleFragment()).commit()
         }
 
         return binding.root
+    }
+
+    private fun getMonth(string : String) : String{
+        val month =
+            when(string) {
+                "January" -> "01"
+                "February" -> "02"
+                "March" -> "03"
+                "April" -> "04"
+                "May" -> "05"
+                "June" -> "06"
+                "July" -> "07"
+                "August" -> "08"
+                "September" -> "09"
+                "October" -> "10"
+                "November" -> "11"
+                else -> "12"
+            }
+        return month
     }
 
     override fun onDestroyView() {
