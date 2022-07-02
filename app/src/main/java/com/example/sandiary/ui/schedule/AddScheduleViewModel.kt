@@ -8,9 +8,9 @@ import java.time.format.DateTimeFormatter
 
 class AddScheduleViewModel : ViewModel() {
     private val _text = MutableLiveData<String>().apply {
-        val localDate = LocalDate.now()
-        val date = localDate.format(DateTimeFormatter.ofPattern("YYYY년 MM월 dd일"))
-        value = date
+        //val localDate = LocalDate.now()
+        //val date = localDate.format(DateTimeFormatter.ofPattern("YYYY년 MM월 dd일"))
+        //value = date
     }
 
     val text: LiveData<String> = _text
