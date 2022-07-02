@@ -12,11 +12,9 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.sandiary.R
-import com.example.sandiary.SeeAllActivity
-import com.example.sandiary.Util
-import com.example.sandiary.WriteActivity
+import com.example.sandiary.*
 import com.example.sandiary.databinding.FragmentHomeBinding
+import com.example.sandiary.ui.search.SearchFragment
 
 class HomeFragment : Fragment() {
     //lateinit var binding : FragmentHomeBinding
@@ -36,6 +34,10 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        binding.homeSearchIb.setOnClickListener {
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.container, SearchFragment()).commit()
+        }
 //        binding = FragmentHomeBinding.inflate(inflater,container,false)
         binding.homeWritingBox1Iv.setOnClickListener {
             startActivity(Intent(activity, WriteActivity::class.java))

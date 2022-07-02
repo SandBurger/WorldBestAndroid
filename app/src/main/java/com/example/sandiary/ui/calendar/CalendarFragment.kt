@@ -43,9 +43,10 @@ class CalendarFragment : Fragment() {
         binding.calendarCalendarCv.setOnMonthChangeListener {
             Log.d("month", "${it.monthName}")
             val date = it.monthName.split(' ')
-            val text = "${date[1]}.${getMonth(date[0])}"
+            val text = "${date[1]}.${date[0].split("월")[0]}"
             binding.seeAllDateTv.setText(text)
         }
+        Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
         binding.calendarFloatingBtn.setOnClickListener{
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, AddScheduleFragment()).commit()
