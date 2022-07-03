@@ -58,6 +58,8 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleEndDayTv.setOnClickListener {
             changeCalendar(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
         }
+        binding.addScheduleAlarmNp.minValue = 0
+        binding.addScheduleAlarmNp.maxValue = 60
         return root
     }
 
