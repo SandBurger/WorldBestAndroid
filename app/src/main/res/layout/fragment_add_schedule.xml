@@ -134,6 +134,7 @@
             android:layout_height="wrap_content"
             android:timePickerMode="spinner"
             android:visibility="gone"
+            android:theme="@style/pickerStyle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <com.applikeysolutions.cosmocalendar.view.CalendarView
@@ -199,6 +200,7 @@
             android:layout_height="wrap_content"
             android:timePickerMode="spinner"
             android:visibility="gone"
+            android:theme="@style/pickerStyle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -224,8 +226,22 @@
         android:id="@+id/add_schedule_alarm_np"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="90dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_tv"
         app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:id="@+id/add_schedule_after_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="분 후"
+        android:visibility="gone"
+        android:theme="@style/pickerStyle"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_np"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_np"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <ImageView
         android:id="@+id/add_schedule_divider3_iv"
         android:layout_width="match_parent"
@@ -233,7 +249,7 @@
         android:src="@drawable/gray_line"
         android:layout_marginTop="15dp"
         android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_tv"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_np"
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/add_schedule_memo_tv"

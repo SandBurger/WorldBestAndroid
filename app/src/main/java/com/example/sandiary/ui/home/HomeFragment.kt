@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
                 .replace(R.id.container, SearchFragment()).commit()
         }
 //        binding = FragmentHomeBinding.inflate(inflater,container,false)
-        binding.homeWritingBox1Iv.setOnClickListener {
+        binding.homeWritingBox1Lo.setOnClickListener {
             startActivity(Intent(activity, WriteActivity::class.java))
         }
         binding.homeWritingBox2Iv.setOnClickListener {
