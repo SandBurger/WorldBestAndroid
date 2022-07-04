@@ -10,11 +10,16 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
 
+
         <!-- Status bar color. -->
 <!--        <item name="android:windowTranslucentStatus">true</item>-->
 <!--        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>-->
 <!--       -->
         <!-- Customize your theme here. -->
+    </style>
+    <style name="pickerStyle">
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

@@ -13,11 +13,17 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.applikeysolutions.cosmocalendar.view.CalendarView
 import com.example.sandiary.MainActivity
+import com.example.sandiary.Plan
 import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentAddScheduleBinding
+import com.example.sandiary.function.PlanDatabase
 import com.example.sandiary.ui.calendar.CalendarFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
@@ -45,7 +51,12 @@ class AddScheduleFragment : Fragment() {
         addScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
         })
-
+        val plan = Plan("name", "1120", "2200", "22")
+        val planDB = PlanDatabase.getInstance(requireContext())
+        CoroutineScope(Dispatchers.IO).launch {
+            planDB!!.planDao().insertPlan(plan)
+            Log.d("insertData","dd")
+        }
         binding.addScheduleStartTimeTv.setOnClickListener {
             changeTimePicker(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
         }
@@ -58,6 +69,10 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleEndDayTv.setOnClickListener {
             changeCalendar(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
         }
+        binding.addScheduleAlarmTv.setOnClickListener {
+            numberPickerVisibility()
+        }
+
         binding.addScheduleAlarmNp.minValue = 0
         binding.addScheduleAlarmNp.maxValue = 60
         return root
@@ -104,6 +119,8 @@ class AddScheduleFragment : Fragment() {
         changeText()
         binding.addScheduleStartTimePickerTp.visibility = View.GONE
         binding.addScheduleEndTimePickerTp.visibility = View.GONE
+        binding.addScheduleAlarmNp.visibility = View.GONE
+        binding.addScheduleAfterTv.visibility = View.GONE
 
         if(calendarView == binding.addScheduleStartCalendarCv){
             if(calendarView.visibility == View.VISIBLE){
@@ -129,6 +146,8 @@ class AddScheduleFragment : Fragment() {
         changeText()
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarCv.visibility = View.GONE
+        binding.addScheduleAlarmNp.visibility = View.GONE
+        binding.addScheduleStartDayTv.visibility = View.GONE
 
         if(timePicker == binding.addScheduleStartTimePickerTp){
             if(timePicker.visibility == View.VISIBLE){
@@ -149,20 +168,59 @@ class AddScheduleFragment : Fragment() {
             }
         }
     }
-    private fun changeText(){
-        if(binding.addScheduleStartCalendarCv.visibility == View.VISIBLE) {
-            getDate(binding.addScheduleStartCalendarCv, binding.addScheduleStartDayTv)
-            binding.addScheduleStartDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
-        } else if(binding.addScheduleEndCalendarCv.visibility == View.VISIBLE) {
-            getDate(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
-            binding.addScheduleEndDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+
+    private fun numberPickerVisibility(){
+        changeText()
+        binding.addScheduleStartCalendarCv.visibility = View.GONE
+        binding.addScheduleEndCalendarCv.visibility = View.GONE
+        binding.addScheduleAlarmNp.visibility = View.GONE
+        binding.addScheduleStartDayTv.visibility = View.GONE
+
+        val numberPicker = binding.addScheduleAlarmNp
+        if(numberPicker.visibility == View.VISIBLE){
+            numberPicker.visibility = View.GONE
+            binding.addScheduleAfterTv.visibility = View.GONE
+        } else{
+
+            numberPicker.visibility = View.VISIBLE
+            binding.addScheduleAfterTv.visibility = View.VISIBLE
         }
-        if(binding.addScheduleStartTimePickerTp.visibility == View.VISIBLE) {
+    }
+
+    private fun changeText() {
+        if (binding.addScheduleStartCalendarCv.visibility == View.VISIBLE) {
+            getDate(binding.addScheduleStartCalendarCv, binding.addScheduleStartDayTv)
+            binding.addScheduleStartDayTv.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.line_black
+                )
+            )
+        } else if (binding.addScheduleEndCalendarCv.visibility == View.VISIBLE) {
+            getDate(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
+            binding.addScheduleEndDayTv.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.line_black
+                )
+            )
+        }
+        if (binding.addScheduleStartTimePickerTp.visibility == View.VISIBLE) {
             getTime(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
-            binding.addScheduleStartTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
-        } else if(binding.addScheduleEndTimePickerTp.visibility == View.VISIBLE) {
+            binding.addScheduleStartTimeTv.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.line_black
+                )
+            )
+        } else if (binding.addScheduleEndTimePickerTp.visibility == View.VISIBLE) {
             getTime(binding.addScheduleEndTimePickerTp, binding.addScheduleEndTimeTv)
-            binding.addScheduleEndTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+            binding.addScheduleEndTimeTv.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.line_black
+                )
+            )
         }
     }
 
