@@ -1,5 +1,6 @@
 package com.example.sandiary.ui.calendar
 
+import CalendarDayBinder
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -13,8 +14,22 @@ import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentCalendarBinding
 import com.example.sandiary.ui.schedule.AddScheduleFragment
 import android.util.Log
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.example.sandiary.databinding.ItemCalendarDayBinding
+import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.model.DayOwner
+import com.kizitonwose.calendarview.ui.DayBinder
+import com.kizitonwose.calendarview.ui.ViewContainer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.time.temporal.WeekFields
+import java.util.*
 
 class CalendarFragment : Fragment() {
 
@@ -35,6 +50,7 @@ class CalendarFragment : Fragment() {
         calendarViewModel =
             ViewModelProvider(this).get(CalendarViewModel::class.java)
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
+
         val root: View = binding.root
         val localDate = LocalDate.now()
         val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM"))
@@ -46,18 +62,19 @@ class CalendarFragment : Fragment() {
             val text = "${date[1]}.${date[0].split("월")[0]}"
             binding.seeAllDateTv.setText(text)
         }
-        Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
+        //Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
         binding.calendarFloatingBtn.setOnClickListener{
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, AddScheduleFragment()).commit()
         }
 
+
+
         return binding.root
     }
-
-    private fun getMonth(string : String) : String{
+    private fun getMonth(string : String) : String {
         val month =
-            when(string) {
+            when (string) {
                 "January" -> "01"
                 "February" -> "02"
                 "March" -> "03"

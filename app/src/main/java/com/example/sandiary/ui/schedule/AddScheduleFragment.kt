@@ -32,7 +32,10 @@ import java.util.*
 class AddScheduleFragment : Fragment() {
     private lateinit var addScheduleViewModel: AddScheduleViewModel
     private var _binding: FragmentAddScheduleBinding? = null
-
+    var startDay : String = ""
+    var endDay : String = ""
+    var startTime : String = ""
+    var endTime : String = ""
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -51,26 +54,41 @@ class AddScheduleFragment : Fragment() {
         addScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
         })
-        val plan = Plan("name", "1120", "2200", "22")
         val planDB = PlanDatabase.getInstance(requireContext())
-        CoroutineScope(Dispatchers.IO).launch {
-            planDB!!.planDao().insertPlan(plan)
-            Log.d("insertData","dd")
+        binding.addScheduleSaveTv.setOnClickListener {
+           val plan = Plan(binding.addScheduleWriteDiaryEt.text.toString(),startTime,endTime, "22")
+            CoroutineScope(Dispatchers.IO).launch {
+                planDB!!.planDao().insertPlan(plan)
+                Log.d("insertData","dd")
+            }
         }
+
+
         binding.addScheduleStartTimeTv.setOnClickListener {
-            changeTimePicker(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
+            CoroutineScope(Dispatchers.Main).launch {
+                changeTimePicker(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
+            }
+
         }
         binding.addScheduleEndTimeTv.setOnClickListener {
-            changeTimePicker(binding.addScheduleEndTimePickerTp, binding.addScheduleEndTimeTv)
+            CoroutineScope(Dispatchers.Main).launch {
+                changeTimePicker(binding.addScheduleEndTimePickerTp, binding.addScheduleEndTimeTv)
+            }
         }
         binding.addScheduleStartDayTv.setOnClickListener {
-            changeCalendar(binding.addScheduleStartCalendarCv, binding.addScheduleStartDayTv)
+            CoroutineScope(Dispatchers.Main).launch {
+                changeCalendar(binding.addScheduleStartCalendarCv, binding.addScheduleStartDayTv)
+            }
         }
         binding.addScheduleEndDayTv.setOnClickListener {
-            changeCalendar(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
+            CoroutineScope(Dispatchers.Main).launch {
+                changeCalendar(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
+            }
         }
         binding.addScheduleAlarmTv.setOnClickListener {
-            numberPickerVisibility()
+            CoroutineScope(Dispatchers.Main).launch {
+                numberPickerVisibility()
+            }
         }
 
         binding.addScheduleAlarmNp.minValue = 0
@@ -87,6 +105,10 @@ class AddScheduleFragment : Fragment() {
             val day = dateFormat[2]
             val year = dateFormat[5]
             textView.text = "${year}.${month}.${day}(${dayOfWeek})"
+            when(textView){
+                binding.addScheduleEndDayTv -> endDay = "${year}.${month}.${day}"
+                else -> startDay = "${year}.${month}.${day}"
+            }
         }
     }
 
@@ -113,6 +135,10 @@ class AddScheduleFragment : Fragment() {
             minuteString = "${minute}"
         }
         textView.text = "${range} ${hourString}:${minuteString}"
+        when(textView){
+            binding.addScheduleEndTimeTv -> endTime = "${hourString}.${minuteString}"
+            else -> startTime = "${hourString}.${minuteString}"
+        }
     }
 
     private fun changeCalendar(calendarView: CalendarView, textView:TextView){
@@ -147,7 +173,7 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarCv.visibility = View.GONE
         binding.addScheduleAlarmNp.visibility = View.GONE
-        binding.addScheduleStartDayTv.visibility = View.GONE
+        binding.addScheduleAfterTv.visibility = View.GONE
 
         if(timePicker == binding.addScheduleStartTimePickerTp){
             if(timePicker.visibility == View.VISIBLE){
@@ -174,7 +200,7 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarCv.visibility = View.GONE
         binding.addScheduleAlarmNp.visibility = View.GONE
-        binding.addScheduleStartDayTv.visibility = View.GONE
+        binding.addScheduleAfterTv.visibility = View.GONE
 
         val numberPicker = binding.addScheduleAlarmNp
         if(numberPicker.visibility == View.VISIBLE){
