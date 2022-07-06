@@ -1,5 +1,6 @@
 package com.example.sandiary
 
+import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.util.Log
@@ -16,11 +17,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.applikeysolutions.cosmocalendar.dialog.CalendarDialog
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivitySeeAllBinding
 import com.example.sandiary.ui.SeeAllRVAdapter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SeeAllActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySeeAllBinding
@@ -74,6 +78,7 @@ class SeeAllActivity : AppCompatActivity() {
         val alertDialog = AlertDialog.Builder(this)
             .setView(view)
             .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         binding.seeAllRv.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val diaryRVAdapter = SeeAllRVAdapter(dummyDiaryList)
@@ -93,6 +98,21 @@ class SeeAllActivity : AppCompatActivity() {
         binding.seeAllExitIb.setOnClickListener {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.seeAllCalendarDialogIb.setOnClickListener {
+            val view = layoutInflater.inflate(R.layout.dialog_date_picker, null)
+            val alertDialog = AlertDialog.Builder(this)
+                .setView(view)
+                .create()
+            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            alertDialog.show()
+            alertDialog.findViewById<TextView>(R.id.dialog_date_picker_confirm_tv)!!.setOnClickListener {
+                alertDialog.hide()
+            }
+            alertDialog.findViewById<TextView>(R.id.dialog_date_picker_cancel_tv)!!.setOnClickListener {
+                alertDialog.hide()
+            }
         }
         initView()
         statusBar()

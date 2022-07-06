@@ -17,6 +17,14 @@
 <!--       -->
         <!-- Customize your theme here. -->
     </style>
+    <style name="DatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="background">@color/white</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+        <!-- 취소/확인버튼 색상 -->
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
     <style name="pickerStyle">
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="android:textSize">20sp</item>

@@ -23,6 +23,7 @@ import com.example.sandiary.function.PlanDatabase
 import com.example.sandiary.ui.calendar.CalendarFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -32,6 +33,7 @@ import java.util.*
 class AddScheduleFragment : Fragment() {
     private lateinit var addScheduleViewModel: AddScheduleViewModel
     private var _binding: FragmentAddScheduleBinding? = null
+    private var planDB : PlanDatabase? = null
     var startDay : String = ""
     var endDay : String = ""
     var startTime : String = ""
@@ -46,6 +48,8 @@ class AddScheduleFragment : Fragment() {
         _binding = FragmentAddScheduleBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        initFragment()
+
         binding.addScheduleExitIb.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CalendarFragment()).commit()
@@ -54,21 +58,21 @@ class AddScheduleFragment : Fragment() {
         addScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
         })
-        val planDB = PlanDatabase.getInstance(requireContext())
+
         binding.addScheduleSaveTv.setOnClickListener {
            val plan = Plan(binding.addScheduleWriteDiaryEt.text.toString(),startTime,endTime, "22")
             CoroutineScope(Dispatchers.IO).launch {
                 planDB!!.planDao().insertPlan(plan)
                 Log.d("insertData","dd")
             }
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.container, CalendarFragment()).commit()
         }
-
 
         binding.addScheduleStartTimeTv.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 changeTimePicker(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
             }
-
         }
         binding.addScheduleEndTimeTv.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
@@ -90,10 +94,12 @@ class AddScheduleFragment : Fragment() {
                 numberPickerVisibility()
             }
         }
-
+        return root
+    }
+    private fun initFragment(){
+        planDB = PlanDatabase.getInstance(requireContext())
         binding.addScheduleAlarmNp.minValue = 0
         binding.addScheduleAlarmNp.maxValue = 60
-        return root
     }
 
     private fun getDate(calendarView: CalendarView, textView: TextView){
