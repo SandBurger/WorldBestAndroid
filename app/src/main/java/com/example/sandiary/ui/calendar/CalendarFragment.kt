@@ -69,7 +69,6 @@ class CalendarFragment : Fragment() {
         }
 
 
-
         return binding.root
     }
     private fun getMonth(string : String) : String {

@@ -42,6 +42,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageButton
+        android:id="@+id/see_all_calendar_dialog_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_setting_inactive"
+        app:layout_constraintTop_toTopOf="@id/see_all_date_tv"
+        app:layout_constraintStart_toEndOf="@id/see_all_date_tv"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/see_all_rv"
