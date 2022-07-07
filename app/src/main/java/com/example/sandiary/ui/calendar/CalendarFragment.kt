@@ -16,6 +16,7 @@ import com.example.sandiary.ui.schedule.AddScheduleFragment
 import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.sandiary.databinding.ItemCalendarDayBinding
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
@@ -55,12 +56,41 @@ class CalendarFragment : Fragment() {
         val localDate = LocalDate.now()
         val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM"))
         binding.seeAllDateTv.text = date
+        CoroutineScope(Dispatchers.Main).launch{
+            binding.calendarCalendarCv.dayBinder = object : DayBinder<DayViewContainer> {
+                override fun create(view: View) =  DayViewContainer(view)
+                override fun bind(container: DayViewContainer, day: CalendarDay) {
+                    container.textView.text = day.date.dayOfMonth.toString()
+                    if(day.owner == DayOwner.THIS_MONTH){
+                        when(day.date.dayOfWeek.value) {
+                            7 -> {
+                                container.textView.setTextColor(ContextCompat
+                                    .getColor(requireContext(), R.color.error))
+                            }
+                            else -> container.textView.setTextColor(ContextCompat
+                                .getColor(requireContext(), R.color.line_black))
+                        }
+                    } else {
+                        container.textView.setTextColor(ContextCompat
+                            .getColor(requireContext(),R.color.line_grey))
+                    }
+                }
+            }
+            val daysOfWeek = arrayOf(
+                DayOfWeek.SUNDAY,
+                DayOfWeek.MONDAY,
+                DayOfWeek.TUESDAY,
+                DayOfWeek.WEDNESDAY,
+                DayOfWeek.THURSDAY,
+                DayOfWeek.FRIDAY,
+                DayOfWeek.SATURDAY
+            )
 
-        binding.calendarCalendarCv.setOnMonthChangeListener {
-            Log.d("month", "${it.monthName}")
-            val date = it.monthName.split(' ')
-            val text = "${date[1]}.${date[0].split("월")[0]}"
-            binding.seeAllDateTv.setText(text)
+            val currentMonth = YearMonth.now()
+            val firstMonth = currentMonth.minusMonths(10)
+            val lastMonth = currentMonth.plusMonths(10)
+            binding.calendarCalendarCv.setup(firstMonth, lastMonth, daysOfWeek.first())
+            binding.calendarCalendarCv.scrollToMonth(currentMonth)
         }
         //Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
         binding.calendarFloatingBtn.setOnClickListener{

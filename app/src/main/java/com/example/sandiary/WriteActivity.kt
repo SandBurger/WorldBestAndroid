@@ -2,10 +2,13 @@ package com.example.sandiary
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivityWriteBinding
@@ -18,11 +21,23 @@ class WriteActivity : AppCompatActivity() {
         binding = ActivityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.writeExitIb.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
         statusBar()
+
+        val view = layoutInflater.inflate(R.layout.dialog_write, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(view)
+            .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        binding.writeExitIb.setOnClickListener {
+            alertDialog.show()
+            alertDialog.findViewById<TextView>(R.id.dialog_write_keep_tv)!!.setOnClickListener {
+                alertDialog.hide()
+            }
+            alertDialog.findViewById<TextView>(R.id.dialog_write_exit_tv)!!.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
 
     }
     private fun statusBar(){
