@@ -20,6 +20,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivityMainBinding
 import com.example.sandiary.ui.calendar.CalendarFragment
+import com.example.sandiary.ui.calendar.KizitonFragment
 import com.example.sandiary.ui.home.HomeFragment
 import com.example.sandiary.ui.settings.SettingsFragment
 import com.google.android.material.navigation.NavigationBarItemView
