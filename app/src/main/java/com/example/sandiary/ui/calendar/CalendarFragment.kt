@@ -67,6 +67,10 @@ class CalendarFragment : Fragment() {
                                 container.textView.setTextColor(ContextCompat
                                     .getColor(requireContext(), R.color.error))
                             }
+                            6 -> {
+                                container.textView.setTextColor(ContextCompat
+                                    .getColor(requireContext(), R.color.saturday_blue))
+                            }
                             else -> container.textView.setTextColor(ContextCompat
                                 .getColor(requireContext(), R.color.line_black))
                         }
