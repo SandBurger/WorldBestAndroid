@@ -23,5 +23,5 @@
     <color name="inactive">#909090</color>
     <color name="active">#2209AC</color>
     <color name="search_box">#DEDEE0</color>
-
+    <color name="saturday_blue">#2020FF</color>
 </resources>

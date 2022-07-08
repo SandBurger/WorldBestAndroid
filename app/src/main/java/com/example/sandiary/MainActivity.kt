@@ -1,8 +1,5 @@
 package com.example.sandiary
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -11,19 +8,11 @@ import android.view.View
 import android.view.WindowManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivityMainBinding
 import com.example.sandiary.ui.calendar.CalendarFragment
-import com.example.sandiary.ui.calendar.KizitonFragment
 import com.example.sandiary.ui.home.HomeFragment
 import com.example.sandiary.ui.settings.SettingsFragment
-import com.google.android.material.navigation.NavigationBarItemView
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
