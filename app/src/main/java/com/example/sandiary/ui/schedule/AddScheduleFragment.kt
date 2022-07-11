@@ -60,7 +60,7 @@ class AddScheduleFragment : Fragment() {
         })
 
         binding.addScheduleSaveTv.setOnClickListener {
-           val plan = Plan(binding.addScheduleWriteDiaryEt.text.toString(),startTime,endTime, "22")
+           val plan = Plan(binding.addScheduleWriteDiaryEt.text.toString(),7, 13, 13 ,endTime, "22", "end")
             CoroutineScope(Dispatchers.IO).launch {
                 planDB!!.planDao().insertPlan(plan)
                 Log.d("insertData","dd")

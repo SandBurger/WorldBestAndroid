@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.sandiary.databinding.ItemCalendarDayBinding
+import com.example.sandiary.function.PlanDatabase
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
@@ -37,6 +38,7 @@ class CalendarFragment : Fragment() {
     private lateinit var calendarViewModel: CalendarViewModel
     //lateinit var binding : FragmentCalendarBinding
     private var _binding: FragmentCalendarBinding? = null
+    private var planDB : PlanDatabase? = null
 //
 //    // This property is only valid between onCreateView and
 //    // onDestroyView.
@@ -51,11 +53,14 @@ class CalendarFragment : Fragment() {
         calendarViewModel =
             ViewModelProvider(this).get(CalendarViewModel::class.java)
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
-
+        initFragment()
         val root: View = binding.root
         val localDate = LocalDate.now()
         val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM"))
         binding.seeAllDateTv.text = date
+        CoroutineScope(Dispatchers.IO).launch {
+            planDB!!.planDao().getMonthPlan(3)
+        }
         CoroutineScope(Dispatchers.Main).launch{
             binding.calendarCalendarCv.dayBinder = object : DayBinder<DayViewContainer> {
                 override fun create(view: View) =  DayViewContainer(view)
@@ -104,6 +109,10 @@ class CalendarFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun initFragment(){
+        planDB = PlanDatabase.getInstance(requireContext())
     }
     private fun getMonth(string : String) : String {
         val month =
