@@ -6,5 +6,7 @@
         android:id="@+id/item_calendar_day_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textSize="14sp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:gravity="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

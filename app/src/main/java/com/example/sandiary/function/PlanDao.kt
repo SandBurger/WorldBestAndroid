@@ -13,4 +13,7 @@ interface PlanDao {
     @Query("SELECT * FROM PlanTable")
     fun getAllPlan() : List<Plan>
 
+    @Query("SELECT * FROM PlanTable WHERE startMonth = :startMonth")
+    fun getMonthPlan(startMonth : Int) : List<Plan>
+
 }

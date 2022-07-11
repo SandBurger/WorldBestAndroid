@@ -4,11 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/backgroundColor"
     tools:context=".ui.calendar.CalendarFragment">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@color/background_white"/>
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/calendar_date_container"
         android:layout_width="0dp"
@@ -63,6 +60,41 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageView
+        android:id="@+id/calendar_plan_background_iv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@color/background_white"
+        app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/calendar_today_plan_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/today_plan"
+        android:textSize="14sp"
+        android:textColor="@color/font_black"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        app:layout_constraintTop_toTopOf="@id/calendar_plan_background_iv"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <ImageView
+        android:id="@+id/calendar_plan_dot_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/grey_dot"
+        android:layout_marginTop="26dp"
+        app:layout_constraintTop_toBottomOf="@id/calendar_today_plan_tv"
+        app:layout_constraintStart_toStartOf="@id/calendar_today_plan_tv"/>
+    <ImageView
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:src="@color/cardview_grey"
+        app:layout_constraintTop_toBottomOf="@id/calendar_plan_dot_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/calendar_plan_dot_iv"
+        app:layout_constraintEnd_toEndOf="@id/calendar_plan_dot_iv"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/calendar_floating_btn"
         android:layout_width="wrap_content"

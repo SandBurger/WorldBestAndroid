@@ -11,5 +11,4 @@ interface DiaryInterface {
     fun getDiary(
         @Path("id") id : Int
     ) : Call<DiaryResponse>
-
 }

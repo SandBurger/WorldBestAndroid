@@ -16,12 +16,22 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.applikeysolutions.cosmocalendar.dialog.CalendarDialog
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivitySeeAllBinding
 import com.example.sandiary.ui.SeeAllRVAdapter
+import com.example.sandiary.ui.calendar.DayViewContainer
+import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.model.DayOwner
+import com.kizitonwose.calendarview.ui.DayBinder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
@@ -101,7 +111,7 @@ class SeeAllActivity : AppCompatActivity() {
         }
 
         binding.seeAllCalendarDialogIb.setOnClickListener {
-            val view = layoutInflater.inflate(R.layout.dialog_date_picker, null)
+            val view = layoutInflater.inflate(R.layout.dialog_see_all, null)
             val alertDialog = AlertDialog.Builder(this)
                 .setView(view)
                 .create()
