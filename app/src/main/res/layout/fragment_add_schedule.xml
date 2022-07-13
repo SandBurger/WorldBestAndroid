@@ -18,6 +18,7 @@
         android:layout_width="18dp"
         android:layout_height="12dp"
         android:src="@drawable/ic_exit"
+        app:tint="@color/background_white"
         android:scaleType="center"
         android:layout_marginStart="17dp"
         app:layout_constraintTop_toTopOf="@id/add_schedule_date_tv"
@@ -71,11 +72,11 @@
         android:id="@+id/add_schedule_clock_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:src="@drawable/ic_clock"
         android:scaleType="fitCenter"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_divider_iv"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_all_day_tv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_all_day_tv"
         app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/add_schedule_all_day_tv"
@@ -85,7 +86,8 @@
         android:textColor="@color/font_black"
         android:layout_marginStart="16sp"
         android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="@id/add_schedule_clock_iv"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_divider_iv"
         app:layout_constraintStart_toEndOf="@id/add_schedule_clock_iv"/>
     <Switch
         android:layout_width="wrap_content"
@@ -214,6 +216,15 @@
         android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_end_lo"
         app:layout_constraintStart_toStartOf="parent"/>
+    <ImageView
+        android:id="@+id/add_schedule_alarm_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_alarm"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@id/add_schedule_clock_iv"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_tv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_tv"/>
     <TextView
         android:id="@+id/add_schedule_alarm_tv"
         android:layout_width="wrap_content"
@@ -224,22 +235,50 @@
         android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_divider2_iv"
         app:layout_constraintStart_toStartOf="@id/add_schedule_all_day_tv"/>
+    <TextView
+        android:id="@+id/add_schedule_alarm_minute_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="0"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:textColor="@color/active"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_after_minute_tv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_after_minute_tv"
+        app:layout_constraintEnd_toStartOf="@id/add_schedule_alarm_after_minute_tv"/>
+    <TextView
+        android:id="@+id/add_schedule_alarm_after_minute_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textSize="14sp"
+        android:text="분 후"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:visibility="gone"
+        android:textColor="@color/active"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_tv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_tv"/>
     <NumberPicker
         android:id="@+id/add_schedule_alarm_np"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="90dp"
+        android:layout_marginEnd="70dp"
         android:visibility="gone"
+        android:theme="@style/pickerStyle"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_tv"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
         android:id="@+id/add_schedule_after_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="@color/line_black"
         android:text="분 후"
         android:visibility="gone"
-        android:theme="@style/pickerStyle"
+        android:layout_marginStart="5dp"
         app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_np"
         app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_np"
         app:layout_constraintStart_toStartOf="parent"
@@ -253,6 +292,15 @@
         android:layout_marginHorizontal="16dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_np"
         app:layout_constraintStart_toStartOf="parent"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_memo"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="2dp"
+        app:layout_constraintStart_toStartOf="@id/add_schedule_clock_iv"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_memo_tv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_memo_tv"/>
     <TextView
         android:id="@+id/add_schedule_memo_tv"
         android:layout_width="wrap_content"
