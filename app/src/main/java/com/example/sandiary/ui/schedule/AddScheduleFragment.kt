@@ -38,6 +38,7 @@ class AddScheduleFragment : Fragment() {
     var endDay : String = ""
     var startTime : String = ""
     var endTime : String = ""
+    var flag : Int = 0
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -49,7 +50,7 @@ class AddScheduleFragment : Fragment() {
         val root: View = binding.root
 
         initFragment()
-
+        Log.d("alarm", "${binding.addScheduleAlarmNp.value}")
         binding.addScheduleExitIb.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CalendarFragment()).commit()
@@ -147,6 +148,18 @@ class AddScheduleFragment : Fragment() {
         }
     }
 
+    private fun getAlarm(){
+        if(binding.addScheduleAlarmNp.value != 0){
+            binding.addScheduleAlarmMinuteTv.text = binding.addScheduleAlarmNp.value.toString()
+            binding.addScheduleAlarmMinuteTv.visibility = View.VISIBLE
+            binding.addScheduleAlarmAfterMinuteTv.visibility = View.VISIBLE
+        } else {
+            binding.addScheduleAlarmMinuteTv.visibility = View.GONE
+            binding.addScheduleAlarmAfterMinuteTv.visibility = View.GONE
+        }
+
+    }
+
     private fun changeCalendar(calendarView: CalendarView, textView:TextView){
         changeText()
         binding.addScheduleStartTimePickerTp.visibility = View.GONE
@@ -205,21 +218,25 @@ class AddScheduleFragment : Fragment() {
         changeText()
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarCv.visibility = View.GONE
+        binding.addScheduleStartTimePickerTp.visibility = View.GONE
+        binding.addScheduleEndTimePickerTp.visibility = View.GONE
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE
 
         val numberPicker = binding.addScheduleAlarmNp
-        if(numberPicker.visibility == View.VISIBLE){
-            numberPicker.visibility = View.GONE
-            binding.addScheduleAfterTv.visibility = View.GONE
-        } else{
-
+        if(flag == 0){
             numberPicker.visibility = View.VISIBLE
             binding.addScheduleAfterTv.visibility = View.VISIBLE
+            flag = 1
+        } else{
+            numberPicker.visibility = View.GONE
+            binding.addScheduleAfterTv.visibility = View.GONE
+            flag = 0
         }
     }
 
     private fun changeText() {
+        getAlarm()
         if (binding.addScheduleStartCalendarCv.visibility == View.VISIBLE) {
             getDate(binding.addScheduleStartCalendarCv, binding.addScheduleStartDayTv)
             binding.addScheduleStartDayTv.setTextColor(
