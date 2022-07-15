@@ -94,6 +94,9 @@ class CalendarFragment : Fragment() {
                         when{
                             day.date == selectedDay -> {
                                 container.imageView.visibility = View.VISIBLE
+                                Log.d("date","${day.date}")
+                                Log.d("date","${day.date.dayOfMonth}")
+                                Log.d("date","${day.date.month}")
                             }
                             day.date.dayOfWeek.value == 7 -> {
                                 container.textView.setTextColor(ContextCompat

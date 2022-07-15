@@ -1,69 +1,59 @@
 package com.example.sandiary
 
+import android.app.ProgressDialog.show
+import android.content.ContentProvider
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivitySeeAllBinding
+import com.example.sandiary.databinding.DialogDatePickerBinding
+import com.example.sandiary.databinding.ItemCalendarDayBinding
 import com.example.sandiary.ui.SeeAllRVAdapter
+import com.kizitonwose.calendarview.CalendarView
+import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.model.DayOwner
+import com.kizitonwose.calendarview.ui.DayBinder
+import com.kizitonwose.calendarview.ui.ViewContainer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
 class SeeAllActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySeeAllBinding
+    private var selectedDay : LocalDate? = null
+    private lateinit var pickerBinding : DialogDatePickerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         var dummyDiaryList = ArrayList<Diary>()
         dummyDiaryList.add(Diary(0, "CODE' -> CODE \n" +
-                "CODE -> VDECL CODE\n" +
-                "CODE -> FDECL CODE\n" +
-                "CODE -> CDECL CODE\n" +
-                "CODE -> ''\n" +
-                "VDECL -> vtype id semi\n" +
-                "VDECL -> vtype id ASSIGN semi\n" +
-                "ASSIGN -> id assign RHS\n" +
-                "RHS -> EXPR\n" +
-                "RHS -> literal\n" +
-                "RHS -> character\n" +
-                "RHS -> boolstr\n" +
-                "EXPR -> EXPR addsub EXPR \n" +
-                "EXPR -> EXPR multidiv EXPR\n" +
-                "EXPR -> lparen EXPR rparen\n" +
-                "EXPR -> id\n" +
-                "EXPR -> num\n" +
-                "FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace\n" +
-                "ARG -> vtype id MOREARGS\n" +
-                "ARG -> ''\n" +
-                "MOREARGS -> comma vtype id MOREARGS\n" +
-                "MOREARGS -> ''\n" +
-                "BLOCK -> STMT BLOCK\n" +
-                "BLOCK -> ''\n" +
-                "STMT -> VDECL\n" +
-                "STMT -> ASSIGN semi\n" +
-                "STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE\n" +
-                "STMT -> while lparen COND rparen lbrace BLOCK rbrace\n" +
-                "COND -> COND comp COND\n" +
-                "COND -> boolstr\n" +
-                "ELSE -> else lbrace BLOCK rbrace\n" +
-                "ELSE -> ''\n" +
                 "RETURN -> return RHS semi\n" +
                 "CDECL -> class id lbrace ODECL rbrace\n" +
                 "ODECL -> VDECL ODECL\n" +
                 "ODECL -> FDECL ODECL\n" +
                 "ODECL -> ''"))
         dummyDiaryList.add(Diary(1, "test1"))
-
+        pickerBinding = DialogDatePickerBinding.inflate(layoutInflater)
         binding = ActivitySeeAllBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val layoutInflater = LayoutInflater.from(this)
@@ -88,28 +78,18 @@ class SeeAllActivity : AppCompatActivity() {
         })
         binding.seeAllRv.adapter = diaryRVAdapter
 
+
         binding.seeAllExitIb.setOnClickListener {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }
-
         binding.seeAllCalendarDialogIb.setOnClickListener {
-            val view = layoutInflater.inflate(R.layout.dialog_see_all, null)
-            val alertDialog = AlertDialog.Builder(this)
-                .setView(view)
-                .create()
-            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            alertDialog.show()
-            alertDialog.findViewById<TextView>(R.id.dialog_date_picker_confirm_tv)!!.setOnClickListener {
-                alertDialog.hide()
-            }
-            alertDialog.findViewById<TextView>(R.id.dialog_date_picker_cancel_tv)!!.setOnClickListener {
-                alertDialog.hide()
-            }
+            TestDialog().show(supportFragmentManager, "Test")
         }
         initView()
         statusBar()
     }
+
     private fun statusBar(){
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
@@ -127,5 +107,6 @@ class SeeAllActivity : AppCompatActivity() {
         val localDate = LocalDate.now()
         val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM.dd"))
         binding.seeAllDateTv.text = date
+
     }
 }
