@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/calendar_header_month_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dasda"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_bottom_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/tv_day_of_week_0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textColor="@color/error"
+        android:text="일"
+        android:textSize="12sp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_day_of_week_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendar_header_month_tv" />
+
+    <TextView
+        android:id="@+id/tv_day_of_week_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textColor="@color/line_black"
+        android:text="월"
+        android:textSize="12sp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_day_of_week_2"
+        app:layout_constraintStart_toEndOf="@id/tv_day_of_week_0"
+        app:layout_constraintTop_toTopOf="@id/tv_day_of_week_0" />
+
+    <TextView
+        android:id="@+id/tv_day_of_week_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textColor="@color/line_black"
+        android:text="@string/tuesday"
+        android:textSize="12sp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_day_of_week_3"
+        app:layout_constraintStart_toEndOf="@id/tv_day_of_week_1"
+        app:layout_constraintTop_toTopOf="@id/tv_day_of_week_0" />
+
+    <TextView
+        android:id="@+id/tv_day_of_week_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textColor="@color/line_black"
+        android:text="@string/wednesday"
+        android:textSize="12sp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_day_of_week_4"
+        app:layout_constraintStart_toEndOf="@id/tv_day_of_week_2"
+        app:layout_constraintTop_toTopOf="@id/tv_day_of_week_0" />
+
+    <TextView
+        android:id="@+id/tv_day_of_week_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textColor="@color/line_black"
+        android:text="@string/thursday"
+        android:textSize="12sp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_day_of_week_5"
+        app:layout_constraintStart_toEndOf="@id/tv_day_of_week_3"
+        app:layout_constraintTop_toTopOf="@id/tv_day_of_week_0" />
+
+    <TextView
+        android:id="@+id/tv_day_of_week_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textColor="@color/line_black"
+        android:text="@string/friday"
+        android:textSize="12sp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_day_of_week_6"
+        app:layout_constraintStart_toEndOf="@id/tv_day_of_week_4"
+        app:layout_constraintTop_toTopOf="@id/tv_day_of_week_0" />
+
+    <TextView
+        android:id="@+id/tv_day_of_week_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="normal"
+        android:textColor="@color/saturday_blue"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:text="@string/saturday"
+        android:textSize="12sp"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_day_of_week_5"
+        app:layout_constraintTop_toTopOf="@id/tv_day_of_week_0" />
+</androidx.constraintlayout.widget.ConstraintLayout>
