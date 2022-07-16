@@ -83,8 +83,11 @@ class SeeAllActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }
+        val view2 = layoutInflater.inflate(R.layout.dialog_date_picker, null)
+        val dialog2 = AlertDialog.Builder(this).setView(view2).create()
         binding.seeAllCalendarDialogIb.setOnClickListener {
-            TestDialog().show(supportFragmentManager, "Test")
+            dialog2.show()
+            //TestDialog().show(supportFragmentManager, "Test")
         }
         initView()
         statusBar()
