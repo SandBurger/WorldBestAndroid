@@ -29,6 +29,10 @@
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="android:textSize">20sp</item>
     </style>
+    <style name="dd">
+        <item name="windowMinWidthMinor">90%</item>
+        <item name="windowMinWidthMajor">90%</item>
+    </style>
     <style name="backgroundColor">
         <item name="backgroundColor">@color/white</item>
     </style>

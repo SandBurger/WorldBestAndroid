@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -26,6 +27,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -39,7 +41,7 @@ class TestDialog : DialogFragment() {
 
     private var selectedDay : LocalDate? = null
     private lateinit var pickerBinding : TestBinding
-
+    private lateinit var size : Point
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -93,16 +95,6 @@ class TestDialog : DialogFragment() {
                                 Log.d("date","${day.date.dayOfMonth}")
                                 Log.d("date","${day.date.month}")
                             }
-                            day.date.dayOfWeek.value == 7 -> {
-                                container.textView.setTextColor(
-                                    ContextCompat
-                                        .getColor(requireContext(), R.color.error))
-                            }
-                            day.date.dayOfWeek.value == 6 -> {
-                                container.textView.setTextColor(
-                                    ContextCompat
-                                        .getColor(requireContext(), R.color.saturday_blue))
-                            }
                             else -> {
                                 container.textView.setTextColor(
                                     ContextCompat
@@ -134,30 +126,33 @@ class TestDialog : DialogFragment() {
             pickerBinding.dialogSeeAllV.scrollToMonth(currentMonth)
         }
         val datePickerView = layoutInflater.inflate(R.layout.test, null)
-        val datePickerDialog = AlertDialog.Builder(requireContext()).setView(datePickerView)
-            .setPositiveButton(R.string.thursday, DialogInterface.OnClickListener { dialogInterface, i ->
-                dialog?.hide()
-            })
-            .setNegativeButton(R.string.thursday, DialogInterface.OnClickListener{dialogInterface, i ->
-                dialog?.hide()  
-            }).create()
-        pickerBinding.root.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        val datePickerDialog = AlertDialog.Builder(requireContext()).setView(datePickerView).create()
+        pickerBinding.dialogDatePickerTv.setOnClickListener {
+            datePickerDialog.dismiss()
+        }
+        pickerBinding.dialogDatePickerCancelTv.setOnClickListener {
+            datePickerDialog.hide()
+        }
+
         datePickerDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         return pickerBinding.root
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        val windowManager = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-//        val params : ViewGroup.LayoutParams? = dialog?.window?.attributes
-//
-//        params?.width = WindowManager.LayoutParams.WRAP_CONTENT
-//        params?.height = WindowManager.LayoutParams.WRAP_CONTENT
-//        dialog?.window?.attributes = params as WindowManager.LayoutParams
-//    }
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        CoroutineScope(Dispatchers.Main).launch {
+//            dialog?.window?.setLayout(
+//                LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//            )
+//        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
