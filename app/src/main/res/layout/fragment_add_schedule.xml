@@ -4,15 +4,23 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
-        android:id="@+id/add_schedule_top_iv"
+        android:id="@+id/add_schedule_header_iv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@color/brand_light"
+        android:src="@color/background_grey"
         android:layout_marginBottom="17dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/add_schedule_write_diary_et"/>
+    <ImageView
+        android:id="@+id/add_schedule_header_divider_iv"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="@color/line_grey"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_header_iv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <ImageButton
         android:id="@+id/add_schedule_exit_ib"
         android:layout_width="18dp"
@@ -29,12 +37,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="일정 추가"
-        android:textColor="@color/background_white"
-        android:layout_marginTop="33dp"
+        android:text="일정추가"
+        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+        android:textColor="@color/font_black"
+        android:layout_marginTop="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_exit"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_date_tv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_date_tv"
+        app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/add_schedule_save_tv"
         android:layout_width="wrap_content"
@@ -83,6 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="하루종일"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textColor="@color/font_black"
         android:layout_marginStart="16sp"
         android:textSize="16sp"
@@ -101,6 +120,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:text="시작일"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textColor="@color/font_black"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_all_day_tv"
@@ -112,6 +132,7 @@
         android:layout_marginStart="44dp"
         android:gravity="center"
         android:text="2022.05.03(화)"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textSize="14dp"
         android:textColor="@color/font_black"
         app:layout_constraintTop_toTopOf="@id/add_schedule_start_tv"
@@ -120,8 +141,9 @@
         android:id="@+id/add_schedule_start_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textSize="14sp"
-        android:textColor="@color/font_black"
+        android:textColor="@color/line_grey"
         android:text="오전 06:00"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="@id/add_schedule_start_day_tv"
@@ -137,10 +159,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:timePickerMode="spinner"
-            android:visibility="gone"
+            android:numbersTextColor="@color/active"
             android:theme="@style/pickerStyle"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
+<!--        <ImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/ic_exit"-->
+<!--            app:layout_constraintTop_toTopOf="@id/add_schedule_start_time_picker_tp"-->
+<!--            app:layout_constraintStart_toStartOf="@id/add_schedule_start_time_picker_tp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/add_schedule_start_time_picker_tp"/>-->
         <com.applikeysolutions.cosmocalendar.view.CalendarView
             android:id="@+id/add_schedule_start_calendar_cv"
             android:layout_width="match_parent"
@@ -159,6 +190,7 @@
         android:textSize="16sp"
         android:text="종료일"
         android:textColor="@color/font_black"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_start_lo"
         app:layout_constraintStart_toStartOf="@id/add_schedule_start_tv"/>
@@ -170,6 +202,7 @@
         android:gravity="center"
         android:text="2022.05.03(화)"
         android:textSize="14dp"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textColor="@color/font_black"
         app:layout_constraintTop_toTopOf="@id/add_schedule_end_tv"
         app:layout_constraintStart_toEndOf="@id/add_schedule_end_tv"/>
@@ -177,8 +210,9 @@
         android:id="@+id/add_schedule_end_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textSize="14sp"
-        android:textColor="@color/font_black"
+        android:textColor="@color/line_grey"
         android:text="오전 06:00"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="@id/add_schedule_end_day_tv"
