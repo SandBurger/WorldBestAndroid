@@ -29,61 +29,60 @@
     <ImageView
         android:id="@+id/calendar_divider_iv"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="134dp"
         android:src="@color/brand_light"
         android:layout_marginBottom="17dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+    <ImageButton
+        android:id="@+id/calendar_search_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_search"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
-        android:id="@+id/see_all_date_tv"
+        android:id="@+id/calendar_date_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textStyle="bold"
         android:textColor="@color/background_white"
         android:fontFamily="@font/spoqa_han_sans_neo_medium"
         android:text="5월 15일"
-        android:layout_marginTop="33dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="15dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/calendar_divider_iv"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageButton
+        android:layout_width="16dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_bottom_arrow"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@id/calendar_date_tv"
+        app:layout_constraintBottom_toBottomOf="@id/calendar_date_tv"
+        app:layout_constraintStart_toEndOf="@id/calendar_date_tv"/>
     <ImageView
         android:id="@+id/calendar_plan_background_iv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@color/background_white"
+        android:src="@color/background_grey"
         app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv"
         app:layout_constraintBottom_toBottomOf="parent"/>
-    <TextView
-        android:id="@+id/calendar_today_plan_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/today_plan"
-        android:textSize="14sp"
-        android:textColor="@color/font_black"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="15dp"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
-        app:layout_constraintTop_toTopOf="@id/calendar_plan_background_iv"
-        app:layout_constraintStart_toStartOf="parent"/>
     <ImageView
-        android:id="@+id/calendar_plan_dot_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/grey_dot"
-        android:layout_marginTop="26dp"
-        app:layout_constraintTop_toBottomOf="@id/calendar_today_plan_tv"
-        app:layout_constraintStart_toStartOf="@id/calendar_today_plan_tv"/>
-    <ImageView
+        android:id="@+id/calendar_schedule_line_iv"
         android:layout_width="2dp"
         android:layout_height="0dp"
         android:src="@color/cardview_grey"
-        app:layout_constraintTop_toBottomOf="@id/calendar_plan_dot_iv"
+        android:layout_marginStart="19dp"
+        app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/calendar_plan_dot_iv"
-        app:layout_constraintEnd_toEndOf="@id/calendar_plan_dot_iv"/>
+        app:layout_constraintStart_toStartOf="parent" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/calendar_floating_btn"
         android:layout_width="wrap_content"

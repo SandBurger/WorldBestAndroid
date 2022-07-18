@@ -58,7 +58,7 @@ class CalendarFragment : Fragment() {
         val root: View = binding.root
         val localDate = LocalDate.now()
         val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM"))
-        binding.seeAllDateTv.text = date
+        binding.calendarDateTv.text = date
         CoroutineScope(Dispatchers.IO).launch {
             planDB!!.planDao().getMonthPlan(3)
         }

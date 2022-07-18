@@ -33,6 +33,9 @@
         <item name="windowMinWidthMinor">90%</item>
         <item name="windowMinWidthMajor">90%</item>
     </style>
+    <style name="write_background">
+        <item name="backgroundColor">@color/background_grey</item>
+    </style>
     <style name="backgroundColor">
         <item name="backgroundColor">@color/white</item>
     </style>
