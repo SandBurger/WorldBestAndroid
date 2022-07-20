@@ -25,8 +25,10 @@
         <!-- 취소/확인버튼 색상 -->
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
-    <style name="pickerStyle">
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/active</item>
         <item name="android:textSize">20sp</item>
     </style>
     <style name="dd">
