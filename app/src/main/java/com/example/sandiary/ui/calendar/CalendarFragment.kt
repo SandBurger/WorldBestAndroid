@@ -98,17 +98,7 @@ class CalendarFragment : Fragment() {
                                 Log.d("date","${day.date.dayOfMonth}")
                                 Log.d("date","${day.date.month}")
                             }
-                            day.date.dayOfWeek.value == 7 -> {
-                                container.textView.setTextColor(ContextCompat
-                                    .getColor(requireContext(), R.color.error))
-                            }
-                            day.date.dayOfWeek.value == 6 -> {
-                                container.textView.setTextColor(ContextCompat
-                                    .getColor(requireContext(), R.color.saturday_blue))
-                            }
                             else -> {
-                                container.textView.setTextColor(ContextCompat
-                                        .getColor(requireContext(), R.color.line_black))
                                 container.imageView.visibility = View.INVISIBLE
                             }
                         }

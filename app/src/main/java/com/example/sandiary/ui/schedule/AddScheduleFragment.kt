@@ -1,5 +1,6 @@
 package com.example.sandiary.ui.schedule
 
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.lang.reflect.Field
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
@@ -59,6 +62,7 @@ class AddScheduleFragment : Fragment() {
         addScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
         })
+
 
         binding.addScheduleSaveTv.setOnClickListener {
            val plan = Plan(binding.addScheduleWriteDiaryEt.text.toString(),7, 13, 13 ,endTime, "22", "end")
@@ -163,6 +167,7 @@ class AddScheduleFragment : Fragment() {
     private fun changeCalendar(calendarView: CalendarView, textView:TextView){
         changeText()
         binding.addScheduleStartTimePickerTp.visibility = View.GONE
+        binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
         binding.addScheduleEndTimePickerTp.visibility = View.GONE
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE
@@ -197,9 +202,11 @@ class AddScheduleFragment : Fragment() {
         if(timePicker == binding.addScheduleStartTimePickerTp){
             if(timePicker.visibility == View.VISIBLE){
                 timePicker.visibility = View.GONE
+                binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
                 timePicker.visibility = View.VISIBLE
+                binding.addScheduleStartTimeBackgroundIv.visibility = View.VISIBLE
                 binding.addScheduleEndTimePickerTp.visibility = View.GONE
             }
         }
@@ -210,6 +217,7 @@ class AddScheduleFragment : Fragment() {
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
                 timePicker.visibility = View.VISIBLE
                 binding.addScheduleStartTimePickerTp.visibility = View.GONE
+                binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
             }
         }
     }
@@ -219,6 +227,7 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarCv.visibility = View.GONE
         binding.addScheduleStartTimePickerTp.visibility = View.GONE
+        binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
         binding.addScheduleEndTimePickerTp.visibility = View.GONE
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE
@@ -272,6 +281,7 @@ class AddScheduleFragment : Fragment() {
             )
         }
     }
+
 
     private fun getDayOfWeek(string: String) : String{
         val dayOfWeek =

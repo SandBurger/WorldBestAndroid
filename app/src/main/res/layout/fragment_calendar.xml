@@ -29,8 +29,11 @@
     <ImageView
         android:id="@+id/calendar_divider_iv"
         android:layout_width="match_parent"
-        android:layout_height="134dp"
-        android:src="@color/brand_light"
+        android:layout_height="118dp"
+        android:background="@color/brand_light"
+        android:scaleType="fitXY"
+        android:paddingTop="18dp"
+        android:src="@drawable/calendar_background"
         android:layout_marginBottom="17dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
