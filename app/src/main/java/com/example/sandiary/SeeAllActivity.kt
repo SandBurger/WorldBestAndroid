@@ -1,40 +1,22 @@
 package com.example.sandiary
 
-import android.app.ProgressDialog.show
-import android.content.ContentProvider
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivitySeeAllBinding
 import com.example.sandiary.databinding.DialogDatePickerBinding
-import com.example.sandiary.databinding.ItemCalendarDayBinding
 import com.example.sandiary.ui.SeeAllRVAdapter
-import com.kizitonwose.calendarview.CalendarView
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.model.DayOwner
-import com.kizitonwose.calendarview.ui.DayBinder
-import com.kizitonwose.calendarview.ui.ViewContainer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
@@ -56,24 +38,11 @@ class SeeAllActivity : AppCompatActivity() {
         pickerBinding = DialogDatePickerBinding.inflate(layoutInflater)
         binding = ActivitySeeAllBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val layoutInflater = LayoutInflater.from(this)
-        val view = layoutInflater.inflate(R.layout.dialog_see_all, null)
-        val alertDialog = AlertDialog.Builder(this)
-            .setView(view)
-            .create()
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         binding.seeAllRv.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val diaryRVAdapter = SeeAllRVAdapter(dummyDiaryList)
         diaryRVAdapter.itemClickListener(object : SeeAllRVAdapter.ItemClickListener{
             override fun onClick(diary: Diary) {
-                alertDialog.show()
-                alertDialog.findViewById<TextView>(R.id.dialog_see_all_cancel_tv)!!.setOnClickListener {
-                    alertDialog.hide()
-                }
-                alertDialog.findViewById<TextView>(R.id.dialog_see_all_remove_tv)!!.setOnClickListener {
-                    alertDialog.hide()
-                }
+                showDialog()
             }
         })
         binding.seeAllRv.adapter = diaryRVAdapter
@@ -110,6 +79,22 @@ class SeeAllActivity : AppCompatActivity() {
         val localDate = LocalDate.now()
         val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM.dd"))
         binding.seeAllDateTv.text = date
+    }
 
+    private fun showDialog(){
+        val layoutInflater = LayoutInflater.from(this)
+        val view = layoutInflater.inflate(R.layout.dialog_exit, null)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(view)
+            .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        view.findViewById<TextView>(R.id.dialog_exit_positive_button_tv).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        view.findViewById<TextView>(R.id.dialog_exit_negative_button_tv).setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 }

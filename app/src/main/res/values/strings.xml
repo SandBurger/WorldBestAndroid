@@ -13,4 +13,11 @@
     <string name="friday">금</string>
     <string name="saturday">토</string>
     <string name="today_plan">오늘 일정</string>
+    <string name="cancel">취소</string>
+    <string name="remove">삭제</string>
+    <string name="exit">나가기</string>
+    <string name="dialog_see_title">글을 삭제하시겠어요?</string>
+    <string name="dialog_see_message">삭제한 글은 다시 복원할 수 없어요.</string>
+    <string name="dialog_write_title">나가시겠어요?</string>
+    <string name="dialog_write_message">작성한 글은 저장되지 않습니다.</string>
 </resources>

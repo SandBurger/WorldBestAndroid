@@ -58,7 +58,7 @@ class AddScheduleFragment : Fragment() {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CalendarFragment()).commit()
         }
-        val dateTv = binding.addScheduleDateTv
+        val dateTv = binding.addScheduleStartTv
         addScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
         })

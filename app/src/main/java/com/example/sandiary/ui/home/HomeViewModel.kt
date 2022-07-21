@@ -10,7 +10,7 @@ class HomeViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         val localDate = LocalDate.now()
-        val date = localDate.format(DateTimeFormatter.ofPattern("MM월 dd일"))
+        val date = localDate.format(DateTimeFormatter.ofPattern("M월 dd일"))
         value = date
     }
     val text: LiveData<String> = _text

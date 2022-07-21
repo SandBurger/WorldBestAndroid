@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -22,21 +23,8 @@ class WriteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         statusBar()
-
-        val view = layoutInflater.inflate(R.layout.dialog_write, null)
-        val alertDialog = AlertDialog.Builder(this)
-            .setView(view)
-            .create()
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         binding.writeExitIb.setOnClickListener {
-            alertDialog.show()
-            alertDialog.findViewById<TextView>(R.id.dialog_write_keep_tv)!!.setOnClickListener {
-                alertDialog.hide()
-            }
-            alertDialog.findViewById<TextView>(R.id.dialog_write_exit_tv)!!.setOnClickListener {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
+            showDialog()
         }
 
     }
@@ -52,5 +40,28 @@ class WriteActivity : AppCompatActivity() {
             window.statusBarColor = Color.TRANSPARENT
         }
     }
+
+    private fun showDialog(){
+        val layoutInflater = LayoutInflater.from(this)
+        val view = layoutInflater.inflate(R.layout.dialog_exit, null)
+
+        view.findViewById<TextView>(R.id.dialog_exit_positive_button_tv).setText(R.string.exit)
+        view.findViewById<TextView>(R.id.dialog_exit_title_tv).setText(R.string.dialog_write_title)
+        view.findViewById<TextView>(R.id.dialog_exit_message_tv).setText(R.string.dialog_write_message)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(view)
+            .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        view.findViewById<TextView>(R.id.dialog_exit_positive_button_tv).setOnClickListener {
+            alertDialog.dismiss()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        view.findViewById<TextView>(R.id.dialog_exit_negative_button_tv).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        alertDialog.show()
+    }
+
 
 }
