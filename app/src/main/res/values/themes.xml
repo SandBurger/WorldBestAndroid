@@ -31,9 +31,14 @@
         <item name="android:textColorPrimary">@color/active</item>
         <item name="android:textSize">20sp</item>
     </style>
-    <style name="dd">
-        <item name="windowMinWidthMinor">90%</item>
-        <item name="windowMinWidthMajor">90%</item>
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+    <style name="PositiveButtonStyle">
+        <item name="android:textColor">@color/error</item>
+        <item name="android:textSize">14sp</item>
+        <item name="background">@android:color/transparent</item>
+        <item name="fontFamily">@font/min_sans_medium</item>
     </style>
     <style name="write_background">
         <item name="backgroundColor">@color/background_grey</item>

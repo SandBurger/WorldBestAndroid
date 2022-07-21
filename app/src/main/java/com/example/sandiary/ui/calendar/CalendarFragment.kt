@@ -14,6 +14,7 @@ import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentCalendarBinding
 import com.example.sandiary.ui.schedule.AddScheduleFragment
 import android.util.Log
+import androidx.lifecycle.Observer
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -59,6 +60,10 @@ class CalendarFragment : Fragment() {
         val localDate = LocalDate.now()
         val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM"))
         binding.calendarDateTv.text = date
+        val day2 = binding.calendarDateTv
+        calendarViewModel.text.observe(viewLifecycleOwner, Observer {
+            day2.text = it
+        })
         CoroutineScope(Dispatchers.IO).launch {
             planDB!!.planDao().getMonthPlan(3)
         }
@@ -75,6 +80,7 @@ class CalendarFragment : Fragment() {
                             binding.calendarCalendarCv.notifyDateChanged(currentSelection)
                         } else {
                             selectedDay = day.date
+                            binding.calendarDateTv.text = day.date.toString()
                             binding.calendarCalendarCv.notifyDateChanged(day.date)
                             if (currentSelection != null){
                                 binding.calendarCalendarCv.notifyDateChanged(currentSelection)
