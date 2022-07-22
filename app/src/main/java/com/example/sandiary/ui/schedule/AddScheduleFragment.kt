@@ -16,13 +16,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import com.applikeysolutions.cosmocalendar.view.CalendarView
 import com.example.sandiary.MainActivity
 import com.example.sandiary.Plan
 import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentAddScheduleBinding
+import com.example.sandiary.databinding.ItemCalendarDayBinding
 import com.example.sandiary.function.PlanDatabase
 import com.example.sandiary.ui.calendar.CalendarFragment
+import com.kizitonwose.calendarview.CalendarView
+import com.kizitonwose.calendarview.model.CalendarDay
+import com.kizitonwose.calendarview.model.DayOwner
+import com.kizitonwose.calendarview.ui.DayBinder
+import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -30,6 +35,10 @@ import kotlinx.coroutines.launch
 import java.lang.reflect.Field
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.Month
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -42,6 +51,17 @@ class AddScheduleFragment : Fragment() {
     var startTime : String = ""
     var endTime : String = ""
     var flag : Int = 0
+    var selectedStartDay : LocalDate? = null
+    var selectedEndDay : LocalDate? = null
+    val daysOfWeek = arrayOf(
+        DayOfWeek.SUNDAY,
+        DayOfWeek.MONDAY,
+        DayOfWeek.TUESDAY,
+        DayOfWeek.WEDNESDAY,
+        DayOfWeek.THURSDAY,
+        DayOfWeek.FRIDAY,
+        DayOfWeek.SATURDAY
+    )
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -62,6 +82,111 @@ class AddScheduleFragment : Fragment() {
         addScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
         })
+        class DayViewContainer(view : View) : ViewContainer(view) {
+            val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
+            val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
+            lateinit var day : CalendarDay
+            init {
+                view.setOnClickListener{
+                    if (day.owner == DayOwner.THIS_MONTH){
+                        if(binding.addScheduleStartCalendarCv.visibility == View.VISIBLE){
+                            val currentSelection = selectedStartDay
+                            if(currentSelection == day.date){
+                                selectedStartDay = null
+                                binding.addScheduleStartCalendarCv.notifyDateChanged(currentSelection)
+                            } else {
+                                selectedStartDay = day.date
+                                binding.addScheduleStartDayTv.text = getDate(day.date)
+                                binding.addScheduleStartCalendarCv.notifyDateChanged(day.date)
+                                if (currentSelection != null){
+                                    binding.addScheduleStartCalendarCv.notifyDateChanged(currentSelection)
+                                }
+                            }
+                        }
+                        else{
+                            val currentSelection = selectedEndDay
+                            if(currentSelection == day.date){
+                                selectedEndDay = null
+                                binding.addScheduleEndCalendarCv.notifyDateChanged(currentSelection)
+                            } else {
+                                selectedEndDay = day.date
+                                binding.addScheduleEndDayTv.text = getDate(day.date)
+                                binding.addScheduleEndCalendarCv.notifyDateChanged(day.date)
+                                if (currentSelection != null){
+                                    binding.addScheduleEndCalendarCv.notifyDateChanged(currentSelection)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        CoroutineScope(Dispatchers.Main).launch{
+            binding.addScheduleStartCalendarCv.dayBinder = object : DayBinder<DayViewContainer> {
+                override fun create(view: View) =  DayViewContainer(view)
+                override fun bind(container: DayViewContainer, day: CalendarDay) {
+                    container.day = day
+                    container.textView.text = day.date.dayOfMonth.toString()
+                    if(day.owner == DayOwner.THIS_MONTH){
+                        when{
+                            day.date == selectedStartDay -> {
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                                container.imageView.visibility = View.VISIBLE
+                                Log.d("date","${day.date}")
+                                Log.d("date","${day.date.dayOfMonth}")
+                                Log.d("date","${day.date.month}")
+                            }
+                            else -> {
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+                                container.imageView.visibility = View.INVISIBLE
+                            }
+                        }
+                    } else {
+                        container.textView.setTextColor(ContextCompat
+                            .getColor(requireContext(),R.color.line_grey))
+                    }
+                }
+            }
+
+            val currentMonth = YearMonth.now()
+            val firstMonth = currentMonth.minusMonths(10)
+            val lastMonth = currentMonth.plusMonths(10)
+            binding.addScheduleStartCalendarCv.setup(firstMonth, lastMonth, daysOfWeek.first())
+            binding.addScheduleStartCalendarCv.scrollToMonth(currentMonth)
+        }
+        CoroutineScope(Dispatchers.Main).launch{
+            binding.addScheduleEndCalendarCv.dayBinder = object : DayBinder<DayViewContainer> {
+                override fun create(view: View) =  DayViewContainer(view)
+                override fun bind(container: DayViewContainer, day: CalendarDay) {
+                    container.day = day
+                    container.textView.text = day.date.dayOfMonth.toString()
+                    if(day.owner == DayOwner.THIS_MONTH){
+                        when{
+                            day.date == selectedEndDay -> {
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                                container.imageView.visibility = View.VISIBLE
+                                Log.d("date","${day.date}")
+                                Log.d("date","${day.date.dayOfMonth}")
+                                Log.d("date","${day.date.month}")
+                                Log.d("date","${day.date.dayOfWeek}")
+                            }
+                            else -> {
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+                                container.imageView.visibility = View.INVISIBLE
+                            }
+                        }
+                    } else {
+                        container.textView.setTextColor(ContextCompat.getColor(requireContext(),R.color.line_grey))
+                    }
+                }
+            }
+
+            val currentMonth = YearMonth.now()
+            val firstMonth = currentMonth.minusMonths(10)
+            val lastMonth = currentMonth.plusMonths(10)
+            binding.addScheduleEndCalendarCv.setup(firstMonth, lastMonth, daysOfWeek.first())
+            binding.addScheduleEndCalendarCv.scrollToMonth(currentMonth)
+        }
 
 
         binding.addScheduleSaveTv.setOnClickListener {
@@ -107,20 +232,9 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleAlarmNp.maxValue = 60
     }
 
-    private fun getDate(calendarView: CalendarView, textView: TextView){
-        if(calendarView.selectedDays.isNotEmpty()){
-            val date = calendarView.selectedDays.get(0).calendar.time.toString()
-            val dateFormat = date.split(' ')
-            val dayOfWeek = getDayOfWeek(dateFormat[0])
-            val month = getMonth(dateFormat[1])
-            val day = dateFormat[2]
-            val year = dateFormat[5]
-            textView.text = "${year}.${month}.${day}(${dayOfWeek})"
-            when(textView){
-                binding.addScheduleEndDayTv -> endDay = "${year}.${month}.${day}"
-                else -> startDay = "${year}.${month}.${day}"
-            }
-        }
+    private fun getDate(date : LocalDate) : String {
+        Log.d("date.month","${date.month}")
+        return "${date.year}.${getMonth(date.month)}.${date.dayOfMonth}(${getDayOfWeek(date.dayOfWeek)})"
     }
 
     private fun getTime(timePicker: TimePicker, textView: TextView){
@@ -165,7 +279,6 @@ class AddScheduleFragment : Fragment() {
     }
 
     private fun changeCalendar(calendarView: CalendarView, textView:TextView){
-        changeText()
         binding.addScheduleStartTimePickerTp.visibility = View.GONE
         binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
         binding.addScheduleEndTimePickerTp.visibility = View.GONE
@@ -175,6 +288,7 @@ class AddScheduleFragment : Fragment() {
         if(calendarView == binding.addScheduleStartCalendarCv){
             if(calendarView.visibility == View.VISIBLE){
                 calendarView.visibility = View.GONE
+                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
                 calendarView.visibility = View.VISIBLE
@@ -184,6 +298,7 @@ class AddScheduleFragment : Fragment() {
         else {
             if(calendarView.visibility == View.VISIBLE){
                 calendarView.visibility = View.GONE
+                textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
                 calendarView.visibility = View.VISIBLE
@@ -195,7 +310,9 @@ class AddScheduleFragment : Fragment() {
     private fun changeTimePicker(timePicker: TimePicker, textView: TextView) {
         changeText()
         binding.addScheduleStartCalendarCv.visibility = View.GONE
+        binding.addScheduleStartDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
         binding.addScheduleEndCalendarCv.visibility = View.GONE
+        binding.addScheduleEndDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE
 
@@ -247,7 +364,6 @@ class AddScheduleFragment : Fragment() {
     private fun changeText() {
         getAlarm()
         if (binding.addScheduleStartCalendarCv.visibility == View.VISIBLE) {
-            getDate(binding.addScheduleStartCalendarCv, binding.addScheduleStartDayTv)
             binding.addScheduleStartDayTv.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -255,7 +371,6 @@ class AddScheduleFragment : Fragment() {
                 )
             )
         } else if (binding.addScheduleEndCalendarCv.visibility == View.VISIBLE) {
-            getDate(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
             binding.addScheduleEndDayTv.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -283,36 +398,36 @@ class AddScheduleFragment : Fragment() {
     }
 
 
-    private fun getDayOfWeek(string: String) : String{
-        val dayOfWeek =
-            when(string) {
-                "Mon" -> "월"
-                "Tue" -> "화"
-                "Wed" -> "수"
-                "Thu" -> "목"
-                "Fri" -> "금"
-                "Sat" -> "토"
+    private fun getDayOfWeek(dayOfWeek: DayOfWeek) : String{
+        val stringDayOfWeek =
+            when(daysOfWeek.indexOf(dayOfWeek)) {
+                1 -> "월"
+                2 -> "화"
+                3 -> "수"
+                4 -> "목"
+                5 -> "금"
+                6 -> "토"
                 else -> "일"
             }
-        return dayOfWeek
+        return stringDayOfWeek
     }
-    private fun getMonth(string : String) : String{
-        val month =
-            when(string) {
-                "Jan" -> "01"
-                "Feb" -> "02"
-                "Mar" -> "03"
-                "Apr" -> "04"
-                "May" -> "05"
-                "Jun" -> "06"
-                "Jul" -> "07"
-                "Aug" -> "08"
-                "Sep" -> "09"
-                "Oct" -> "10"
-                "Nov" -> "11"
+    private fun getMonth(month : Month) : String{
+        val stringMonth =
+            when(month) {
+                Month.JANUARY -> "01"
+                Month.FEBRUARY -> "02"
+                Month.MARCH -> "03"
+                Month.APRIL -> "04"
+                Month.MAY -> "05"
+                Month.JUNE -> "06"
+                Month.JULY -> "07"
+                Month.AUGUST -> "08"
+                Month.SEPTEMBER -> "09"
+                Month.OCTOBER -> "10"
+                Month.NOVEMBER -> "11"
                 else -> "12"
             }
-        return month
+        return stringMonth
     }
 
     override fun onDestroyView() {
