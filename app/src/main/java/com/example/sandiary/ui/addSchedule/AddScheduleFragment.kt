@@ -1,7 +1,5 @@
-package com.example.sandiary.ui.schedule
+package com.example.sandiary.ui.addSchedule
 
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +7,10 @@ import android.view.ViewGroup
 import android.util.Log
 import android.widget.TextView
 import android.widget.TimePicker
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
 import com.example.sandiary.MainActivity
 import com.example.sandiary.Plan
 import com.example.sandiary.R
@@ -30,17 +25,11 @@ import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.lang.reflect.Field
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 class AddScheduleFragment : Fragment() {
     private lateinit var addScheduleViewModel: AddScheduleViewModel
@@ -74,6 +63,7 @@ class AddScheduleFragment : Fragment() {
 
         initFragment()
         Log.d("alarm", "${binding.addScheduleAlarmNp.value}")
+
         binding.addScheduleExitIb.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CalendarFragment()).commit()
@@ -230,10 +220,15 @@ class AddScheduleFragment : Fragment() {
         planDB = PlanDatabase.getInstance(requireContext())
         binding.addScheduleAlarmNp.minValue = 0
         binding.addScheduleAlarmNp.maxValue = 60
+        binding.addScheduleStartDayTv.text = getDate(LocalDate.now())
+        binding.addScheduleEndDayTv.text = getDate(LocalDate.now())
+
     }
 
     private fun getDate(date : LocalDate) : String {
-        Log.d("date.month","${date.month}")
+        if(date.dayOfMonth < 10){
+            return "${date.year}.${getMonth(date.month)}.0${date.dayOfMonth}(${getDayOfWeek(date.dayOfWeek)})"
+        }
         return "${date.year}.${getMonth(date.month)}.${date.dayOfMonth}(${getDayOfWeek(date.dayOfWeek)})"
     }
 
@@ -288,21 +283,29 @@ class AddScheduleFragment : Fragment() {
         if(calendarView == binding.addScheduleStartCalendarCv){
             if(calendarView.visibility == View.VISIBLE){
                 calendarView.visibility = View.GONE
+                binding.addScheduleStartCalendarDateContainer.visibility = View.GONE
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
+                binding.addScheduleEndDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
                 calendarView.visibility = View.VISIBLE
+                binding.addScheduleStartCalendarDateContainer.visibility = View.VISIBLE
                 binding.addScheduleEndCalendarCv.visibility = View.GONE
+                binding.addScheduleEndCalendarDateContainer.visibility = View.GONE
             }
         }
         else {
             if(calendarView.visibility == View.VISIBLE){
                 calendarView.visibility = View.GONE
+                binding.addScheduleEndCalendarDateContainer.visibility = View.GONE
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
+                binding.addScheduleStartDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
                 calendarView.visibility = View.VISIBLE
+                binding.addScheduleEndCalendarDateContainer.visibility = View.VISIBLE
                 binding.addScheduleStartCalendarCv.visibility = View.GONE
+                binding.addScheduleStartCalendarDateContainer.visibility = View.GONE
             }
         }
     }
@@ -310,8 +313,10 @@ class AddScheduleFragment : Fragment() {
     private fun changeTimePicker(timePicker: TimePicker, textView: TextView) {
         changeText()
         binding.addScheduleStartCalendarCv.visibility = View.GONE
+        binding.addScheduleStartCalendarDateContainer.visibility = View.GONE
         binding.addScheduleStartDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
         binding.addScheduleEndCalendarCv.visibility = View.GONE
+        binding.addScheduleEndCalendarDateContainer.visibility = View.GONE
         binding.addScheduleEndDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE

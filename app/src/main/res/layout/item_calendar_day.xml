@@ -6,9 +6,8 @@
         android:id="@+id/item_calendar_day_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="10dp"
         android:visibility="invisible"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_light_blue_dot"/>
     <TextView
         android:id="@+id/item_calendar_day_tv"

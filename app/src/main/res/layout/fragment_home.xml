@@ -101,10 +101,10 @@
             android:paddingVertical="10dp"
             android:maxLength="50"
             android:maxLines="2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/home_writing_box1_lo"
+            app:layout_constraintBottom_toBottomOf="@id/home_writing_box1_lo"
             app:layout_constraintStart_toEndOf="@id/home_writing_time1_tv"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/home_writing_box1_lo"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
