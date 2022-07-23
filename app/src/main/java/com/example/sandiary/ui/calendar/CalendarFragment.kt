@@ -1,8 +1,5 @@
 package com.example.sandiary.ui.calendar
 
-import CalendarDayBinder
-import android.graphics.Color
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sandiary.MainActivity
 import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentCalendarBinding
-import com.example.sandiary.ui.schedule.AddScheduleFragment
+import com.example.sandiary.ui.addSchedule.AddScheduleFragment
 import android.util.Log
 import androidx.lifecycle.Observer
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sandiary.Diary
+import com.example.sandiary.Schedule
 import com.example.sandiary.databinding.ItemCalendarDayBinding
 import com.example.sandiary.function.PlanDatabase
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -31,7 +29,6 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
-import java.time.temporal.WeekFields
 import java.util.*
 
 class CalendarFragment : Fragment() {
@@ -80,7 +77,7 @@ class CalendarFragment : Fragment() {
                             binding.calendarCalendarCv.notifyDateChanged(currentSelection)
                         } else {
                             selectedDay = day.date
-                            binding.calendarDateTv.text = day.date.toString()
+                            //binding.calendarDateTv.text = day.date.toString()
                             binding.calendarCalendarCv.notifyDateChanged(day.date)
                             if (currentSelection != null){
                                 binding.calendarCalendarCv.notifyDateChanged(currentSelection)
@@ -88,6 +85,7 @@ class CalendarFragment : Fragment() {
                         }
                     }
                 }
+
             }
         }
         CoroutineScope(Dispatchers.Main).launch{
@@ -96,6 +94,9 @@ class CalendarFragment : Fragment() {
                 override fun bind(container: DayViewContainer, day: CalendarDay) {
                     container.day = day
                     container.textView.text = day.date.dayOfMonth.toString()
+                    binding.calendarCalendarCv.monthScrollListener = {month ->
+                        binding.calendarDateTv.text = "${month.year}년 ${month.month}월"
+                    }
                     if(day.owner == DayOwner.THIS_MONTH){
                         when{
                             day.date == selectedDay -> {
@@ -125,11 +126,24 @@ class CalendarFragment : Fragment() {
             )
 
             val currentMonth = YearMonth.now()
+            Log.d("now","${currentMonth}")
             val firstMonth = currentMonth.minusMonths(10)
             val lastMonth = currentMonth.plusMonths(10)
             binding.calendarCalendarCv.setup(firstMonth, lastMonth, daysOfWeek.first())
             binding.calendarCalendarCv.scrollToMonth(currentMonth)
         }
+        var dummyScheduleList = ArrayList<Schedule>()
+        dummyScheduleList.add(Schedule(0,"dasd",null))
+        binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val scheduleRVAdapter = ScheduleRVAdapter(dummyScheduleList)
+        scheduleRVAdapter.itemClickListener(object : ScheduleRVAdapter.ItemClickListener{
+            override fun onClick(diary: Diary) {
+
+            }
+        })
+        binding.calendarScheduleRv.adapter = scheduleRVAdapter
+
+
         //Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
         binding.calendarFloatingBtn.setOnClickListener{
             (context as MainActivity).supportFragmentManager.beginTransaction()
