@@ -25,6 +25,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -69,6 +70,11 @@ class CalendarFragment : Fragment() {
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
             lateinit var day : CalendarDay
             init {
+                binding.calendarSearchIb.setOnClickListener {
+                    Log.d("dd","dd")
+                    binding.calendarCalendarCv.notifyMonthChanged(YearMonth.of(2022,11))
+                    binding.calendarCalendarCv.scrollToMonth(YearMonth.of(2022,11))
+                }
                 view.setOnClickListener{
                     if (day.owner == DayOwner.THIS_MONTH){
                         val currentSelection = selectedDay
@@ -88,15 +94,17 @@ class CalendarFragment : Fragment() {
 
             }
         }
+
         CoroutineScope(Dispatchers.Main).launch{
             binding.calendarCalendarCv.dayBinder = object : DayBinder<DayViewContainer> {
                 override fun create(view: View) =  DayViewContainer(view)
                 override fun bind(container: DayViewContainer, day: CalendarDay) {
                     container.day = day
                     container.textView.text = day.date.dayOfMonth.toString()
-                    binding.calendarCalendarCv.monthScrollListener = {month ->
+                    binding.calendarCalendarCv.monthScrollListener = { month ->
                         binding.calendarDateTv.text = "${month.year}년 ${month.month}월"
                     }
+
                     if(day.owner == DayOwner.THIS_MONTH){
                         when{
                             day.date == selectedDay -> {
@@ -133,7 +141,11 @@ class CalendarFragment : Fragment() {
             binding.calendarCalendarCv.scrollToMonth(currentMonth)
         }
         var dummyScheduleList = ArrayList<Schedule>()
-        dummyScheduleList.add(Schedule(0,"dasd",null))
+        dummyScheduleList.add(Schedule("10시 약속",10,30,12,20))
+        dummyScheduleList.add(Schedule("11시 약속",11,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.sortBy { it.startHour }
+
         binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val scheduleRVAdapter = ScheduleRVAdapter(dummyScheduleList)
         scheduleRVAdapter.itemClickListener(object : ScheduleRVAdapter.ItemClickListener{

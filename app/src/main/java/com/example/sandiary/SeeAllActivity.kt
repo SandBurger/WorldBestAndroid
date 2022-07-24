@@ -16,6 +16,7 @@ import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivitySeeAllBinding
 import com.example.sandiary.databinding.DialogDatePickerBinding
 import com.example.sandiary.ui.SeeAllRVAdapter
+import org.w3c.dom.Text
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
@@ -88,6 +89,8 @@ class SeeAllActivity : AppCompatActivity() {
             .setView(view)
             .create()
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        view.findViewById<TextView>(R.id.dialog_exit_title_tv).setText(R.string.dialog_see_title)
+        view.findViewById<TextView>(R.id.dialog_exit_message_tv).setText(R.string.dialog_see_message)
         view.findViewById<TextView>(R.id.dialog_exit_positive_button_tv).setOnClickListener {
             alertDialog.dismiss()
         }
