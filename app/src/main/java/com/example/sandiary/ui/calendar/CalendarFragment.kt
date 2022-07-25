@@ -11,6 +11,8 @@ import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentCalendarBinding
 import com.example.sandiary.ui.addSchedule.AddScheduleFragment
 import android.util.Log
+import android.widget.NumberPicker
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,11 +27,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.sql.Time
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.format.DateTimeFormatter
+import java.time.*
 import java.util.*
 
 class CalendarFragment : Fragment() {
@@ -39,6 +37,8 @@ class CalendarFragment : Fragment() {
     private var _binding: FragmentCalendarBinding? = null
     private var planDB : PlanDatabase? = null
     private var selectedDay : LocalDate? = null
+    private var year : Int = 0
+    private var month : Int = 0
 //
 //    // This property is only valid between onCreateView and
 //    // onDestroyView.
@@ -56,8 +56,9 @@ class CalendarFragment : Fragment() {
         initFragment()
         val root: View = binding.root
         val localDate = LocalDate.now()
-        val date = localDate.format(DateTimeFormatter.ofPattern("YYYY.MM"))
-        binding.calendarDateTv.text = date
+        year = localDate.year
+        month = localDate.month.value
+
         val day2 = binding.calendarDateTv
         calendarViewModel.text.observe(viewLifecycleOwner, Observer {
             day2.text = it
@@ -70,11 +71,11 @@ class CalendarFragment : Fragment() {
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
             lateinit var day : CalendarDay
             init {
-                binding.calendarSearchIb.setOnClickListener {
-                    Log.d("dd","dd")
-                    binding.calendarCalendarCv.notifyMonthChanged(YearMonth.of(2022,11))
-                    binding.calendarCalendarCv.scrollToMonth(YearMonth.of(2022,11))
-                }
+//                binding.calendarSearchIb.setOnClickListener {
+//                    Log.d("dd","dd")
+//                    binding.calendarCalendarCv.notifyMonthChanged(YearMonth.of(2022,11))
+//                    binding.calendarCalendarCv.scrollToMonth(YearMonth.of(2022,11))
+//                }
                 view.setOnClickListener{
                     if (day.owner == DayOwner.THIS_MONTH){
                         val currentSelection = selectedDay
@@ -101,11 +102,15 @@ class CalendarFragment : Fragment() {
                 override fun bind(container: DayViewContainer, day: CalendarDay) {
                     container.day = day
                     container.textView.text = day.date.dayOfMonth.toString()
-                    binding.calendarCalendarCv.monthScrollListener = { month ->
-                        binding.calendarDateTv.text = "${month.year}년 ${month.month}월"
+                    binding.calendarCalendarCv.monthScrollListener = { calendarMonth ->
+                        binding.calendarDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+                        year = calendarMonth.year
+                        month = calendarMonth.month
                     }
 
                     if(day.owner == DayOwner.THIS_MONTH){
+                        container.textView.setTextColor(ContextCompat
+                            .getColor(requireContext(),R.color.line_black))
                         when{
                             day.date == selectedDay -> {
                                 container.imageView.visibility = View.VISIBLE
@@ -135,8 +140,8 @@ class CalendarFragment : Fragment() {
 
             val currentMonth = YearMonth.now()
             Log.d("now","${currentMonth}")
-            val firstMonth = currentMonth.minusMonths(10)
-            val lastMonth = currentMonth.plusMonths(10)
+            val firstMonth = currentMonth.minusMonths(100)
+            val lastMonth = currentMonth.plusMonths(200)
             binding.calendarCalendarCv.setup(firstMonth, lastMonth, daysOfWeek.first())
             binding.calendarCalendarCv.scrollToMonth(currentMonth)
         }
@@ -156,6 +161,10 @@ class CalendarFragment : Fragment() {
         binding.calendarScheduleRv.adapter = scheduleRVAdapter
 
 
+        binding.calendarSearchIb.setOnClickListener {
+            initPicker()
+        }
+
         //Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
         binding.calendarFloatingBtn.setOnClickListener{
             (context as MainActivity).supportFragmentManager.beginTransaction()
@@ -168,6 +177,20 @@ class CalendarFragment : Fragment() {
 
     private fun initFragment(){
         planDB = PlanDatabase.getInstance(requireContext())
+    }
+
+    private fun initPicker(){
+        val view = layoutInflater.inflate(R.layout.dialog_month_picker, null)
+        val dialog = AlertDialog.Builder(requireContext()).setView(view).create()
+        val yearPicker = view.findViewById<NumberPicker>(R.id.dialog_month_picker_year_np)
+        val monthPicker = view.findViewById<NumberPicker>(R.id.dialog_month_picker_month_np)
+        yearPicker.minValue = 1900
+        yearPicker.maxValue = 2100
+        yearPicker.value = year
+        monthPicker.minValue = 1
+        monthPicker.maxValue = 12
+        monthPicker.value = month
+        dialog.show()
     }
     private fun getMonth(string : String) : String {
         val month =
