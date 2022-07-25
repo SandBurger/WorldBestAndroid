@@ -14,9 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivitySeeAllBinding
-import com.example.sandiary.databinding.DialogDatePickerBinding
+import com.example.sandiary.databinding.TestBinding
 import com.example.sandiary.ui.SeeAllRVAdapter
-import org.w3c.dom.Text
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
@@ -24,7 +23,7 @@ import kotlin.collections.ArrayList
 class SeeAllActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySeeAllBinding
     private var selectedDay : LocalDate? = null
-    private lateinit var pickerBinding : DialogDatePickerBinding
+    private lateinit var pickerBinding : TestBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,7 +35,7 @@ class SeeAllActivity : AppCompatActivity() {
                 "ODECL -> FDECL ODECL\n" +
                 "ODECL -> ''"))
         dummyDiaryList.add(Diary(1, "test1"))
-        pickerBinding = DialogDatePickerBinding.inflate(layoutInflater)
+        pickerBinding = TestBinding.inflate(layoutInflater)
         binding = ActivitySeeAllBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.seeAllRv.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -53,7 +52,7 @@ class SeeAllActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }
-        val view2 = layoutInflater.inflate(R.layout.dialog_date_picker, null)
+        val view2 = layoutInflater.inflate(R.layout.dialog_month_picker, null)
         val dialog2 = AlertDialog.Builder(this).setView(view2).create()
         binding.seeAllCalendarDialogIb.setOnClickListener {
             dialog2.show()
