@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
+                android:id="@+id/dialog_month_picker_background_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/picker_background"
@@ -37,8 +38,8 @@
                 android:fontFamily="@font/spoqa_han_sans_neo_medium"
                 android:textColor="@color/line_black"
                 android:textSize="16sp"
-                app:layout_constraintTop_toTopOf="@id/dialog_month_picker_year_np"
-                app:layout_constraintBottom_toBottomOf="@id/dialog_month_picker_year_np"
+                app:layout_constraintTop_toTopOf="@id/dialog_month_picker_background_iv"
+                app:layout_constraintBottom_toBottomOf="@id/dialog_month_picker_background_iv"
                 app:layout_constraintStart_toEndOf="@id/dialog_month_picker_year_np"/>
             <NumberPicker
                 android:id="@+id/dialog_month_picker_month_np"
@@ -59,8 +60,8 @@
                 android:fontFamily="@font/spoqa_han_sans_neo_medium"
                 android:textColor="@color/line_black"
                 android:textSize="16sp"
-                app:layout_constraintTop_toTopOf="@id/dialog_month_picker_month_np"
-                app:layout_constraintBottom_toBottomOf="@id/dialog_month_picker_month_np"
+                app:layout_constraintTop_toTopOf="@id/dialog_month_picker_background_iv"
+                app:layout_constraintBottom_toBottomOf="@id/dialog_month_picker_background_iv"
                 app:layout_constraintStart_toEndOf="@id/dialog_month_picker_month_np"/>
 
             <TextView

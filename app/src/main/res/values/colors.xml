@@ -26,4 +26,5 @@
     <color name="saturday_blue">#2020FF</color>
     <color name="background_grey">#F7F7F7</color>
     <color name="indicator_active">#FB8D45</color>
+    <color name="inactive_box">#9a9b9d</color>
 </resources>

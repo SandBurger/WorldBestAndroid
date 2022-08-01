@@ -56,12 +56,13 @@
         android:textSize="20sp"
         android:textColor="@color/background_white"
         android:fontFamily="@font/spoqa_han_sans_neo_medium"
-        android:text="5월 15일"
+        android:text=""
         android:layout_marginBottom="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/calendar_divider_iv"
         app:layout_constraintEnd_toEndOf="parent"/>
     <ImageButton
+        android:id="@+id/calendar_month_selector_ib"
         android:layout_width="16dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_bottom_arrow"
