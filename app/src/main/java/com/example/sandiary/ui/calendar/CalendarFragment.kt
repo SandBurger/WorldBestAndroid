@@ -12,6 +12,7 @@ import com.example.sandiary.databinding.FragmentCalendarBinding
 import com.example.sandiary.ui.addSchedule.AddScheduleFragment
 import android.util.Log
 import android.widget.NumberPicker
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.core.content.ContextCompat
@@ -27,6 +28,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 import java.time.*
 import java.util.*
 
@@ -71,11 +73,9 @@ class CalendarFragment : Fragment() {
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
             lateinit var day : CalendarDay
             init {
-//                binding.calendarSearchIb.setOnClickListener {
-//                    Log.d("dd","dd")
-//                    binding.calendarCalendarCv.notifyMonthChanged(YearMonth.of(2022,11))
-//                    binding.calendarCalendarCv.scrollToMonth(YearMonth.of(2022,11))
-//                }
+                binding.calendarMonthSelectorIb.setOnClickListener {
+                    showPicker()
+                }
                 view.setOnClickListener{
                     if (day.owner == DayOwner.THIS_MONTH){
                         val currentSelection = selectedDay
@@ -160,11 +160,6 @@ class CalendarFragment : Fragment() {
         })
         binding.calendarScheduleRv.adapter = scheduleRVAdapter
 
-
-        binding.calendarSearchIb.setOnClickListener {
-            initPicker()
-        }
-
         //Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
         binding.calendarFloatingBtn.setOnClickListener{
             (context as MainActivity).supportFragmentManager.beginTransaction()
@@ -179,11 +174,12 @@ class CalendarFragment : Fragment() {
         planDB = PlanDatabase.getInstance(requireContext())
     }
 
-    private fun initPicker(){
+    private fun showPicker(){
         val view = layoutInflater.inflate(R.layout.dialog_month_picker, null)
         val dialog = AlertDialog.Builder(requireContext()).setView(view).create()
         val yearPicker = view.findViewById<NumberPicker>(R.id.dialog_month_picker_year_np)
         val monthPicker = view.findViewById<NumberPicker>(R.id.dialog_month_picker_month_np)
+
         yearPicker.minValue = 1900
         yearPicker.maxValue = 2100
         yearPicker.value = year
@@ -191,6 +187,17 @@ class CalendarFragment : Fragment() {
         monthPicker.maxValue = 12
         monthPicker.value = month
         dialog.show()
+
+        view.findViewById<TextView>(R.id.dialog_month_picker_confirm_tv).setOnClickListener {
+            year = yearPicker.value
+            month = monthPicker.value
+            binding.calendarCalendarCv.notifyMonthChanged(YearMonth.of(year,month))
+            binding.calendarCalendarCv.scrollToMonth(YearMonth.of(year,month))
+            dialog.dismiss()
+        }
+        view.findViewById<TextView>(R.id.dialog_month_picker_cancel_tv).setOnClickListener {
+            dialog.dismiss()
+        }
     }
     private fun getMonth(string : String) : String {
         val month =

@@ -1,6 +1,9 @@
 package com.example.sandiary.ui.home
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.WindowCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -38,8 +44,9 @@ class HomeFragment : Fragment() {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, SearchFragment()).commit()
         }
+        checkWriting()
 //        binding = FragmentHomeBinding.inflate(inflater,container,false)
-        binding.homeWritingBox1Lo.setOnClickListener {
+        binding.homeWritingBox1Iv.setOnClickListener {
             startActivity(Intent(activity, WriteActivity::class.java))
         }
         binding.homeWritingBox2Iv.setOnClickListener {
@@ -52,12 +59,39 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             dateTv.text = it
         })
+
+
         return root
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun checkWriting(){
+        if(binding.homeWritingContent1Tv.text != "글 쓰러 가기"){
+            binding.homeWritingContent1Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.line_black))
+            binding.homeWritingTime1Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.indicator_active))
+
+        }
+        if(binding.homeWritingContent2Tv.text != "글 쓰러 가기"){
+           binding.homeWritingContent2Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.line_black))
+           binding.homeWritingTime2Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.indicator_active))
+            ImageViewCompat.setImageTintList(binding.homeWritingBox2Iv,
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_grey)))
+       }
+        if(binding.homeWritingContent3Tv.text != "글 쓰러 가기"){
+           binding.homeWritingContent3Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.line_black))
+           binding.homeWritingTime3Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.indicator_active))
+            ImageViewCompat.setImageTintList(binding.homeWritingBox3Iv,
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_grey)))
+       }
     }
 }

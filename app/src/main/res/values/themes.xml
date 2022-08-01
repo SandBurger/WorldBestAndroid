@@ -53,4 +53,8 @@
     <style name="backgroundColor">
         <item name="backgroundColor">@color/white</item>
     </style>
+    <style name="switch_custom">
+        <item name="android:thumb">@drawable/ic_thumb_inactive</item>
+        <item name="android:track">@drawable/ic_switch_inactive</item>
+    </style>
 </resources>
