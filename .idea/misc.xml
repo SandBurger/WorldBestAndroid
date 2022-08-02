@@ -16,7 +16,9 @@
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/drawable/round_dialog.xml" value="0.1" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/drawable/switch_selector.xml" value="0.23703703703703705" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/drawable/switch_track_on.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/drawable/thumb.xml" value="0.23703703703703705" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/drawable/thumb_selector.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/drawable/track.xml" value="0.23703703703703705" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/font/app_font.xml" value="0.1" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/font/app_font2.xml" value="0.1" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/font/app_fontt.xml" value="0.1" />
@@ -31,12 +33,12 @@
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/dialog_month_picker.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/dialog_see_all.xml" value="0.1" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/dialog_write.xml" value="0.1" />
-        <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_add_schedule.xml" value="0.2912621359223301" />
+        <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_add_schedule.xml" value="0.432712215320911" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_calendar.xml" value="0.1" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_calendar_date.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_home.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_kiziton.xml" value="0.1" />
-        <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_search.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_search.xml" value="0.1" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_see_diary.xml" value="0.15925925925925927" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="..\:/Users/dandy/Documents/GitHub/WorldBestAndroid/app/src/main/res/layout/fragment_write_diary.xml" value="0.15925925925925927" />

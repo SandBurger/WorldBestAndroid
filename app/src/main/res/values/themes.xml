@@ -31,6 +31,14 @@
         <item name="android:textColorPrimary">@color/active</item>
         <item name="android:textSize">20sp</item>
     </style>
+    <style name="AppTheme.Picker_16sp" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="fontFamily">@font/spoqa_han_sans_neo_medium</item>
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/active</item>
+        <item name="android:textSize">16sp</item>
+
+    </style>
     <style name="AppTheme.PickerDialog" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@android:color/transparent</item>
         <item name="fontFamily">@font/min_sans_medium</item>
@@ -53,8 +61,9 @@
     <style name="backgroundColor">
         <item name="backgroundColor">@color/white</item>
     </style>
-    <style name="switch_custom">
-        <item name="android:thumb">@drawable/ic_thumb_inactive</item>
-        <item name="android:track">@drawable/ic_switch_inactive</item>
+    <style name="Apptheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorControlActivated">@color/active</item>
+        <item name="colorSwitchThumbNormal">@color/white</item>
+        <item name="colorControlNormal">@color/black</item>
     </style>
 </resources>

@@ -26,10 +26,7 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.Month
-import java.time.YearMonth
+import java.time.*
 
 class AddScheduleFragment : Fragment() {
     private lateinit var addScheduleViewModel: AddScheduleViewModel
@@ -178,7 +175,6 @@ class AddScheduleFragment : Fragment() {
             binding.addScheduleEndCalendarCv.scrollToMonth(currentMonth)
         }
 
-
         binding.addScheduleSaveTv.setOnClickListener {
            val plan = Plan(binding.addScheduleWriteDiaryEt.text.toString(),7, 13, 13 ,endTime, "22", "end")
             CoroutineScope(Dispatchers.IO).launch {
@@ -222,7 +218,27 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleAlarmNp.maxValue = 60
         binding.addScheduleStartDayTv.text = getDate(LocalDate.now())
         binding.addScheduleEndDayTv.text = getDate(LocalDate.now())
+        val timeZoneArray = arrayOf("오전", "오후")
+        val hourArray = Array(12){
+            it -> "${it+1}시"
+        }
+        val minuteArray = Array(61){
+            it -> "${it}분"
+        }
+        binding.addScheduleStartTimeZonePickerNp.minValue = 0
+        binding.addScheduleStartTimeZonePickerNp.maxValue = timeZoneArray.size-1
+        binding.addScheduleStartTimeZonePickerNp.displayedValues = timeZoneArray
 
+        binding.addScheduleStartHourPickerNp.minValue = 0
+        binding.addScheduleStartHourPickerNp.maxValue = hourArray.size-1
+        binding.addScheduleStartHourPickerNp.value = LocalTime.now().hour-1
+        Log.d("LocalHour", "${LocalTime.now().hour}")
+        binding.addScheduleStartHourPickerNp.displayedValues = hourArray
+        binding.addScheduleStartMinutePickerNp.minValue = 0
+        binding.addScheduleStartMinutePickerNp.maxValue = minuteArray.size-1
+        binding.addScheduleStartMinutePickerNp.value = LocalTime.now().minute
+        Log.d("LocalMin", "${LocalTime.now().minute}")
+        binding.addScheduleStartMinutePickerNp.displayedValues = minuteArray
     }
 
     private fun getDate(date : LocalDate) : String {
@@ -274,7 +290,11 @@ class AddScheduleFragment : Fragment() {
     }
 
     private fun changeCalendar(calendarView: CalendarView, textView:TextView){
-        binding.addScheduleStartTimePickerTp.visibility = View.GONE
+        //binding.addScheduleStartTimePickerTp.visibility = View.GONE
+        binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
+        binding.addScheduleStartHourPickerNp.visibility = View.GONE
+        binding.addScheduleStartMinutePickerNp.visibility = View.GONE
+
         binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
         binding.addScheduleEndTimePickerTp.visibility = View.GONE
         binding.addScheduleAlarmNp.visibility = View.GONE
@@ -322,12 +342,18 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleAfterTv.visibility = View.GONE
 
         if(timePicker == binding.addScheduleStartTimePickerTp){
-            if(timePicker.visibility == View.VISIBLE){
-                timePicker.visibility = View.GONE
+            if(binding.addScheduleStartTimeZonePickerNp.visibility == View.VISIBLE){
+                //binding.addScheduleStartTimePickerTp
+                binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
+                binding.addScheduleStartHourPickerNp.visibility = View.GONE
+                binding.addScheduleStartMinutePickerNp.visibility = View.GONE
                 binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
-                timePicker.visibility = View.VISIBLE
+                //timePicker.visibility = View.VISIBLE
+                binding.addScheduleStartTimeZonePickerNp.visibility = View.VISIBLE
+                binding.addScheduleStartHourPickerNp.visibility = View.VISIBLE
+                binding.addScheduleStartMinutePickerNp.visibility = View.VISIBLE
                 binding.addScheduleStartTimeBackgroundIv.visibility = View.VISIBLE
                 binding.addScheduleEndTimePickerTp.visibility = View.GONE
             }
@@ -338,7 +364,10 @@ class AddScheduleFragment : Fragment() {
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
                 timePicker.visibility = View.VISIBLE
-                binding.addScheduleStartTimePickerTp.visibility = View.GONE
+                //binding.addScheduleStartTimePickerTp.visibility = View.GONE
+                binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
+                binding.addScheduleStartHourPickerNp.visibility = View.GONE
+                binding.addScheduleStartMinutePickerNp.visibility = View.GONE
                 binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
             }
         }
@@ -348,7 +377,12 @@ class AddScheduleFragment : Fragment() {
         changeText()
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarCv.visibility = View.GONE
-        binding.addScheduleStartTimePickerTp.visibility = View.GONE
+        //binding.addScheduleStartTimePickerTp.visibility = View.GONE
+
+        binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
+        binding.addScheduleStartHourPickerNp.visibility = View.GONE
+        binding.addScheduleStartMinutePickerNp.visibility = View.GONE
+
         binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
         binding.addScheduleEndTimePickerTp.visibility = View.GONE
         binding.addScheduleAlarmNp.visibility = View.GONE
@@ -383,7 +417,7 @@ class AddScheduleFragment : Fragment() {
                 )
             )
         }
-        if (binding.addScheduleStartTimePickerTp.visibility == View.VISIBLE) {
+        if (/*binding.addScheduleStartTimePickerTp.visibility == View.VISIBLE*/binding.addScheduleStartTimeZonePickerNp.visibility == View.VISIBLE) {
             getTime(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
             binding.addScheduleStartTimeTv.setTextColor(
                 ContextCompat.getColor(
@@ -440,3 +474,5 @@ class AddScheduleFragment : Fragment() {
         _binding = null
     }
 }
+
+
