@@ -65,9 +65,7 @@ class CalendarFragment : Fragment() {
         calendarViewModel.text.observe(viewLifecycleOwner, Observer {
             day2.text = it
         })
-        CoroutineScope(Dispatchers.IO).launch {
-            planDB!!.planDao().getMonthPlan(3)
-        }
+
         class DayViewContainer(view : View) : ViewContainer(view) {
             val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
@@ -76,6 +74,11 @@ class CalendarFragment : Fragment() {
                 binding.calendarMonthSelectorIb.setOnClickListener {
                     showPicker()
                 }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val planList = planDB!!.planDao().getMonthPlan(month)
+                    Log.d("planList", "${planList}")
+                }
+
                 view.setOnClickListener{
                     if (day.owner == DayOwner.THIS_MONTH){
                         val currentSelection = selectedDay
