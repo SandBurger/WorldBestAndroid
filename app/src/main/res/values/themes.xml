@@ -33,7 +33,7 @@
     </style>
     <style name="AppTheme.Picker_16sp" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlNormal">@android:color/transparent</item>
-        <item name="fontFamily">@font/spoqa_han_sans_neo_medium</item>
+        <item name="fontFamily">@font/spoqa_han_sans_neo_bold</item>
         <item name="android:textColor">@android:color/transparent</item>
         <item name="android:textColorPrimary">@color/active</item>
         <item name="android:textSize">16sp</item>

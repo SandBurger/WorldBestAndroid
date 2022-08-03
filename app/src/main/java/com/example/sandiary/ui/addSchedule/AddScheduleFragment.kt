@@ -1,10 +1,12 @@
 package com.example.sandiary.ui.addSchedule
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.util.Log
+import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.core.content.ContextCompat
@@ -27,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.*
+import java.util.*
 
 class AddScheduleFragment : Fragment() {
     private lateinit var addScheduleViewModel: AddScheduleViewModel
@@ -36,6 +39,8 @@ class AddScheduleFragment : Fragment() {
     var endDay : String = ""
     var startTime : String = ""
     var endTime : String = ""
+    val timeZoneArray = arrayOf("오전", "오후")
+    var pickerFlag = 0
     var flag : Int = 0
     var selectedStartDay : LocalDate? = null
     var selectedEndDay : LocalDate? = null
@@ -187,12 +192,12 @@ class AddScheduleFragment : Fragment() {
 
         binding.addScheduleStartTimeTv.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                changeTimePicker(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
+                changeTimePicker(binding.addScheduleStartTimeZonePickerNp, binding.addScheduleStartTimeTv)
             }
         }
         binding.addScheduleEndTimeTv.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                changeTimePicker(binding.addScheduleEndTimePickerTp, binding.addScheduleEndTimeTv)
+                changeTimePicker(binding.addScheduleEndTimeZonePickerNp, binding.addScheduleEndTimeTv)
             }
         }
         binding.addScheduleStartDayTv.setOnClickListener {
@@ -218,27 +223,75 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleAlarmNp.maxValue = 60
         binding.addScheduleStartDayTv.text = getDate(LocalDate.now())
         binding.addScheduleEndDayTv.text = getDate(LocalDate.now())
-        val timeZoneArray = arrayOf("오전", "오후")
+        initPicker()
+    }
+    private fun initPicker(){
         val hourArray = Array(12){
-            it -> "${it+1}시"
+            if(it >= 9){
+                "${it + 1}시"
+            } else {
+                "0${it + 1}시"
+            }
         }
         val minuteArray = Array(61){
-            it -> "${it}분"
+            if(it >= 9){
+                "${it}분"
+            } else {
+                "0${it}분"
+            }
         }
+        var currentTimeZone = 0
+        var currentHour = LocalTime.now().hour
+        val currentMinute = LocalTime.now().minute
+        var currentMinuteString = ""
+        if(currentMinute >= 10){
+            currentMinuteString = currentMinute.toString()
+        } else {
+            currentMinuteString = "0${currentMinute}"
+        }
+        if(currentHour >= 12){
+            currentTimeZone = 1
+            currentHour -= 12
+            binding.addScheduleStartTimeTv.text = "${timeZoneArray[currentTimeZone]} 0${currentHour}:${currentMinuteString}"
+            binding.addScheduleEndTimeTv.text = "${timeZoneArray[currentTimeZone]} 0${currentHour}:${currentMinuteString}"
+        } else {
+            binding.addScheduleStartTimeTv.text = "${timeZoneArray[currentTimeZone]} ${currentHour}:${currentMinuteString}"
+            binding.addScheduleEndTimeTv.text = "${timeZoneArray[currentTimeZone]} ${currentHour}:${currentMinuteString}"
+        }
+
+
         binding.addScheduleStartTimeZonePickerNp.minValue = 0
         binding.addScheduleStartTimeZonePickerNp.maxValue = timeZoneArray.size-1
         binding.addScheduleStartTimeZonePickerNp.displayedValues = timeZoneArray
+        binding.addScheduleStartTimeZonePickerNp.value = currentTimeZone
 
         binding.addScheduleStartHourPickerNp.minValue = 0
         binding.addScheduleStartHourPickerNp.maxValue = hourArray.size-1
-        binding.addScheduleStartHourPickerNp.value = LocalTime.now().hour-1
-        Log.d("LocalHour", "${LocalTime.now().hour}")
         binding.addScheduleStartHourPickerNp.displayedValues = hourArray
+        binding.addScheduleStartHourPickerNp.value = currentHour-1
+
+
         binding.addScheduleStartMinutePickerNp.minValue = 0
         binding.addScheduleStartMinutePickerNp.maxValue = minuteArray.size-1
-        binding.addScheduleStartMinutePickerNp.value = LocalTime.now().minute
-        Log.d("LocalMin", "${LocalTime.now().minute}")
         binding.addScheduleStartMinutePickerNp.displayedValues = minuteArray
+        binding.addScheduleStartMinutePickerNp.value = currentMinute
+        Log.d("LocalMin", "${LocalTime.now().minute}")
+
+        binding.addScheduleEndTimeZonePickerNp.minValue = 0
+        binding.addScheduleEndTimeZonePickerNp.maxValue = timeZoneArray.size-1
+        binding.addScheduleEndTimeZonePickerNp.displayedValues = timeZoneArray
+        binding.addScheduleEndTimeZonePickerNp.value = currentTimeZone
+
+        binding.addScheduleEndHourPickerNp.minValue = 0
+        binding.addScheduleEndHourPickerNp.maxValue = hourArray.size-1
+        binding.addScheduleEndHourPickerNp.displayedValues = hourArray
+        binding.addScheduleEndHourPickerNp.value = currentHour-1
+
+        binding.addScheduleEndMinutePickerNp.minValue = 0
+        binding.addScheduleEndMinutePickerNp.maxValue = minuteArray.size-1
+        binding.addScheduleEndMinutePickerNp.displayedValues = minuteArray
+        binding.addScheduleEndMinutePickerNp.value = currentMinute
+
     }
 
     private fun getDate(date : LocalDate) : String {
@@ -248,32 +301,78 @@ class AddScheduleFragment : Fragment() {
         return "${date.year}.${getMonth(date.month)}.${date.dayOfMonth}(${getDayOfWeek(date.dayOfWeek)})"
     }
 
-    private fun getTime(timePicker: TimePicker, textView: TextView){
-        var hour = timePicker.hour
-        val minute = timePicker.minute
-        var range = "오전"
+    private fun showNumberPicker(numberPicker: NumberPicker){
+        if(numberPicker == binding.addScheduleStartTimeZonePickerNp){
+            binding.addScheduleStartTimeZonePickerNp.visibility = View.VISIBLE
+            binding.addScheduleStartHourPickerNp.visibility = View.VISIBLE
+            binding.addScheduleStartMinutePickerNp.visibility = View.VISIBLE
+            binding.addScheduleStartTimeBackgroundIv.visibility = View.VISIBLE
+        } else {
+            binding.addScheduleEndTimeZonePickerNp.visibility = View.VISIBLE
+            binding.addScheduleEndHourPickerNp.visibility = View.VISIBLE
+            binding.addScheduleEndMinutePickerNp.visibility = View.VISIBLE
+            binding.addScheduleEndTimeBackgroundIv.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideNumberPicker(numberPicker: NumberPicker){
+        if(numberPicker == binding.addScheduleStartTimeZonePickerNp){
+            binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
+            binding.addScheduleStartHourPickerNp.visibility = View.GONE
+            binding.addScheduleStartMinutePickerNp.visibility = View.GONE
+            binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
+        } else {
+            binding.addScheduleEndTimeZonePickerNp.visibility = View.GONE
+            binding.addScheduleEndHourPickerNp.visibility = View.GONE
+            binding.addScheduleEndMinutePickerNp.visibility = View.GONE
+            binding.addScheduleEndTimeBackgroundIv.visibility = View.GONE
+        }
+    }
+
+    private fun getTime(numberPicker: NumberPicker){
+        var timezone = 0
+        var hour = 0
+        var minute = 0
+        var time = ""
         var hourString = ""
         var minuteString = ""
-        if(hour < 10)  {
-            hourString = "0${hour}"
-        } else {
-            if(hour > 12){
-                hour -= 12
-                hourString = "0${hour}"
-                range = "오후"
+        if(numberPicker == binding.addScheduleStartTimeZonePickerNp){
+            pickerFlag = 1
+            timezone = binding.addScheduleStartTimeZonePickerNp.value
+            hour = binding.addScheduleStartHourPickerNp.value
+            minute = binding.addScheduleStartMinutePickerNp.value
+            Log.d("timezone", "${binding.addScheduleStartTimeZonePickerNp.value}")
+            Log.d("hour", "${binding.addScheduleStartHourPickerNp.value}")
+            Log.d("minute", "${binding.addScheduleStartMinutePickerNp.value}")
+            Log.d("minute", "${minute}")
+            if(hour < 9){
+                hourString = "0${hour+1}"
             } else {
-                hourString = "${hour}"
+                hourString = (hour+1).toString()
             }
-        }
-        if(minute < 10) {
-            minuteString = "0${minute}"
+            if(minute < 10){
+                minuteString = "0${minute}"
+            } else {
+                minuteString = minute.toString()
+            }
+            binding.addScheduleStartTimeTv.text = "${timeZoneArray[timezone]} ${hourString}:${minuteString}"
+
         } else {
-            minuteString = "${minute}"
-        }
-        textView.text = "${range} ${hourString}:${minuteString}"
-        when(textView){
-            binding.addScheduleEndTimeTv -> endTime = "${hourString}.${minuteString}"
-            else -> startTime = "${hourString}.${minuteString}"
+            pickerFlag = 1
+            timezone = binding.addScheduleStartTimeZonePickerNp.value
+            hour = binding.addScheduleStartHourPickerNp.value
+            minute = binding.addScheduleStartMinutePickerNp.value
+            if(hour < 9){
+                hourString = "0${hour+1}"
+            } else {
+                hourString = (hour+1).toString()
+            }
+            if(minute < 10){
+                minuteString = "0${minute}"
+            } else {
+                minuteString = minute.toString()
+            }
+            binding.addScheduleEndTimeTv.text = "${timeZoneArray[timezone]} ${hourString}:${minuteString}"
         }
     }
 
@@ -290,13 +389,18 @@ class AddScheduleFragment : Fragment() {
     }
 
     private fun changeCalendar(calendarView: CalendarView, textView:TextView){
-        //binding.addScheduleStartTimePickerTp.visibility = View.GONE
-        binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
-        binding.addScheduleStartHourPickerNp.visibility = View.GONE
-        binding.addScheduleStartMinutePickerNp.visibility = View.GONE
-
-        binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
-        binding.addScheduleEndTimePickerTp.visibility = View.GONE
+        if(binding.addScheduleStartTimeZonePickerNp.visibility == View.VISIBLE){
+            getTime(binding.addScheduleStartTimeZonePickerNp)
+        }
+        if(binding.addScheduleEndTimeZonePickerNp.visibility == View.VISIBLE){
+            getTime(binding.addScheduleEndTimeZonePickerNp)
+        }
+        hideNumberPicker(binding.addScheduleStartTimeZonePickerNp)
+        hideNumberPicker(binding.addScheduleEndTimeZonePickerNp)
+        if(pickerFlag == 1){
+            binding.addScheduleStartTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+            binding.addScheduleEndTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+        }
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE
 
@@ -330,45 +434,37 @@ class AddScheduleFragment : Fragment() {
         }
     }
 
-    private fun changeTimePicker(timePicker: TimePicker, textView: TextView) {
+    private fun changeTimePicker(numberPicker: NumberPicker, textView: TextView) {
         changeText()
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleStartCalendarDateContainer.visibility = View.GONE
         binding.addScheduleStartDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+
         binding.addScheduleEndCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarDateContainer.visibility = View.GONE
         binding.addScheduleEndDayTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE
 
-        if(timePicker == binding.addScheduleStartTimePickerTp){
-            if(binding.addScheduleStartTimeZonePickerNp.visibility == View.VISIBLE){
-                //binding.addScheduleStartTimePickerTp
-                binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
-                binding.addScheduleStartHourPickerNp.visibility = View.GONE
-                binding.addScheduleStartMinutePickerNp.visibility = View.GONE
-                binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
+        if(numberPicker == binding.addScheduleStartTimeZonePickerNp){
+            if(numberPicker.visibility == View.VISIBLE){
+                hideNumberPicker(numberPicker)
+                binding.addScheduleEndTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
-                //timePicker.visibility = View.VISIBLE
-                binding.addScheduleStartTimeZonePickerNp.visibility = View.VISIBLE
-                binding.addScheduleStartHourPickerNp.visibility = View.VISIBLE
-                binding.addScheduleStartMinutePickerNp.visibility = View.VISIBLE
-                binding.addScheduleStartTimeBackgroundIv.visibility = View.VISIBLE
-                binding.addScheduleEndTimePickerTp.visibility = View.GONE
+                showNumberPicker(numberPicker)
+                hideNumberPicker(binding.addScheduleEndTimeZonePickerNp)
             }
         }
         else {
-            if(timePicker.visibility == View.VISIBLE){
-                timePicker.visibility = View.GONE
+            if(numberPicker.visibility == View.VISIBLE){
+                hideNumberPicker(numberPicker)
+                binding.addScheduleStartTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
             } else{
                 textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.active))
-                timePicker.visibility = View.VISIBLE
-                //binding.addScheduleStartTimePickerTp.visibility = View.GONE
-                binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
-                binding.addScheduleStartHourPickerNp.visibility = View.GONE
-                binding.addScheduleStartMinutePickerNp.visibility = View.GONE
-                binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
+                showNumberPicker(numberPicker)
+                hideNumberPicker(binding.addScheduleStartTimeZonePickerNp)
             }
         }
     }
@@ -377,14 +473,11 @@ class AddScheduleFragment : Fragment() {
         changeText()
         binding.addScheduleStartCalendarCv.visibility = View.GONE
         binding.addScheduleEndCalendarCv.visibility = View.GONE
-        //binding.addScheduleStartTimePickerTp.visibility = View.GONE
 
-        binding.addScheduleStartTimeZonePickerNp.visibility = View.GONE
-        binding.addScheduleStartHourPickerNp.visibility = View.GONE
-        binding.addScheduleStartMinutePickerNp.visibility = View.GONE
+        hideNumberPicker(binding.addScheduleStartTimeZonePickerNp)
+        hideNumberPicker(binding.addScheduleEndTimeZonePickerNp)
 
-        binding.addScheduleStartTimeBackgroundIv.visibility = View.GONE
-        binding.addScheduleEndTimePickerTp.visibility = View.GONE
+
         binding.addScheduleAlarmNp.visibility = View.GONE
         binding.addScheduleAfterTv.visibility = View.GONE
 
@@ -417,16 +510,16 @@ class AddScheduleFragment : Fragment() {
                 )
             )
         }
-        if (/*binding.addScheduleStartTimePickerTp.visibility == View.VISIBLE*/binding.addScheduleStartTimeZonePickerNp.visibility == View.VISIBLE) {
-            getTime(binding.addScheduleStartTimePickerTp, binding.addScheduleStartTimeTv)
+        if (binding.addScheduleStartTimeZonePickerNp.visibility == View.VISIBLE) {
+            getTime(binding.addScheduleStartTimeZonePickerNp)
             binding.addScheduleStartTimeTv.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.line_black
                 )
             )
-        } else if (binding.addScheduleEndTimePickerTp.visibility == View.VISIBLE) {
-            getTime(binding.addScheduleEndTimePickerTp, binding.addScheduleEndTimeTv)
+        } else if (binding.addScheduleEndTimeZonePickerNp.visibility == View.VISIBLE) {
+            getTime(binding.addScheduleEndTimeZonePickerNp)
             binding.addScheduleEndTimeTv.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
