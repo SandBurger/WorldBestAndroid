@@ -177,15 +177,6 @@
             android:layout_marginEnd="20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="@id/add_schedule_start_time_background_iv"/>
-        <TimePicker
-            android:id="@+id/add_schedule_start_time_picker_tp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            android:theme="@style/AppTheme.Picker"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
         <ImageView
             android:id="@+id/add_schedule_start_time_background_iv"
             android:layout_width="wrap_content"
@@ -285,15 +276,45 @@
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/add_schedule_end_calendar_date_container"
             app:layout_constraintStart_toStartOf="parent"/>
-        <TimePicker
-            android:id="@+id/add_schedule_end_time_picker_tp"
-            android:layout_width="match_parent"
+        <NumberPicker
+            android:id="@+id/add_schedule_end_time_zone_picker_np"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
+            android:theme="@style/AppTheme.Picker_16sp"
             android:visibility="gone"
-            android:theme="@style/AppTheme.Picker"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="@id/add_schedule_end_time_background_iv"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <NumberPicker
+            android:id="@+id/add_schedule_end_hour_picker_np"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Picker_16sp"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toEndOf="@id/add_schedule_end_time_zone_picker_np"
+            app:layout_constraintEnd_toStartOf="@id/add_schedule_end_minute_picker_np"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <NumberPicker
+            android:id="@+id/add_schedule_end_minute_picker_np"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Picker_16sp"
+            android:visibility="gone"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/add_schedule_end_time_background_iv"/>
+        <ImageView
+            android:id="@+id/add_schedule_end_time_background_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/picker_background"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/add_schedule_end_time_zone_picker_np"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/add_schedule_end_time_zone_picker_np"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ImageView
         android:id="@+id/add_schedule_divider2_iv"
