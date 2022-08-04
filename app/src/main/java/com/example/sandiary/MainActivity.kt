@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private var runnable : Runnable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         statusBar()
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
 
-    fun statusBar(){
+    private fun statusBar(){
         if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
             setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
         }
