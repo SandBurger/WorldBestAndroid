@@ -102,6 +102,7 @@
         app:layout_constraintStart_toEndOf="@id/add_schedule_clock_iv"/>
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/add_schedule_all_day_sw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="7dp"
@@ -352,11 +353,11 @@
         android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:textColor="@color/active"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_after_minute_tv"
-        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_after_minute_tv"
-        app:layout_constraintEnd_toStartOf="@id/add_schedule_alarm_after_minute_tv"/>
+        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_before_minute_tv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_before_minute_tv"
+        app:layout_constraintEnd_toStartOf="@id/add_schedule_alarm_before_minute_tv"/>
     <TextView
-        android:id="@+id/add_schedule_alarm_after_minute_tv"
+        android:id="@+id/add_schedule_alarm_before_minute_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -379,7 +380,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
     <TextView
-        android:id="@+id/add_schedule_after_tv"
+        android:id="@+id/add_schedule_alarm_number_picker_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
