@@ -17,10 +17,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sandiary.Diary
 import com.example.sandiary.Schedule
 import com.example.sandiary.databinding.ItemCalendarDayBinding
 import com.example.sandiary.function.PlanDatabase
+import com.google.android.material.appbar.AppBarLayout
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
@@ -60,8 +62,47 @@ class CalendarFragment : Fragment() {
         val localDate = LocalDate.now()
         year = localDate.year
         month = localDate.month.value
+        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener{ appbar, verticalOffset ->
+            var scrollRange = -1
+            if(scrollRange == -1){
+                scrollRange = appbar.totalScrollRange
+                Log.d("dasdasd", "dasda")
+            }
+            if(verticalOffset+appbar.totalScrollRange == 0){
+                Log.d("dsadasd", "11")
+                binding.calendarCollapsedDateTv.visibility = View.VISIBLE
+                binding.calendarCollapsedMonthSelectorIb.visibility = View.VISIBLE
 
-        val day2 = binding.calendarDateTv
+                binding.calendarExpandedDateTv.visibility = View.GONE
+                binding.calendarExpandedMonthSelectorIb.visibility = View.GONE
+            } else {
+                binding.calendarCollapsedDateTv.visibility = View.GONE
+                binding.calendarCollapsedMonthSelectorIb.visibility = View.GONE
+
+                binding.calendarExpandedDateTv.visibility = View.VISIBLE
+                binding.calendarExpandedMonthSelectorIb.visibility = View.VISIBLE
+            }
+        })
+        val onScrollListener = object :RecyclerView.OnScrollListener(){
+            var temp = 0
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if(temp == 1){
+                    super.onScrolled(recyclerView, dx, dy)
+                }
+
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                temp = 1
+            }
+        }
+        binding.calendarScheduleRv.setOnScrollListener(onScrollListener)
+        if(binding.appbar.isLifted == true){
+            Log.d("djdj","ddkd")
+        }
+
+        val day2 = binding.calendarCollapsedDateTv
         calendarViewModel.text.observe(viewLifecycleOwner, Observer {
             day2.text = it
         })
@@ -71,9 +112,13 @@ class CalendarFragment : Fragment() {
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
             lateinit var day : CalendarDay
             init {
-                binding.calendarMonthSelectorIb.setOnClickListener {
+                binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
                     showPicker()
                 }
+                binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
+                    showPicker()
+                }
+
                 CoroutineScope(Dispatchers.IO).launch {
                     val planList = planDB!!.planDao().getMonthPlan(month)
                     Log.d("planList", "${planList}")
@@ -106,7 +151,8 @@ class CalendarFragment : Fragment() {
                     container.day = day
                     container.textView.text = day.date.dayOfMonth.toString()
                     binding.calendarCalendarCv.monthScrollListener = { calendarMonth ->
-                        binding.calendarDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+                        binding.calendarExpandedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+                        binding.calendarCollapsedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
                         year = calendarMonth.year
                         month = calendarMonth.month
                     }
@@ -151,6 +197,18 @@ class CalendarFragment : Fragment() {
         var dummyScheduleList = ArrayList<Schedule>()
         dummyScheduleList.add(Schedule("10시 약속",10,30,12,20))
         dummyScheduleList.add(Schedule("11시 약속",11,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
+        dummyScheduleList.add(Schedule("dasd",8,30,12,20))
         dummyScheduleList.add(Schedule("dasd",8,30,12,20))
         dummyScheduleList.sortBy { it.startHour }
 
