@@ -30,7 +30,7 @@
                     <ImageView
                         android:id="@+id/calendar_header_iv"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="118dp"
                         android:background="@color/brand_light"
                         android:scaleType="fitXY"
                         android:paddingTop="18dp"
@@ -109,70 +109,90 @@
         </com.google.android.material.appbar.AppBarLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:layout_constraintTop_toBottomOf="@id/coordinator"
-            app:layout_constraintBottom_toBottomOf="parent">
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/calendar_date_container"
-                android:name="com.example.sandiary.ui.calendar.FragmentCalendarDate"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.kizitonwose.calendarview.CalendarView
-                android:id="@+id/calendar_calendar_cv"
+            android:layout_height="fill_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cv_dayViewResource="@layout/item_calendar_day"
-                app:cv_hasBoundaries="true"
-                app:cv_inDateStyle="allMonths"
-                app:cv_orientation="horizontal"
-                app:cv_outDateStyle="endOfRow"
-                app:cv_scrollMode="paged"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calendar_date_container" />
-            <ImageView
-                android:id="@+id/calendar_plan_background_iv"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:src="@color/background_grey"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv" />
+                app:layout_constraintTop_toTopOf="parent"
+                >
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/calendar_date_container"
+                    android:name="com.example.sandiary.ui.calendar.FragmentCalendarDate"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/calendar_schedule_line_iv"
-                android:layout_width="2dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="19dp"
-                android:src="@color/cardview_grey"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv" />
+                <com.kizitonwose.calendarview.CalendarView
+                    android:id="@+id/calendar_calendar_cv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cv_dayViewResource="@layout/item_calendar_day"
+                    app:cv_hasBoundaries="true"
+                    app:cv_inDateStyle="allMonths"
+                    app:cv_orientation="horizontal"
+                    app:cv_outDateStyle="endOfRow"
+                    app:cv_scrollMode="paged"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calendar_date_container" />
+                <ImageView
+                    android:id="@+id/calendar_plan_background_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:src="@color/background_grey"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv" />
+
+                <ImageView
+                    android:id="@+id/calendar_schedule_line_iv"
+                    android:layout_width="2dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="19dp"
+                    android:src="@color/cardview_grey"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv" />
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/calendar_schedule_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_schedule"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:layout_constraintTop_toBottomOf="@id/calendar_schedule_rv"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
 
 
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/calendar_floating_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:src="@drawable/ic_plus"
-                app:backgroundTint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv" />
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/calendar_floating_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/ic_plus"
+                    app:backgroundTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calendar_calendar_cv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/calendar_schedule_rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="300dp"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                tools:listitem="@layout/item_schedule" />
+
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
