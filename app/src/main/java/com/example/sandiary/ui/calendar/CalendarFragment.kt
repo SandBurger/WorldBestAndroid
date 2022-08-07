@@ -98,9 +98,6 @@ class CalendarFragment : Fragment() {
             }
         }
         binding.calendarScheduleRv.setOnScrollListener(onScrollListener)
-        if(binding.appbar.isLifted == true){
-            Log.d("djdj","ddkd")
-        }
 
         val day2 = binding.calendarCollapsedDateTv
         calendarViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -115,7 +112,7 @@ class CalendarFragment : Fragment() {
                 binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
                     showPicker()
                 }
-                binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
+                binding.calendarExpandedMonthSelectorIb.setOnClickListener {
                     showPicker()
                 }
 
@@ -163,12 +160,14 @@ class CalendarFragment : Fragment() {
                         when{
                             day.date == selectedDay -> {
                                 container.imageView.visibility = View.VISIBLE
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.background_white))
                                 Log.d("date","${day.date}")
                                 Log.d("date","${day.date.dayOfMonth}")
                                 Log.d("date","${day.date.month}")
                             }
                             else -> {
                                 container.imageView.visibility = View.INVISIBLE
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
                             }
                         }
                     } else {
@@ -198,18 +197,18 @@ class CalendarFragment : Fragment() {
         dummyScheduleList.add(Schedule("10시 약속",10,30,12,20))
         dummyScheduleList.add(Schedule("11시 약속",11,30,12,20))
         dummyScheduleList.add(Schedule("0",8,30,12,20))
-        dummyScheduleList.add(Schedule("1",8,30,12,20))
-        dummyScheduleList.add(Schedule("2",8,30,12,20))
-        dummyScheduleList.add(Schedule("3",8,30,12,20))
-        dummyScheduleList.add(Schedule("4",8,30,12,20))
-        dummyScheduleList.add(Schedule("5",8,30,12,20))
-        dummyScheduleList.add(Schedule("6",8,30,12,20))
-        dummyScheduleList.add(Schedule("7",8,30,12,20))
-        dummyScheduleList.add(Schedule("8",8,30,12,20))
-        dummyScheduleList.add(Schedule("9",8,30,12,20))
-        dummyScheduleList.add(Schedule("10",8,30,12,20))
-        dummyScheduleList.add(Schedule("11",8,30,12,20))
-        dummyScheduleList.add(Schedule("12",8,30,12,20))
+//        dummyScheduleList.add(Schedule("1",8,30,12,20))
+//        dummyScheduleList.add(Schedule("2",8,30,12,20))
+//        dummyScheduleList.add(Schedule("3",8,30,12,20))
+//        dummyScheduleList.add(Schedule("4",8,30,12,20))
+//        dummyScheduleList.add(Schedule("5",8,30,12,20))
+//        dummyScheduleList.add(Schedule("6",8,30,12,20))
+//        dummyScheduleList.add(Schedule("7",8,30,12,20))
+//        dummyScheduleList.add(Schedule("8",8,30,12,20))
+//        dummyScheduleList.add(Schedule("9",8,30,12,20))
+//        dummyScheduleList.add(Schedule("10",8,30,12,20))
+//        dummyScheduleList.add(Schedule("11",8,30,12,20))
+//        dummyScheduleList.add(Schedule("12",8,30,12,20))
         dummyScheduleList.sortBy { it.startHour }
 
         binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

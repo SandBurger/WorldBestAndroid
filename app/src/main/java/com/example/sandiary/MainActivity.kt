@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sandiary.Util.hideStatusBar
 import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivityMainBinding
 import com.example.sandiary.ui.calendar.CalendarFragment
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        statusBar()
+        hideStatusBar()
         binding.navView.setOnNavigationItemSelectedListener(this)
 
     }
@@ -48,22 +49,4 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
         return false
     }
-
-
-
-    private fun statusBar(){
-        if (Build.VERSION.SDK_INT >= 19 && Build.VERSION.SDK_INT < 21) {
-            setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
-        }
-        if (Build.VERSION.SDK_INT >= 19) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
-        if (Build.VERSION.SDK_INT >= 21) {
-            setWindowFlag(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
-            window.statusBarColor = Color.TRANSPARENT
-        }
-    }
-
-
-
 }
