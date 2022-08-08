@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:id="@+id/read_divider_iv"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:src="@color/line_grey"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="17dp"
+        app:layout_constraintTop_toBottomOf="@id/read_exit_ib"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <ImageButton
+        android:id="@+id/read_exit_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_exit"
+        android:layout_marginTop="44dp"
+        android:layout_marginStart="17dp"
+        app:tint="@color/font_black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/read_remove_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="21dp"
+        app:layout_constraintTop_toTopOf="@id/read_exit_ib"
+        app:layout_constraintBottom_toBottomOf="@id/read_exit_ib"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/read_divider_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <TextView
+                android:id="@+id/read_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:text="2022.08.08 오전 12:00"
+                android:textSize="12sp"
+                android:textColor="@color/inactive"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:lineSpacingExtra="4sp"
+                android:fontFamily="@font/min_sans_regular"
+                android:textSize="14sp"
+                android:textColor="@color/line_black"
+                android:text="https://forms.gle/5YG6Bb5rBof9B4tQ7
+\n\n\n\n\n\n\n\n\n\nn\n\n\nn\n\n\n\n\n
+지원 파트가 추가되어서(디자인, 운영(부리더)) 다시 알려드립니다! 현재까지 지원해주신 분들은 다시 작성하실 필요 없으며, 세미나 일정 관련한 설명이 폼에 추가되었습니다.
+
+ 마감까지 4일 가량 남았는데, 이번 UMC 2기를 마치신 분들이라면 적어도 이번에 참여했던 파트의 파트장으로 참여하시기에는 무리가 없는 실력을 갖추셨을것이기에 부담 갖지 말고 지원해주세요!
+
+CODE' -> CODE
+CODE -> VDECL CODE
+CODE -> FDECL CODE
+CODE -> CDECL CODE
+CODE -> ''
+VDECL -> vtype id semi
+VDECL -> vtype id ASSIGN semi
+ASSIGN -> id assign RHS
+RHS -> EXPR
+RHS -> literal
+RHS -> character
+RHS -> boolstr
+EXPR -> EXPR addsub EXPR
+EXPR -> EXPR multidiv EXPR
+EXPR -> lparen EXPR rparen
+EXPR -> id
+EXPR -> num
+FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace
+ARG -> vtype id MOREARGS
+ARG -> ''
+MOREARGS -> comma vtype id MOREARGS
+MOREARGS -> ''
+BLOCK -> STMT BLOCK
+BLOCK -> ''
+STMT -> VDECL
+STMT -> ASSIGN semi
+STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE
+STMT -> while lparen COND rparen lbrace BLOCK rbrace
+COND -> COND comp COND
+COND -> boolstr
+ELSE -> else lbrace BLOCK rbrace
+ELSE -> ''
+RETURN -> return RHS semi
+CDECL -> class id lbrace ODECL rbrace
+ODECL -> VDECL ODECL
+ODECL -> FDECL ODECL
+ODECL -> ''"
+                app:layout_constraintTop_toBottomOf="@id/read_date_tv"
+                app:layout_constraintStart_toStartOf="@id/read_date_tv"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,8 @@ class SeeAllRVAdapter(val diaryList : ArrayList<Diary>) : RecyclerView.Adapter<S
     lateinit var context: Context
     private lateinit var itemClickListener : ItemClickListener
     interface ItemClickListener{
-        fun onClick(diary: Diary)
+        fun onRemove(diary: Diary)
+        fun onClick(position: Int)
     }
 //    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
 //        super.onAttachedToRecyclerView(recyclerView)
@@ -31,7 +32,10 @@ class SeeAllRVAdapter(val diaryList : ArrayList<Diary>) : RecyclerView.Adapter<S
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(diaryList[position])
         holder.binding.itemDiarySettingIb.setOnClickListener {
-            itemClickListener.onClick(diaryList[position])
+            itemClickListener.onRemove(diaryList[position])
+        }
+        holder.binding.itemDiaryBackgroundCv.setOnClickListener {
+            itemClickListener.onClick(position)
         }
     }
     inner class ViewHolder(val binding : ItemDiaryBinding) : RecyclerView.ViewHolder(binding.root){

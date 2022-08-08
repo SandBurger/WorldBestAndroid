@@ -42,8 +42,12 @@ class SeeAllActivity : AppCompatActivity() {
         binding.seeAllRv.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         val diaryRVAdapter = SeeAllRVAdapter(dummyDiaryList)
         diaryRVAdapter.itemClickListener(object : SeeAllRVAdapter.ItemClickListener{
-            override fun onClick(diary: Diary) {
+            override fun onRemove(diary: Diary) {
                 showDialog()
+            }
+
+            override fun onClick(position: Int) {
+                startActivity(Intent(applicationContext, ReadDiaryActivity::class.java))
             }
         })
         binding.seeAllRv.adapter = diaryRVAdapter
