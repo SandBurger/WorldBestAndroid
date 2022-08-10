@@ -1,5 +1,7 @@
 package com.example.sandiary.ui.calendar
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import android.util.Log
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -214,8 +217,8 @@ class CalendarFragment : Fragment() {
         binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val scheduleRVAdapter = ScheduleRVAdapter(dummyScheduleList)
         scheduleRVAdapter.itemClickListener(object : ScheduleRVAdapter.ItemClickListener{
-            override fun onClick(diary: Diary) {
-
+            override fun onClick(schedule: Schedule) {
+                showDialog()
             }
         })
         binding.calendarScheduleRv.adapter = scheduleRVAdapter
@@ -276,6 +279,24 @@ class CalendarFragment : Fragment() {
                 else -> "12"
             }
         return month
+    }
+
+    private fun showDialog(){
+        val layoutInflater = LayoutInflater.from(requireContext())
+        val view = layoutInflater.inflate(R.layout.dialog_schedule, null)
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setView(view)
+            .create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.findViewById<ConstraintLayout>(R.id.dialog_schedule_fix_lo).setOnClickListener {
+            alertDialog.dismiss()
+        }
+        view.findViewById<ConstraintLayout>(R.id.dialog_schedule_remove_lo).setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 
     override fun onDestroyView() {

@@ -19,7 +19,7 @@ class ScheduleRVAdapter(val scheduleList : ArrayList<Schedule>) : RecyclerView.A
         lateinit var context: Context
         private lateinit var itemClickListener : ItemClickListener
         interface ItemClickListener{
-            fun onClick(diary: Diary)
+            fun onClick(schedule: Schedule)
         }
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
             super.onAttachedToRecyclerView(recyclerView)
@@ -37,9 +37,9 @@ class ScheduleRVAdapter(val scheduleList : ArrayList<Schedule>) : RecyclerView.A
         }
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.bind(scheduleList[position])
-//            holder.binding.item.setOnClickListener {
-//                itemClickListener.onClick(diaryList[position])
-//            }
+            holder.binding.itemScheduleTitleTv.setOnClickListener {
+                itemClickListener.onClick(scheduleList[position])
+            }
         }
         inner class ViewHolder(val binding : ItemScheduleBinding) : RecyclerView.ViewHolder(binding.root){
             fun bind(schedule : Schedule){

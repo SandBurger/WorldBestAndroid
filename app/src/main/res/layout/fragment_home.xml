@@ -67,11 +67,12 @@
         app:layout_constraintStart_toStartOf="parent"
         />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/home_writing_box1_iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/writingbox_inactive"
+        android:layout_height="50dp"
+        android:src="@drawable/cardview_gray_corner"
+        android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:layout_marginTop="12dp"
         android:layout_marginStart="16dp"
@@ -85,7 +86,7 @@
             android:id="@+id/home_writing_time1_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/line_grey"
+            android:textColor="@color/indicator_active"
             android:textSize="12sp"
             android:fontFamily="@font/min_sans_regular"
             android:text="오후 01:00"
@@ -98,13 +99,12 @@
             android:id="@+id/home_writing_content1_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/line_grey"
+            android:textColor="@color/line_black"
             android:textSize="12sp"
             android:fontFamily="@font/min_sans_regular"
-            android:text="아침 일찍 일어나니 공기가 상쾌하다. 역시 일찍 일어나길 잘한건가…. 아침에 진짜 할일이…"
+            android:text="아침 일찍 일어나니 공기가 상쾌하다. 역시 일찍 일어나길 잘한건가…. 아침에 진짜 할일이…dasdasdasjdjiasdioasjoidjsaijdiojsaiodjsioajdiosjdioas"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="18dp"
-            android:paddingVertical="10dp"
             android:maxLength="50"
             android:maxLines="2"
             app:layout_constraintTop_toTopOf="@id/home_writing_box1_iv"
@@ -114,11 +114,12 @@
             />
 
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/home_writing_box2_iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/writingbox_inactive"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/cardview_gray_corner"
         android:scaleType="fitXY"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
@@ -131,7 +132,7 @@
         android:id="@+id/home_writing_time2_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/line_grey"
+        android:textColor="@color/indicator_active"
         android:textSize="12sp"
         android:fontFamily="@font/min_sans_regular"
         android:text="오후 01:00"
@@ -144,7 +145,7 @@
         android:id="@+id/home_writing_content2_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/line_grey"
+        android:textColor="@color/line_black"
         android:textSize="12sp"
         android:fontFamily="@font/min_sans_regular"
         android:text="아침 일찍 일어나니 공기가 상쾌하다. 역시 일찍 일 어나길 잘한건가…. 아침에 진짜 할일이 많았는데 이렇게 될 줄은 몰랐다 "
@@ -156,11 +157,12 @@
         app:layout_constraintStart_toEndOf="@id/home_writing_time2_tv"
         app:layout_constraintEnd_toEndOf="@id/home_writing_box2_iv"
         />
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/home_writing_box3_iv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/writingbox_inactive"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/cardview_gray_corner"
         android:scaleType="fitXY"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
@@ -173,7 +175,7 @@
         android:id="@+id/home_writing_time3_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/line_grey"
+        android:textColor="@color/indicator_active"
         android:textSize="12sp"
         android:fontFamily="@font/min_sans_regular"
         android:text="오후 01:00"
@@ -186,7 +188,7 @@
         android:id="@+id/home_writing_content3_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/line_grey"
+        android:textColor="@color/line_black"
         android:textSize="12sp"
         android:fontFamily="@font/spoqa_han_sans_neo_regular"
         android:text="글 쓰러 가기"

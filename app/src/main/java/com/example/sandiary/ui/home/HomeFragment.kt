@@ -70,28 +70,30 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkWriting(){
-        if(binding.homeWritingContent1Tv.text != "글 쓰러 가기"){
+        if(binding.homeWritingContent1Tv.text == "글 쓰러 가기"){
+            ImageViewCompat.setImageTintList(binding.homeWritingBox1Iv,
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.inactive_box_transparent_50)))
             binding.homeWritingContent1Tv.setTextColor(ContextCompat
-               .getColor(requireContext(),R.color.line_black))
+               .getColor(requireContext(),R.color.line_grey))
             binding.homeWritingTime1Tv.setTextColor(ContextCompat
-               .getColor(requireContext(),R.color.indicator_active))
+               .getColor(requireContext(),R.color.line_grey))
 
         }
-        if(binding.homeWritingContent2Tv.text != "글 쓰러 가기"){
-           binding.homeWritingContent2Tv.setTextColor(ContextCompat
-               .getColor(requireContext(),R.color.line_black))
-           binding.homeWritingTime2Tv.setTextColor(ContextCompat
-               .getColor(requireContext(),R.color.indicator_active))
+        if(binding.homeWritingContent2Tv.text == "글 쓰러 가기"){
             ImageViewCompat.setImageTintList(binding.homeWritingBox2Iv,
-                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_grey)))
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.inactive_box_transparent_50)))
+           binding.homeWritingContent2Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.line_grey))
+           binding.homeWritingTime2Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.line_grey))
        }
-        if(binding.homeWritingContent3Tv.text != "글 쓰러 가기"){
-           binding.homeWritingContent3Tv.setTextColor(ContextCompat
-               .getColor(requireContext(),R.color.line_black))
-           binding.homeWritingTime3Tv.setTextColor(ContextCompat
-               .getColor(requireContext(),R.color.indicator_active))
+        if(binding.homeWritingContent3Tv.text == "글 쓰러 가기"){
             ImageViewCompat.setImageTintList(binding.homeWritingBox3Iv,
-                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.background_grey)))
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.inactive_box_transparent_50)))
+           binding.homeWritingContent3Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.line_grey))
+           binding.homeWritingTime3Tv.setTextColor(ContextCompat
+               .getColor(requireContext(),R.color.line_grey))
        }
     }
 }
