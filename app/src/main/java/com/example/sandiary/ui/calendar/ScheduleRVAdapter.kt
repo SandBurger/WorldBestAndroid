@@ -51,7 +51,7 @@ class ScheduleRVAdapter(val scheduleList : ArrayList<Schedule>) : RecyclerView.A
                 }else{
                     binding.itemScheduleTitleTv.setTextColor(ContextCompat.getColor(context, R.color.font_grey))
                 }
-                binding.itemScheduleTitleTv.text = schedule.schedule
+                binding.itemScheduleTitleTv.text = schedule.scheduleName
             }
         }
     }

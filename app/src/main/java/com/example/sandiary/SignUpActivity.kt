@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sandiary.Util.hideStatusBar
 import com.example.sandiary.databinding.ActivitySignUpBinding
 import com.example.sandiary.databinding.ActivitySplashBinding
 
@@ -14,6 +15,7 @@ class SignUpActivity : AppCompatActivity() {
 
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        hideStatusBar()
         binding.btn.setOnClickListener{
             startActivity(Intent(this, MainActivity::class.java))
         }
