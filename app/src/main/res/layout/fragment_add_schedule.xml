@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/add_schedule_write_diary_et"/>
+        app:layout_constraintBottom_toTopOf="@id/add_schedule_write_schedule_et"/>
     <ImageView
         android:id="@+id/add_schedule_header_divider_iv"
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
-        android:id="@+id/add_schedule_write_diary_et"
+        android:id="@+id/add_schedule_write_schedule_et"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:hint="일정을 입력하세요."
@@ -76,7 +76,7 @@
         android:src="@drawable/gray_line"
         android:layout_marginTop="24dp"
         android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_write_diary_et"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_write_schedule_et"
         app:layout_constraintStart_toStartOf="parent"/>
     <ImageView
         android:id="@+id/add_schedule_clock_iv"
@@ -379,13 +379,23 @@
         app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_tv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/add_schedule_alarm_background_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/picker_background"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_np"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_np"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
     <TextView
         android:id="@+id/add_schedule_alarm_number_picker_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textColor="@color/line_black"
-        android:text="분 후"
+        android:text="분 전"
         android:visibility="gone"
         android:layout_marginStart="5dp"
         app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_np"
@@ -402,6 +412,7 @@
         app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_np"
         app:layout_constraintStart_toStartOf="parent"/>
     <ImageView
+        android:id="@+id/add_schedule_memo_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_memo"
@@ -420,4 +431,12 @@
         android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_divider3_iv"
         app:layout_constraintStart_toStartOf="@id/add_schedule_all_day_tv"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ddasdsadasdaaaaaaaaaaaaaaaa"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_memo_tv"
+        app:layout_constraintStart_toStartOf="@id/add_schedule_memo_tv"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

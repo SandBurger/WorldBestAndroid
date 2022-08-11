@@ -21,10 +21,9 @@ import androidx.lifecycle.Observer
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sandiary.Diary
 import com.example.sandiary.Schedule
 import com.example.sandiary.databinding.ItemCalendarDayBinding
-import com.example.sandiary.function.PlanDatabase
+import com.example.sandiary.function.ScheduleDatabase
 import com.google.android.material.appbar.AppBarLayout
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
@@ -33,7 +32,6 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.time.*
 import java.util.*
 
@@ -42,7 +40,7 @@ class CalendarFragment : Fragment() {
     private lateinit var calendarViewModel: CalendarViewModel
     //lateinit var binding : FragmentCalendarBinding
     private var _binding: FragmentCalendarBinding? = null
-    private var planDB : PlanDatabase? = null
+    private var scheduleDB : ScheduleDatabase? = null
     private var selectedDay : LocalDate? = null
     private var year : Int = 0
     private var month : Int = 0
@@ -69,10 +67,8 @@ class CalendarFragment : Fragment() {
             var scrollRange = -1
             if(scrollRange == -1){
                 scrollRange = appbar.totalScrollRange
-                Log.d("dasdasd", "dasda")
             }
             if(verticalOffset+appbar.totalScrollRange == 0){
-                Log.d("dsadasd", "11")
                 binding.calendarCollapsedDateTv.visibility = View.VISIBLE
                 binding.calendarCollapsedMonthSelectorIb.visibility = View.VISIBLE
 
@@ -92,9 +88,7 @@ class CalendarFragment : Fragment() {
                 if(temp == 1){
                     super.onScrolled(recyclerView, dx, dy)
                 }
-
             }
-
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 temp = 1
@@ -120,8 +114,8 @@ class CalendarFragment : Fragment() {
                 }
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    val planList = planDB!!.planDao().getMonthPlan(month)
-                    Log.d("planList", "${planList}")
+                    val scheduleList = scheduleDB!!.scheduleDao().getMonthSchedule(month)
+                    Log.d("planList", "${scheduleList}")
                 }
 
                 view.setOnClickListener{
@@ -197,21 +191,7 @@ class CalendarFragment : Fragment() {
             binding.calendarCalendarCv.scrollToMonth(currentMonth)
         }
         var dummyScheduleList = ArrayList<Schedule>()
-        dummyScheduleList.add(Schedule("10시 약속",10,30,12,20))
-        dummyScheduleList.add(Schedule("11시 약속",11,30,12,20))
-        dummyScheduleList.add(Schedule("0",8,30,12,20))
-//        dummyScheduleList.add(Schedule("1",8,30,12,20))
-//        dummyScheduleList.add(Schedule("2",8,30,12,20))
-//        dummyScheduleList.add(Schedule("3",8,30,12,20))
-//        dummyScheduleList.add(Schedule("4",8,30,12,20))
-//        dummyScheduleList.add(Schedule("5",8,30,12,20))
-//        dummyScheduleList.add(Schedule("6",8,30,12,20))
-//        dummyScheduleList.add(Schedule("7",8,30,12,20))
-//        dummyScheduleList.add(Schedule("8",8,30,12,20))
-//        dummyScheduleList.add(Schedule("9",8,30,12,20))
-//        dummyScheduleList.add(Schedule("10",8,30,12,20))
-//        dummyScheduleList.add(Schedule("11",8,30,12,20))
-//        dummyScheduleList.add(Schedule("12",8,30,12,20))
+
         dummyScheduleList.sortBy { it.startHour }
 
         binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -234,7 +214,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun initFragment(){
-        planDB = PlanDatabase.getInstance(requireContext())
+        scheduleDB = ScheduleDatabase.getInstance(requireContext())
     }
 
     private fun showPicker(){
