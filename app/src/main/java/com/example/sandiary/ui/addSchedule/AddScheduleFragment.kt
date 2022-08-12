@@ -1,10 +1,13 @@
 package com.example.sandiary.ui.addSchedule
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -32,6 +35,7 @@ class AddScheduleFragment : Fragment() {
     private lateinit var addScheduleViewModel: AddScheduleViewModel
     private var _binding: FragmentAddScheduleBinding? = null
     private var scheduleDB : ScheduleDatabase? = null
+
     var startMonth : Int = 0
     var startDay : Int = 0
     var endMonth : Int = 0
@@ -76,13 +80,19 @@ class AddScheduleFragment : Fragment() {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CalendarFragment()).commit()
         }
-        binding.addScheduleWriteScheduleEt.setOnClickListener {
-            checkPickerVisibility()
-            binding.addScheduleStartCalendarCv.visibility = View.GONE
-            binding.addScheduleStartCalendarDateContainer.visibility = View.GONE
-            binding.addScheduleEndCalendarCv.visibility = View.GONE
-            binding.addScheduleEndCalendarDateContainer.visibility = View.GONE
+        binding.addScheduleWriteScheduleEt.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+            if(b){
+                checkPickerVisibility()
+                binding.addScheduleStartCalendarCv.visibility = View.GONE
+                binding.addScheduleStartCalendarDateContainer.visibility = View.GONE
+                binding.addScheduleEndCalendarCv.visibility = View.GONE
+                binding.addScheduleEndCalendarDateContainer.visibility = View.GONE
+            } else{
+                hideKeyboard(binding.addScheduleWriteScheduleEt)
+            }
         }
+
+
 
         val dateTv = binding.addScheduleStartTv
         addScheduleViewModel.text.observe(viewLifecycleOwner, Observer {
@@ -141,6 +151,16 @@ class AddScheduleFragment : Fragment() {
                                 container.imageView.visibility = View.VISIBLE
                                 startMonth = getMonth(day.date.month).toInt()
                                 startDay = day.date.dayOfMonth
+//                                if(endMonth < startMonth){
+//                                    endMonth = startMonth+1
+//                                    if(endDay < startDay){
+//                                        startDay = endDay-1
+//                                    }
+//                                } else {
+//                                    if(endDay < startDay){
+//                                        startDay = endDay-1
+//                                    }
+//                                }
                             }
                             else -> {
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
@@ -174,6 +194,16 @@ class AddScheduleFragment : Fragment() {
                                 container.imageView.visibility = View.VISIBLE
                                 endMonth = getMonth(day.date.month).toInt()
                                 endDay = day.date.dayOfMonth
+//                                if(endMonth < startMonth){
+//                                    startMonth = endMonth-1
+//                                    if(endDay < startDay){
+//                                        startDay = endDay-1
+//                                    }
+//                                } else {
+//                                    if(endDay < startDay){
+//                                        startDay = endDay-1
+//                                    }
+//                                }
                             }
                             else -> {
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
@@ -260,6 +290,11 @@ class AddScheduleFragment : Fragment() {
         } 
         return root
     }
+    private fun hideKeyboard(editText: EditText){
+        (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).apply {
+            hideSoftInputFromWindow(editText.windowToken, 0)
+        }
+    }
 
     private fun initFragment(){
         scheduleDB = ScheduleDatabase.getInstance(requireContext())
@@ -269,6 +304,7 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleEndDayTv.text = getDate(LocalDate.now())
         initPicker()
     }
+
     private fun initPicker(){
         val hourArray = Array(12){
             if(it >= 9){
@@ -296,12 +332,10 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleStartHourPickerNp.displayedValues = hourArray
         binding.addScheduleStartHourPickerNp.value = currentHour-1
 
-
         binding.addScheduleStartMinutePickerNp.minValue = 0
         binding.addScheduleStartMinutePickerNp.maxValue = minuteArray.size-1
         binding.addScheduleStartMinutePickerNp.displayedValues = minuteArray
         binding.addScheduleStartMinutePickerNp.value = currentMinute
-        Log.d("LocalMin", "${LocalTime.now().minute}")
 
         binding.addScheduleEndTimeZonePickerNp.minValue = 0
         binding.addScheduleEndTimeZonePickerNp.maxValue = timeZoneArray.size-1
@@ -420,8 +454,6 @@ class AddScheduleFragment : Fragment() {
         }
     }
     private fun clickedNumberPicker(numberPicker: NumberPicker, textView: TextView) {
-        checkPickerVisibility()
-
         if(pickerFlag == 1){
             binding.addScheduleStartTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
             binding.addScheduleEndTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))

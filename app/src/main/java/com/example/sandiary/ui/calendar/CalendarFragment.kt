@@ -13,6 +13,7 @@ import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentCalendarBinding
 import com.example.sandiary.ui.addSchedule.AddScheduleFragment
 import android.util.Log
+import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -39,11 +40,15 @@ class CalendarFragment : Fragment() {
 
     private lateinit var calendarViewModel: CalendarViewModel
     //lateinit var binding : FragmentCalendarBinding
+    private lateinit var scheduleRVAdapter : ScheduleRVAdapter
+    private lateinit var invisibleImageView: ImageView
     private var _binding: FragmentCalendarBinding? = null
     private var scheduleDB : ScheduleDatabase? = null
     private var selectedDay : LocalDate? = null
     private var year : Int = 0
     private var month : Int = 0
+    var scheduleList = arrayListOf<Schedule>()
+
 //
 //    // This property is only valid between onCreateView and
 //    // onDestroyView.
@@ -100,10 +105,14 @@ class CalendarFragment : Fragment() {
         calendarViewModel.text.observe(viewLifecycleOwner, Observer {
             day2.text = it
         })
-
+        binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val empty = arrayListOf<Schedule>()
+        scheduleRVAdapter = ScheduleRVAdapter(empty)
         class DayViewContainer(view : View) : ViewContainer(view) {
             val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
+            val selector = ItemCalendarDayBinding.bind(view).itemCalendarDaySelectorIv
+
             lateinit var day : CalendarDay
             init {
                 binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
@@ -113,9 +122,21 @@ class CalendarFragment : Fragment() {
                     showPicker()
                 }
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    val scheduleList = scheduleDB!!.scheduleDao().getMonthSchedule(month)
-                    Log.d("planList", "${scheduleList}")
+                binding.calendarCalendarCv.monthScrollListener = { month1 ->
+                    scheduleList.clear()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val totalScheduleList =
+                            scheduleDB!!.scheduleDao().getMonthSchedule(month)
+
+                        Log.d("total", "${totalScheduleList}")
+                        for (i in totalScheduleList) {
+                            if (i.startDay.toString() == textView.text) {
+                                scheduleList.add(i)
+                                imageView.visibility = View.VISIBLE
+                            }
+                        }
+                        Log.d("planList", "${scheduleList}")
+                    }
                 }
 
                 view.setOnClickListener{
@@ -145,6 +166,9 @@ class CalendarFragment : Fragment() {
                     container.day = day
                     container.textView.text = day.date.dayOfMonth.toString()
                     binding.calendarCalendarCv.monthScrollListener = { calendarMonth ->
+
+
+
                         binding.calendarExpandedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
                         binding.calendarCollapsedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
                         year = calendarMonth.year
@@ -156,15 +180,24 @@ class CalendarFragment : Fragment() {
                             .getColor(requireContext(),R.color.line_black))
                         when{
                             day.date == selectedDay -> {
-                                container.imageView.visibility = View.VISIBLE
-                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.background_white))
+                                if(container.imageView.visibility == View.VISIBLE){
+                                    container.imageView.visibility = View.INVISIBLE
+                                }
+                                container.selector.visibility = View.VISIBLE
+                                Log.d("scheduleList", "${scheduleList}")
+                                scheduleRVAdapter = ScheduleRVAdapter(scheduleList)
+                                binding.calendarScheduleRv.adapter = scheduleRVAdapter
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.indicator_active))
                                 Log.d("date","${day.date}")
                                 Log.d("date","${day.date.dayOfMonth}")
                                 Log.d("date","${day.date.month}")
                             }
                             else -> {
-                                container.imageView.visibility = View.INVISIBLE
-                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+                                container.selector.visibility = View.INVISIBLE
+                                if(scheduleList.isNotEmpty()){
+                                    container.imageView.visibility = View.VISIBLE
+                                }
+                                //container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
                             }
                         }
                     } else {
@@ -194,14 +227,13 @@ class CalendarFragment : Fragment() {
 
         dummyScheduleList.sortBy { it.startHour }
 
-        binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val scheduleRVAdapter = ScheduleRVAdapter(dummyScheduleList)
+
         scheduleRVAdapter.itemClickListener(object : ScheduleRVAdapter.ItemClickListener{
             override fun onClick(schedule: Schedule) {
                 showDialog()
             }
         })
-        binding.calendarScheduleRv.adapter = scheduleRVAdapter
+
 
         //Log.d("title","${binding.calendarCalendarCv.settingsManager.isShowDaysOfWeekTitle}")
         binding.calendarFloatingBtn.setOnClickListener{
