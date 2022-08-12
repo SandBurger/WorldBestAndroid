@@ -3,6 +3,7 @@ package com.example.sandiary.ui.calendar
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
@@ -51,7 +52,8 @@ class ScheduleRVAdapter(val scheduleList : ArrayList<Schedule>) : RecyclerView.A
                 }else{
                     binding.itemScheduleTitleTv.setTextColor(ContextCompat.getColor(context, R.color.font_grey))
                 }
-                binding.itemScheduleTitleTv.text = schedule.scheduleName
+                //binding.itemScheduleTitleTv.text = schedule.scheduleName
+                binding.itemScheduleTitleTv.text = schedule.startDay.toString()
             }
         }
     }
