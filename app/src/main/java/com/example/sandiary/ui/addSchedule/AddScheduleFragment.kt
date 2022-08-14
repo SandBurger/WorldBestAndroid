@@ -52,8 +52,8 @@ class AddScheduleFragment : Fragment() {
     var currentMinuteString = ""
     var pickerFlag = 0
 
-    var selectedStartDay : LocalDate? = null
-    var selectedEndDay : LocalDate? = null
+    var selectedStartDay : LocalDate? = LocalDate.now()
+    var selectedEndDay : LocalDate? = LocalDate.now()
     val daysOfWeek = arrayOf(
         DayOfWeek.SUNDAY,
         DayOfWeek.MONDAY,
@@ -80,6 +80,8 @@ class AddScheduleFragment : Fragment() {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CalendarFragment()).commit()
         }
+
+        //제목 클릭했을 때 calendar, numberPicker 숨기기
         binding.addScheduleWriteScheduleEt.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
             if(b){
                 checkPickerVisibility()
@@ -104,15 +106,22 @@ class AddScheduleFragment : Fragment() {
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
             lateinit var day : CalendarDay
             init {
+                //클릭 시
                 view.setOnClickListener{
                     if (day.owner == DayOwner.THIS_MONTH){
                         if(binding.addScheduleStartCalendarCv.visibility == View.VISIBLE){
                             val currentSelection = selectedStartDay
+                            //이미 클릭된 날짜일 때
                             if(currentSelection == day.date){
                                 selectedStartDay = null
                                 binding.addScheduleStartCalendarCv.notifyDateChanged(currentSelection)
                             } else {
                                 selectedStartDay = day.date
+                                if(selectedStartDay!! > selectedEndDay){
+                                    selectedEndDay = selectedStartDay
+                                    binding.addScheduleEndDayTv.text = getDate(day.date)
+                                    checkTime(binding.addScheduleStartTimeTv)
+                                }
                                 binding.addScheduleStartDayTv.text = getDate(day.date)
                                 binding.addScheduleStartCalendarCv.notifyDateChanged(day.date)
                                 if (currentSelection != null){
@@ -127,6 +136,12 @@ class AddScheduleFragment : Fragment() {
                                 binding.addScheduleEndCalendarCv.notifyDateChanged(currentSelection)
                             } else {
                                 selectedEndDay = day.date
+                                if(selectedStartDay!! > selectedEndDay){
+                                    selectedStartDay = selectedEndDay
+                                    binding.addScheduleStartDayTv.text = getDate(day.date)
+                                    Log.d("time","${startHour}:${startMinute}, ${endHour}:${endMinute}")
+                                    checkTime(binding.addScheduleStartTimeTv)
+                                }
                                 binding.addScheduleEndDayTv.text = getDate(day.date)
                                 binding.addScheduleEndCalendarCv.notifyDateChanged(day.date)
                                 if (currentSelection != null){
@@ -151,16 +166,7 @@ class AddScheduleFragment : Fragment() {
                                 container.imageView.visibility = View.VISIBLE
                                 startMonth = getMonth(day.date.month).toInt()
                                 startDay = day.date.dayOfMonth
-//                                if(endMonth < startMonth){
-//                                    endMonth = startMonth+1
-//                                    if(endDay < startDay){
-//                                        startDay = endDay-1
-//                                    }
-//                                } else {
-//                                    if(endDay < startDay){
-//                                        startDay = endDay-1
-//                                    }
-//                                }
+                                Log.d("selectedS", "${selectedStartDay}")
                             }
                             else -> {
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
@@ -194,16 +200,6 @@ class AddScheduleFragment : Fragment() {
                                 container.imageView.visibility = View.VISIBLE
                                 endMonth = getMonth(day.date.month).toInt()
                                 endDay = day.date.dayOfMonth
-//                                if(endMonth < startMonth){
-//                                    startMonth = endMonth-1
-//                                    if(endDay < startDay){
-//                                        startDay = endDay-1
-//                                    }
-//                                } else {
-//                                    if(endDay < startDay){
-//                                        startDay = endDay-1
-//                                    }
-//                                }
                             }
                             else -> {
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
@@ -302,6 +298,12 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleAlarmNp.maxValue = 60
         binding.addScheduleStartDayTv.text = getDate(LocalDate.now())
         binding.addScheduleEndDayTv.text = getDate(LocalDate.now())
+
+        startHour = currentHour
+        startMinute = currentMinute
+        endHour = currentHour
+        endMinute = currentMinute
+
         initPicker()
     }
 
@@ -437,6 +439,7 @@ class AddScheduleFragment : Fragment() {
             }
         }
     }
+
     private fun checkPickerVisibility(){
         when {
             (binding.addScheduleStartTimeZonePickerNp.visibility == View.VISIBLE) -> {
@@ -453,6 +456,7 @@ class AddScheduleFragment : Fragment() {
             }
         }
     }
+
     private fun clickedNumberPicker(numberPicker: NumberPicker, textView: TextView) {
         if(pickerFlag == 1){
             binding.addScheduleStartTimeTv.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
@@ -504,7 +508,6 @@ class AddScheduleFragment : Fragment() {
         }
     }
 
-
     private fun getDayOfWeek(dayOfWeek: DayOfWeek): String {
         return when (daysOfWeek.indexOf(dayOfWeek)) {
             1 -> "월"
@@ -516,6 +519,7 @@ class AddScheduleFragment : Fragment() {
             else -> "일"
         }
     }
+
     private fun getMonth(month: Month): String {
         return when (month) {
             Month.JANUARY -> "01"
@@ -555,6 +559,54 @@ class AddScheduleFragment : Fragment() {
         binding.addScheduleEndTimeTv.text = "${timeZoneArray[currentTimeZone]} 0${currentHour}:${currentMinuteString}"
     }
 
+    private fun checkTime(timeText : TextView){
+        //timeZone check 필요
+        when(timeText){
+            binding.addScheduleStartTimeTv -> {
+                if (startHour > endHour) {
+                    startHour = endHour
+                    if (startMinute > endMinute) {
+                        startMinute = endMinute
+                    }
+                } else if (startHour == endHour) {
+                    if (startMinute > endMinute) {
+                        startMinute = endMinute
+                    }
+                }
+                timeText.text = "${timeZoneArray[binding.addScheduleStartTimeZonePickerNp.value]} ${hourToString(startHour)}:${minuteToString(startMinute)}"
+            }
+            else -> {
+                if (startHour > endHour) {
+                    endHour = startHour
+                    if (startMinute > endMinute) {
+                        endMinute = startMinute
+                        binding.addScheduleEndMinutePickerNp.value = binding.addScheduleStartMinutePickerNp.value
+                    }
+                } else if (startHour == endHour) {
+                    if (startMinute > endMinute) {
+                        endMinute = startMinute
+                    }
+                }
+                timeText.text = "${timeZoneArray[binding.addScheduleStartTimeZonePickerNp.value]} ${hourToString(endHour)}:${minuteToString(endMinute)}"
+            }
+        }
+    }
+    private fun hourToString(hour : Int) : String{
+        return if(hour < 9){
+            "0${hour}"
+        } else {
+            hour.toString()
+        }
+    }
+
+    private fun minuteToString(minute : Int) : String{
+        return if(minute < 9){
+            "0${minute}"
+        } else {
+            minute.toString()
+        }
+    }
+
     private fun getPickerValue(numberPicker: NumberPicker){
         var timezone = 0
         var hour = 0
@@ -571,17 +623,11 @@ class AddScheduleFragment : Fragment() {
 
                 startHour = hour+1
                 startMinute = minute
-                hourString = if(hour < 9){
-                    "0${hour+1}"
-                } else {
-                    (hour+1).toString()
-                }
-                minuteString = if(minute < 10){
-                    "0${minute}"
-                } else {
-                    minute.toString()
-                }
-                binding.addScheduleStartTimeTv.text = "${timeZoneArray[timezone]} ${hourString}:${minuteString}"
+
+                hourString = hourToString(startHour)
+                minuteString = minuteToString(startMinute)
+
+                checkTime(binding.addScheduleStartTimeTv)
             }
             binding.addScheduleEndTimeZonePickerNp -> {
                 pickerFlag = 1
@@ -591,17 +637,10 @@ class AddScheduleFragment : Fragment() {
 
                 endHour = hour+1
                 endMinute = minute
-                hourString = if(hour < 9){
-                    "0${hour+1}"
-                } else {
-                    (hour+1).toString()
-                }
-                minuteString = if(minute < 10){
-                    "0${minute}"
-                } else {
-                    minute.toString()
-                }
-                binding.addScheduleEndTimeTv.text = "${timeZoneArray[timezone]} ${hourString}:${minuteString}"
+
+                hourString = hourToString(endHour)
+                minuteString = minuteToString(minute)
+                checkTime(binding.addScheduleEndTimeTv)
             }
             else -> {
                 binding.addScheduleAlarmMinuteTv.text = binding.addScheduleAlarmNp.value.toString()
