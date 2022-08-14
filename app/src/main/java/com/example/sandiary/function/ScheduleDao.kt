@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.sandiary.Schedule
+import java.util.ArrayList
 
 @Dao
 interface ScheduleDao {
