@@ -40,7 +40,7 @@ class SeeAllRVAdapter(val diaryList : ArrayList<Diary>) : RecyclerView.Adapter<S
     }
     inner class ViewHolder(val binding : ItemDiaryBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(diary : Diary){
-            binding.itemDiaryDiaryTv.text = diary.story
+            binding.itemDiaryDiaryTv.text = diary.diary
         }
     }
 }

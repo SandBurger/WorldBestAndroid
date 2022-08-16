@@ -23,7 +23,18 @@ class WriteActivity : AppCompatActivity() {
         binding = ActivityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val diary = intent.getStringExtra("diary")
+        if(diary == null){
+
+        } else {
+            binding.writeWriteDiaryEt.setText(diary)
+            binding.writeSaveTv.visibility = View.GONE
+            binding.writeRemoveIb.visibility = View.VISIBLE
+        }
+
+
         hideStatusBar()
+
         binding.writeExitIb.setOnClickListener {
             showDialog()
         }
