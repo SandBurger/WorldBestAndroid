@@ -48,7 +48,17 @@
         app:layout_constraintTop_toTopOf="@id/write_date_tv"
         app:layout_constraintBottom_toBottomOf="@id/write_date_tv"
         app:layout_constraintEnd_toEndOf="parent"/>
-
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/write_remove_ib"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trash_can"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="@id/write_exit_ib"
+        app:layout_constraintBottom_toBottomOf="@id/write_exit_ib"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <EditText
         android:id="@+id/write_write_diary_et"
         android:layout_width="match_parent"
@@ -57,7 +67,7 @@
         android:layout_marginTop="93dp"
         android:gravity="top"
         android:fontFamily="@font/min_sans_regular"
-        android:textColor="@color/line_grey"
+        android:textColor="@color/diary_text"
         android:hint="지금 무슨 생각을 하고 계신가요?"
         android:background="@color/background_grey"
         app:layout_constraintTop_toTopOf="parent"

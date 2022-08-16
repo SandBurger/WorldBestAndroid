@@ -25,7 +25,7 @@
     <color name="search_box">#DEDEE0</color>
     <color name="saturday_blue">#2020FF</color>
     <color name="background_grey">#F7F7F7</color>
-
+    <color name="diary_text">#000000</color>
     <color name="indicator_active">#FB8D45</color>
     <color name="inactive_box_transparent_50">#80F8F8FA</color>
     <color name="switch_inactive">#BC000000</color>
