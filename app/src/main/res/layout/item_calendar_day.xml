@@ -3,15 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="8dp">
+    android:layout_marginHorizontal="8dp">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_calendar_day_indicator_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_orange_dot"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
     <ImageView
         android:id="@+id/item_calendar_day_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_light_blue_dot"/>
+        android:visibility="invisible"
+        android:src="@drawable/ic_strong_blue_dot"/>
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_calendar_day_selector_iv"
         android:layout_width="match_parent"
@@ -19,13 +27,19 @@
         android:visibility="invisible"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_doughnut"/>
+
     <TextView
         android:id="@+id/item_calendar_day_tv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textSize="14sp"
+        android:text="121"
         android:textColor="@color/line_black"
         android:fontFamily="@font/min_sans_regular"
-        android:gravity="center"/>
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,9 +3,6 @@ package com.example.sandiary.ui.calendar
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sandiary.MainActivity
@@ -13,9 +10,8 @@ import com.example.sandiary.R
 import com.example.sandiary.databinding.FragmentCalendarBinding
 import com.example.sandiary.ui.addSchedule.AddScheduleFragment
 import android.util.Log
-import android.widget.ImageView
-import android.widget.NumberPicker
-import android.widget.TextView
+import android.view.*
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
@@ -69,6 +65,7 @@ class CalendarFragment : Fragment() {
         val localDate = LocalDate.now()
         year = localDate.year
         month = localDate.month.value
+
         binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener{ appbar, verticalOffset ->
             var scrollRange = -1
             if(scrollRange == -1){
@@ -111,12 +108,15 @@ class CalendarFragment : Fragment() {
         scheduleRVAdapter = ScheduleRVAdapter(dayScheduleList)
         scheduleRVAdapter.notifyDataSetChanged()
         binding.calendarScheduleRv.adapter = scheduleRVAdapter
+
         class DayViewContainer(view : View) : ViewContainer(view) {
             val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
             val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
             val selector = ItemCalendarDayBinding.bind(view).itemCalendarDaySelectorIv
+            val indicator = ItemCalendarDayBinding.bind(view).itemCalendarDayIndicatorIv
 
             lateinit var day : CalendarDay
+
             init {
                 binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
                     showPicker()
@@ -152,31 +152,18 @@ class CalendarFragment : Fragment() {
                     container.day = day
                     container.textView.text = day.date.dayOfMonth.toString()
                     scheduleList = getMonthSchedule(month)
-                    for(i in scheduleList){
-                        if(i.startDay.toString() == container.textView.text){
-                            container.imageView.visibility = View.VISIBLE
-                            Log.d("cath", "${container.textView.text}")
-                        }
-                    }
-                    binding.calendarCalendarCv.monthScrollListener = { calendarMonth ->
-                        binding.calendarExpandedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
-                        binding.calendarCollapsedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
-                        year = calendarMonth.year
-                        month = calendarMonth.month
-
-                        scheduleList = getMonthSchedule(month)
-                        for(i in scheduleList){
-                            if(i.startDay.toString() == container.textView.text){
-                                container.imageView.visibility = View.VISIBLE
-                                Log.d("cath", "${container.textView.text}")
-                            }
-                        }
-                    }
-
+                    println(scheduleList)
                     if(day.owner == DayOwner.THIS_MONTH){
                         container.textView.setTextColor(ContextCompat
                             .getColor(requireContext(),R.color.line_black))
-
+                        for(i in scheduleList){
+                            if(i.startDay.toString() == container.textView.text){
+                                container.imageView.visibility = View.VISIBLE
+                                container.indicator.visibility = View.VISIBLE
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                                Log.d("cath1", "${container.textView.text}")
+                            }
+                        }
 
                         when{
                             day.date == selectedDay -> {
@@ -209,6 +196,22 @@ class CalendarFragment : Fragment() {
                         container.textView.setTextColor(ContextCompat
                             .getColor(requireContext(),R.color.line_grey))
                     }
+
+                    binding.calendarCalendarCv.monthScrollListener = { calendarMonth ->
+                        binding.calendarExpandedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+                        binding.calendarCollapsedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+                        year = calendarMonth.year
+                        month = calendarMonth.month
+
+                        scheduleList = getMonthSchedule(month)
+                        for(i in scheduleList){
+                            if(i.startDay.toString() == container.textView.text){
+                                //container.imageView.visibility = View.VISIBLE
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                                Log.d("cath", "${container.textView.text}")
+                            }
+                        }
+                    }
                 }
             }
             val daysOfWeek = arrayOf(
@@ -234,8 +237,8 @@ class CalendarFragment : Fragment() {
 
 
         scheduleRVAdapter.itemClickListener(object : ScheduleRVAdapter.ItemClickListener{
-            override fun onClick(schedule: Schedule) {
-                showDialog()
+            override fun onClick(schedule: Schedule, holder : ScheduleRVAdapter.ViewHolder) {
+                showPopup(holder)
             }
         })
 
@@ -263,7 +266,7 @@ class CalendarFragment : Fragment() {
 //        scheduleRVAdapter.notifyDataSetChanged()
         var totalScheduleList =
             when(month) {
-                8 -> arrayListOf<Schedule>(Schedule("dummy",8,14,12,14,1,2,2,3,null, null))
+                8 -> arrayListOf<Schedule>(Schedule("dummy",8,14,12,14,1,2,2,3,null, null), Schedule("dummy2",8,14,12,14,1,2,2,3,null, null))
                 else -> arrayListOf<Schedule>(Schedule("dummy",9,14,12,14,1,2,2,3,null, null))
             }
         return totalScheduleList
@@ -317,22 +320,22 @@ class CalendarFragment : Fragment() {
         return month
     }
 
-    private fun showDialog(){
-        val layoutInflater = LayoutInflater.from(requireContext())
-        val view = layoutInflater.inflate(R.layout.dialog_schedule, null)
-        val alertDialog = AlertDialog.Builder(requireContext())
-            .setView(view)
-            .create()
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    private fun showPopup(holder : ScheduleRVAdapter.ViewHolder){
+        val inflater = LayoutInflater.from(requireContext())
+        val view = inflater.inflate(R.layout.popup_schedule, null)
+        val popup = PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
 
-        view.findViewById<ConstraintLayout>(R.id.dialog_schedule_fix_lo).setOnClickListener {
-            alertDialog.dismiss()
-        }
-        view.findViewById<ConstraintLayout>(R.id.dialog_schedule_remove_lo).setOnClickListener {
-            alertDialog.dismiss()
-        }
+        popup.showAsDropDown(holder.binding.itemScheduleOptionIb, -200,-20)
 
-        alertDialog.show()
+        popup.isOutsideTouchable = true
+        //popup.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        view.findViewById<ConstraintLayout>(R.id.popup_schedule_adjust_lo).setOnClickListener {
+            popup.dismiss()
+        }
+        view.findViewById<ConstraintLayout>(R.id.popup_schedule_remove_lo).setOnClickListener {
+            popup.dismiss()
+        }
     }
 
     override fun onDestroyView() {
