@@ -44,7 +44,7 @@ class CalendarFragment : Fragment() {
     private var selectedDay : LocalDate? = null
     private var year : Int = 0
     private var month : Int = 0
-    var scheduleList = listOf<Schedule>()
+    var scheduleList : List<Schedule>? = null
     var dayScheduleList = arrayListOf<Schedule>()
 //
 //    // This property is only valid between onCreateView and
@@ -65,6 +65,23 @@ class CalendarFragment : Fragment() {
         val localDate = LocalDate.now()
         year = localDate.year
         month = localDate.month.value
+
+        val daysOfWeek = arrayOf(
+            DayOfWeek.SUNDAY,
+            DayOfWeek.MONDAY,
+            DayOfWeek.TUESDAY,
+            DayOfWeek.WEDNESDAY,
+            DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY,
+            DayOfWeek.SATURDAY
+        )
+
+        val currentMonth = YearMonth.now()
+        val firstMonth = currentMonth.minusMonths(10)
+        val lastMonth = currentMonth.plusMonths(10)
+        binding.calendarCalendarCv.setupAsync(firstMonth, lastMonth, daysOfWeek.first()) {
+            binding.calendarCalendarCv.scrollToMonth(currentMonth)
+        }
 
         binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener{ appbar, verticalOffset ->
             var scrollRange = -1
@@ -104,10 +121,17 @@ class CalendarFragment : Fragment() {
             day2.text = it
         })
         binding.calendarScheduleRv.layoutManager =  LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val empty = arrayListOf<Schedule>()
+
         scheduleRVAdapter = ScheduleRVAdapter(dayScheduleList)
         scheduleRVAdapter.notifyDataSetChanged()
         binding.calendarScheduleRv.adapter = scheduleRVAdapter
+
+        binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
+            showPicker()
+        }
+        binding.calendarExpandedMonthSelectorIb.setOnClickListener {
+            showPicker()
+        }
 
         class DayViewContainer(view : View) : ViewContainer(view) {
             val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
@@ -118,19 +142,14 @@ class CalendarFragment : Fragment() {
             lateinit var day : CalendarDay
 
             init {
-                binding.calendarCollapsedMonthSelectorIb.setOnClickListener {
-                    showPicker()
-                }
-                binding.calendarExpandedMonthSelectorIb.setOnClickListener {
-                    showPicker()
-                }
-
                 view.setOnClickListener{
                     if (day.owner == DayOwner.THIS_MONTH){
                         val currentSelection = selectedDay
                         if(currentSelection == day.date){
                             selectedDay = null
                             binding.calendarCalendarCv.notifyDateChanged(currentSelection)
+                            dayScheduleList.clear()
+                            scheduleRVAdapter.notifyDataSetChanged()
                         } else {
                             selectedDay = day.date
                             //binding.calendarDateTv.text = day.date.toString()
@@ -144,93 +163,80 @@ class CalendarFragment : Fragment() {
 
             }
         }
-
-        CoroutineScope(Dispatchers.Main).launch{
+        CoroutineScope(Dispatchers.Main).launch {
             binding.calendarCalendarCv.dayBinder = object : DayBinder<DayViewContainer> {
-                override fun create(view: View) =  DayViewContainer(view)
+                override fun create(view: View) = DayViewContainer(view)
                 override fun bind(container: DayViewContainer, day: CalendarDay) {
                     container.day = day
-                    container.textView.text = day.date.dayOfMonth.toString()
-                    scheduleList = getMonthSchedule(month)
-                    println(scheduleList)
-                    if(day.owner == DayOwner.THIS_MONTH){
-                        container.textView.setTextColor(ContextCompat
-                            .getColor(requireContext(),R.color.line_black))
-                        for(i in scheduleList){
-                            if(i.startDay.toString() == container.textView.text){
-                                container.imageView.visibility = View.VISIBLE
-                                container.indicator.visibility = View.VISIBLE
-                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                                Log.d("cath1", "${container.textView.text}")
+                    val textView = container.textView
+                    textView.text = day.date.dayOfMonth.toString()
+                    scheduleList = getMonthSchedule(day.date.monthValue)
+
+                    if (day.owner == DayOwner.THIS_MONTH) {
+                        container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+
+                        if(scheduleList!=null){
+                            for(i in scheduleList!!){
+                                if(i.startMonth == day.date.monthValue && i.startDay == day.date.dayOfMonth){
+                                    container.imageView.visibility = View.VISIBLE
+                                    container.indicator.visibility = View.VISIBLE
+                                    container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.background_white))
+                                }
+                            }
+                        } else {
+                            if(container.imageView.visibility == View.VISIBLE){
+                                container.imageView.visibility = View.INVISIBLE
+                                container.indicator.visibility = View.INVISIBLE
                             }
                         }
-
-                        when{
+                        when {
                             day.date == selectedDay -> {
-                                if(container.imageView.visibility == View.VISIBLE){
+                                if (container.imageView.visibility == View.VISIBLE) {
                                     container.imageView.visibility = View.INVISIBLE
                                 }
                                 container.selector.visibility = View.VISIBLE
 
                                 dayScheduleList.clear()
-                                for(schedule in scheduleList){
-                                    if(schedule.startDay.toString() == container.textView.text){
-                                        dayScheduleList.add(schedule)
+                                if (scheduleList != null) {
+                                    for (schedule in scheduleList!!) {
+                                        if (schedule.startDay.toString() == container.textView.text) {
+                                            dayScheduleList.add(schedule)
+                                        }
                                     }
                                 }
                                 scheduleRVAdapter.notifyDataSetChanged()
-                                Log.d("scheduleList", "${dayScheduleList}")
-
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.indicator_active))
-                                Log.d("date","${day.date}")
-                                Log.d("date","${day.date.dayOfMonth}")
-                                Log.d("date","${day.date.month}")
+                                Log.d("date", "${day.date}")
+                                Log.d("date", "${day.date.dayOfMonth}")
+                                Log.d("date", "${day.date.month}")
                             }
                             else -> {
                                 container.selector.visibility = View.INVISIBLE
-
                                 //container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
                             }
                         }
                     } else {
-                        container.textView.setTextColor(ContextCompat
-                            .getColor(requireContext(),R.color.line_grey))
-                    }
-
-                    binding.calendarCalendarCv.monthScrollListener = { calendarMonth ->
-                        binding.calendarExpandedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
-                        binding.calendarCollapsedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
-                        year = calendarMonth.year
-                        month = calendarMonth.month
-
-                        scheduleList = getMonthSchedule(month)
-                        for(i in scheduleList){
-                            if(i.startDay.toString() == container.textView.text){
-                                //container.imageView.visibility = View.VISIBLE
-                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                                Log.d("cath", "${container.textView.text}")
-                            }
-                        }
+                        container.textView.setTextColor(
+                            ContextCompat
+                                .getColor(requireContext(), R.color.line_grey)
+                        )
                     }
                 }
             }
-            val daysOfWeek = arrayOf(
-                DayOfWeek.SUNDAY,
-                DayOfWeek.MONDAY,
-                DayOfWeek.TUESDAY,
-                DayOfWeek.WEDNESDAY,
-                DayOfWeek.THURSDAY,
-                DayOfWeek.FRIDAY,
-                DayOfWeek.SATURDAY
-            )
-
-            val currentMonth = YearMonth.now()
-            Log.d("now","${currentMonth}")
-            val firstMonth = currentMonth.minusMonths(100)
-            val lastMonth = currentMonth.plusMonths(200)
-            binding.calendarCalendarCv.setup(firstMonth, lastMonth, daysOfWeek.first())
-            binding.calendarCalendarCv.scrollToMonth(currentMonth)
         }
+
+        binding.calendarCalendarCv.monthScrollListener = { calendarMonth ->
+            binding.calendarExpandedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+            binding.calendarCollapsedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+            year = calendarMonth.year
+            month = calendarMonth.month
+            selectedDay = null
+            dayScheduleList.clear()
+            scheduleRVAdapter.notifyDataSetChanged()
+        }
+
+
+
         var dummyScheduleList = ArrayList<Schedule>()
 
         dummyScheduleList.sortBy { it.startHour }
@@ -252,7 +258,7 @@ class CalendarFragment : Fragment() {
 
         return binding.root
     }
-    private fun getMonthSchedule(month : Int): ArrayList<Schedule> {
+    private fun getMonthSchedule(month : Int): List<Schedule>? {
         //var totalScheduleList = arrayListOf<Schedule>()
 //        CoroutineScope(Dispatchers.IO).launch {
 //            totalScheduleList =
@@ -266,8 +272,9 @@ class CalendarFragment : Fragment() {
 //        scheduleRVAdapter.notifyDataSetChanged()
         var totalScheduleList =
             when(month) {
-                8 -> arrayListOf<Schedule>(Schedule("dummy",8,14,12,14,1,2,2,3,null, null), Schedule("dummy2",8,14,12,14,1,2,2,3,null, null))
-                else -> arrayListOf<Schedule>(Schedule("dummy",9,14,12,14,1,2,2,3,null, null))
+                8 -> listOf<Schedule>(Schedule("dummy",2022,8,14,2022,12,14,1,2,2,3,null,null), Schedule("dummy2",2022, 8,14,2022,12,14,1,2,2,3,null, null))
+                9 -> listOf<Schedule>(Schedule("dummy",2022, 9,15,2022,12,14,1,2,2,3,null,null))
+                else -> null
             }
         return totalScheduleList
     }

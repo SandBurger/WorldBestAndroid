@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "ScheduleTable")
 data class Schedule(
     var scheduleName : String,
+    var startYear : Int,
     var startMonth : Int,
     var startDay : Int,
+    var endYear : Int,
     var endMonth: Int,
     var endDay: Int,
     var startHour : Int,

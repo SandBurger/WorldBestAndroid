@@ -3,6 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="welcome">환영합니다!\n당신의 하루를 들려주세요.</string>
     <string name="my_writing">내가 쓴 글</string>
     <string name="add_schedule">일정 추가</string>
     <string name="sunday">일</string>

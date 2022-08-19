@@ -16,7 +16,7 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
         hideStatusBar()
-        binding.btn.setOnClickListener{
+        binding.signUpSignUpCv.setOnClickListener{
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
