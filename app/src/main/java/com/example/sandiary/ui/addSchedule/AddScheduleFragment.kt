@@ -36,6 +36,8 @@ class AddScheduleFragment : Fragment() {
     private var _binding: FragmentAddScheduleBinding? = null
     private var scheduleDB : ScheduleDatabase? = null
 
+    var startYear : Int = 0
+    var endYear : Int = 0
     var startMonth : Int = 0
     var startDay : Int = 0
     var endMonth : Int = 0
@@ -164,6 +166,7 @@ class AddScheduleFragment : Fragment() {
                             selectedStartDay -> {
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                                 container.imageView.visibility = View.VISIBLE
+                                startYear = day.date.year
                                 startMonth = getMonth(day.date.month).toInt()
                                 startDay = day.date.dayOfMonth
                                 Log.d("selectedS", "${selectedStartDay}")
@@ -198,6 +201,7 @@ class AddScheduleFragment : Fragment() {
                             selectedEndDay -> {
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                                 container.imageView.visibility = View.VISIBLE
+                                endYear = day.date.year
                                 endMonth = getMonth(day.date.month).toInt()
                                 endDay = day.date.dayOfMonth
                             }
@@ -220,7 +224,7 @@ class AddScheduleFragment : Fragment() {
         }
 
         binding.addScheduleSaveTv.setOnClickListener {
-           val schedule = Schedule(binding.addScheduleWriteScheduleEt.text.toString(),startMonth, startDay, endMonth ,endDay, 1, 3,2,4, null, null)
+           val schedule = Schedule(binding.addScheduleWriteScheduleEt.text.toString(), startYear, startMonth, startDay, endYear, endMonth ,endDay, 1, 3,2,4, null, null)
             CoroutineScope(Dispatchers.IO).launch {
                 scheduleDB!!.scheduleDao().insertSchedule(schedule)
                 Log.d("insertData","${startHour}, ${startMinute}")
