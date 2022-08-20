@@ -47,7 +47,8 @@ class HomeFragment : Fragment() {
         }
 
         checkWriting()
-        val intent = Intent(activity, WriteActivity::class.java)
+
+        val intent = Intent(activity, ReadDiaryActivity::class.java)
 
         binding.homeWritingBox1Iv.setOnClickListener {
             intent.putExtra("diary", diaryList[0].diary)

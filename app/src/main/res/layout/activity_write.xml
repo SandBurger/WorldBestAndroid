@@ -32,6 +32,7 @@
         android:textColor="@color/font_black"
         android:fontFamily="@font/min_sans_regular"
         android:text="5월 15일"
+        android:visibility="invisible"
         android:layout_marginTop="33dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

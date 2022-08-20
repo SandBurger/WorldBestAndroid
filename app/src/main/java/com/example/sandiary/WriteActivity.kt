@@ -25,9 +25,9 @@ class WriteActivity : AppCompatActivity() {
 
         val diary = intent.getStringExtra("diary")
         if(diary == null){
-
+            binding.writeWriteDiaryEt.setText("글쓰기")
         } else {
-            binding.writeWriteDiaryEt.setText(diary)
+            binding.writeWriteDiaryEt.setText("글쓰기")
             binding.writeSaveTv.visibility = View.GONE
             binding.writeRemoveIb.visibility = View.VISIBLE
         }

@@ -3,6 +3,7 @@ package com.example.sandiary
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sandiary.Util.hideStatusBar
 import com.example.sandiary.databinding.ActivityReadDiaryBinding
@@ -16,9 +17,15 @@ class ReadDiaryActivity : AppCompatActivity() {
         binding = ActivityReadDiaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
         hideStatusBar()
+        val diary = intent.getStringExtra("diary")
+        if(diary == null){
+            binding.readDateTv.visibility = View.GONE
+        } else {
+            binding.diaryDiaryEt.setText(diary)
+        }
 
         binding.readExitIb.setOnClickListener {
-            startActivity(Intent(applicationContext, SeeAllActivity::class.java))
+            finish()
         }
     }
 }
