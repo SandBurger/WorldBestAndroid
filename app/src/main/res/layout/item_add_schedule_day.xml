@@ -4,18 +4,15 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="8dp">
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/item_calendar_day_indicator_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_orange_dot"
+    <ImageView
+        android:id="@+id/item_add_schedule_day_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+        android:src="@drawable/ic_strong_blue_dot"/>
     <TextView
-        android:id="@+id/item_calendar_day_tv"
+        android:id="@+id/item_add_schedule_day_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"

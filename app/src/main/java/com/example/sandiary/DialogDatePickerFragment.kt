@@ -2,22 +2,24 @@ package com.example.sandiary
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
-import android.graphics.Point
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.DialogFragment
-import com.example.sandiary.databinding.ItemCalendarDayBinding
-import com.example.sandiary.databinding.TestBinding
+import androidx.fragment.app.activityViewModels
+import com.example.sandiary.databinding.DialogDatePickerBinding
+import com.example.sandiary.databinding.ItemAddScheduleDayBinding
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -27,12 +29,13 @@ import com.kizitonwose.calendarview.ui.ViewContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
+import java.lang.ClassCastException
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.Year
 import java.time.YearMonth
 
-class TestDialog : DialogFragment() {
+class DialogDatePickerFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //false로 설정해 주면 화면밖 혹은 뒤로가기 버튼시 다이얼로그라 dismiss 되지 않는다.
@@ -40,17 +43,26 @@ class TestDialog : DialogFragment() {
     }
 
     private var selectedDay : LocalDate? = null
-    private lateinit var pickerBinding : TestBinding
-    private lateinit var size : Point
+    private lateinit var binding : DialogDatePickerBinding
+    private lateinit var month : YearMonth
+    private val viewModel : SeeAllViewModel by activityViewModels()
+    internal lateinit var listener : DialogClickListener
+
+    interface DialogClickListener {
+        fun onDialogPositive(dialog: DialogFragment)
+        fun onDialogNegative(dialog: DialogFragment)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        pickerBinding = TestBinding.inflate(inflater, container, false)
+        binding = DialogDatePickerBinding.inflate(inflater, container, false)
+
         class DayViewContainer(view : View) : ViewContainer(view) {
-            val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
-            val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
+            val textView = ItemAddScheduleDayBinding.bind(view).itemAddScheduleDayTv
+            val imageView = ItemAddScheduleDayBinding.bind(view).itemAddScheduleDayIv
             lateinit var day : CalendarDay
             init {
                 view.setOnClickListener{
@@ -58,30 +70,21 @@ class TestDialog : DialogFragment() {
                         val currentSelection = selectedDay
                         if(currentSelection == day.date){
                             selectedDay = null
-                            pickerBinding.dialogSeeAllV.notifyDateChanged(currentSelection)
+                            binding.dialogDatePickerCalendarCv.notifyDateChanged(currentSelection)
                         } else {
                             selectedDay = day.date
-                            pickerBinding.dialogSeeAllV.notifyDateChanged(day.date)
+                            binding.dialogDatePickerCalendarCv.notifyDateChanged(day.date)
                             if (currentSelection != null){
-                                pickerBinding.dialogSeeAllV.notifyDateChanged(currentSelection)
+                                binding.dialogDatePickerCalendarCv.notifyDateChanged(currentSelection)
                             }
                         }
                     }
                 }
             }
         }
-        class MonthViewContainer(view: View) : ViewContainer(view) {
-            val textView = view.findViewById<TextView>(R.id.calendar_header_month_tv)
-        }
-        pickerBinding.dialogSeeAllV.monthHeaderBinder = object :
-            MonthHeaderFooterBinder<MonthViewContainer> {
-            override fun create(view: View) = MonthViewContainer(view)
-            override fun bind(container: MonthViewContainer, month: CalendarMonth) {
-                container.textView.text = "${month.yearMonth.month.name.toLowerCase().capitalize()} ${month.year}"
-            }
-        }
+
         CoroutineScope(Dispatchers.Main).launch {
-            pickerBinding.dialogSeeAllV.dayBinder = object :
+            binding.dialogDatePickerCalendarCv.dayBinder = object :
                 DayBinder<DayViewContainer> {
                 override fun create(view: View) =  DayViewContainer(view)
                 override fun bind(container: DayViewContainer, day: CalendarDay) {
@@ -91,6 +94,7 @@ class TestDialog : DialogFragment() {
                         when{
                             day.date == selectedDay -> {
                                 container.imageView.visibility = View.VISIBLE
+                                container.textView.setTextColor(getColor(requireContext(), R.color.white))
                                 Log.d("date","${day.date}")
                                 Log.d("date","${day.date.dayOfMonth}")
                                 Log.d("date","${day.date.month}")
@@ -120,43 +124,77 @@ class TestDialog : DialogFragment() {
             )
 
             val currentMonth = YearMonth.now()
+            month = currentMonth
             val firstMonth = currentMonth.minusMonths(10)
             val lastMonth = currentMonth.plusMonths(10)
-            pickerBinding.dialogSeeAllV.setup(firstMonth, lastMonth, daysOfWeek.first())
-            pickerBinding.dialogSeeAllV.scrollToMonth(currentMonth)
+            binding.dialogDatePickerCalendarCv.setup(firstMonth, lastMonth, daysOfWeek.first())
+            binding.dialogDatePickerCalendarCv.scrollToMonth(currentMonth)
+
+            binding.dialogDatePickerPreviousIb.setOnClickListener {
+                binding.dialogDatePickerCalendarCv.scrollToMonth(month.minusMonths(1))
+            }
+            binding.dialogDatePickerNextIb.setOnClickListener {
+                binding.dialogDatePickerCalendarCv.scrollToMonth(month.plusMonths(1))
+            }
         }
-        val datePickerView = layoutInflater.inflate(R.layout.test, null)
+
+
+        binding.dialogDatePickerCalendarCv.monthScrollListener = { calendarMonth ->
+            binding.dialogDatePickerDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
+            month = calendarMonth.yearMonth
+            selectedDay = null
+        }
+        val datePickerView = layoutInflater.inflate(R.layout.dialog_date_picker, null)
         val datePickerDialog = AlertDialog.Builder(requireContext()).setView(datePickerView).create()
-        pickerBinding.dialogDatePickerTv.setOnClickListener {
-            datePickerDialog.dismiss()
-        }
-        pickerBinding.dialogDatePickerCancelTv.setOnClickListener {
-            datePickerDialog.hide()
-        }
 
         datePickerDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        return pickerBinding.root
+        return binding.root
     }
 
     override fun onStart() {
         super.onStart()
-
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     override fun onResume() {
         super.onResume()
-//        CoroutineScope(Dispatchers.Main).launch {
-//            dialog?.window?.setLayout(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.WRAP_CONTENT
-//            )
-//        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.dialogDatePickerConfirmTv.setOnClickListener {
+            viewModel.selectDate(selectedDay)
+            listener.onDialogPositive(this)
+            dialog?.dismiss()
+        }
+        binding.dialogDatePickerCancelTv.setOnClickListener {
+            listener.onDialogNegative(this)
+            dialog?.dismiss()
+        }
 
 
     }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val percent = 95.toFloat() / 100
+        val dm = Resources.getSystem().displayMetrics
+        val rect = dm.run { Rect(0, 0, widthPixels, heightPixels) }
+        val percentWidth = rect.width() * percent
+        dialog?.window?.setLayout(percentWidth.toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        try {
+            listener = context as DialogClickListener
+        } catch (e : ClassCastException){
+            throw ClassCastException()
+        }
+    }
+
+
 }

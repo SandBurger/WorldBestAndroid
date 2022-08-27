@@ -1,33 +1,40 @@
 package com.example.sandiary
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sandiary.Util.hideStatusBar
-import com.example.sandiary.Util.setWindowFlag
 import com.example.sandiary.databinding.ActivitySeeAllBinding
-import com.example.sandiary.databinding.TestBinding
+import com.example.sandiary.databinding.DialogDatePickerBinding
+
 import com.example.sandiary.ui.SeeAllRVAdapter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
 
-class SeeAllActivity : AppCompatActivity() {
+class SeeAllActivity : AppCompatActivity(), DialogDatePickerFragment.DialogClickListener {
     private lateinit var binding: ActivitySeeAllBinding
     private var selectedDay : LocalDate? = null
-    private lateinit var pickerBinding : TestBinding
+    private lateinit var datePickerBinding : DialogDatePickerBinding
+    private val viewModel : SeeAllViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.selectedDate.observe(this, Observer { selectedDate ->
+            val date = selectedDate?.format(DateTimeFormatter.ofPattern("YYYY.MM.dd"))
+            binding.seeAllDateTv.text = date
+        })
         var dummyDiaryList = ArrayList<Diary>()
         dummyDiaryList.add(Diary(0, "CODE' -> CODE \n" +
                 "RETURN -> return RHS semi\n" +
@@ -36,7 +43,7 @@ class SeeAllActivity : AppCompatActivity() {
                 "ODECL -> FDECL ODECL\n" +
                 "ODECL -> ''"))
         dummyDiaryList.add(Diary(1, "test1"))
-        pickerBinding = TestBinding.inflate(layoutInflater)
+        datePickerBinding = DialogDatePickerBinding.inflate(layoutInflater)
         binding = ActivitySeeAllBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.seeAllRv.layoutManager =  LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -46,8 +53,10 @@ class SeeAllActivity : AppCompatActivity() {
                 showDialog()
             }
 
-            override fun onClick(position: Int) {
-                startActivity(Intent(applicationContext, ReadDiaryActivity::class.java))
+            override fun onClick(position: Int, diary : String?) {
+                val intent = Intent(applicationContext, DiaryActivity::class.java)
+                intent.putExtra("diary", diary)
+                startActivity(intent)
             }
         })
         binding.seeAllRv.adapter = diaryRVAdapter
@@ -57,12 +66,16 @@ class SeeAllActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }
-        val view2 = layoutInflater.inflate(R.layout.dialog_month_picker, null)
-        val dialog2 = AlertDialog.Builder(this).setView(view2).create()
+        val fragmentManager = supportFragmentManager
+
         binding.seeAllCalendarDialogIb.setOnClickListener {
-            dialog2.show()
-            //TestDialog().show(supportFragmentManager, "Test")
+            DialogDatePickerFragment().show(fragmentManager, "show")
+            DialogDatePickerFragment().dialog?.setOnDismissListener(DialogInterface.OnDismissListener {
+                println("end")
+            })
+
         }
+
         initView()
         hideStatusBar()
     }
@@ -90,5 +103,13 @@ class SeeAllActivity : AppCompatActivity() {
         }
 
         alertDialog.show()
+    }
+
+    override fun onDialogNegative(dialog: DialogFragment) {
+        println("negative")
+    }
+
+    override fun onDialogPositive(dialog: DialogFragment) {
+        println("positive")
     }
 }

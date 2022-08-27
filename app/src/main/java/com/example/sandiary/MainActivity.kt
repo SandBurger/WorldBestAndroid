@@ -14,8 +14,9 @@ import com.example.sandiary.databinding.ActivityMainBinding
 import com.example.sandiary.ui.calendar.CalendarFragment
 import com.example.sandiary.ui.home.HomeFragment
 import com.example.sandiary.ui.settings.SettingsFragment
+import com.google.android.material.navigation.NavigationBarView
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var runnable : Runnable? = null
@@ -24,29 +25,29 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         hideStatusBar()
-        binding.navView.setOnNavigationItemSelectedListener(this)
-
+        initNavigation()
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.navigation_calendar -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, CalendarFragment()).commit()
-                return true
+    private fun initNavigation(){
+        binding.navView.run {
+            setOnItemSelectedListener { item ->
+                when(item.itemId){
+                    R.id.navigation_calendar -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, CalendarFragment()).commit()
+                    }
+                    R.id.navigation_home -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, HomeFragment()).commit()
+                    }
+                    R.id.navigation_settings -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, SettingsFragment()).commit()
+                    }
+                }
+                true
             }
-            R.id.navigation_home -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, HomeFragment()).commit()
-                return true
-
-            }
-            R.id.navigation_settings -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, SettingsFragment()).commit()
-                return true
-            }
+            selectedItemId = R.id.navigation_home
         }
-        return false
     }
 }

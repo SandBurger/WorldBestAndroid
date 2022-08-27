@@ -2,6 +2,8 @@ package com.example.sandiary.ui.addSchedule
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +21,7 @@ import com.example.sandiary.MainActivity
 import com.example.sandiary.R
 import com.example.sandiary.Schedule
 import com.example.sandiary.databinding.FragmentAddScheduleBinding
+import com.example.sandiary.databinding.ItemAddScheduleDayBinding
 import com.example.sandiary.databinding.ItemCalendarDayBinding
 import com.example.sandiary.function.ScheduleDatabase
 import com.example.sandiary.ui.calendar.CalendarFragment
@@ -104,50 +108,53 @@ class AddScheduleFragment : Fragment() {
         })
 
         class DayViewContainer(view : View) : ViewContainer(view) {
-            val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
-            val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
+            val textView = ItemAddScheduleDayBinding.bind(view).itemAddScheduleDayTv
+            val imageView = ItemAddScheduleDayBinding.bind(view).itemAddScheduleDayIv
             lateinit var day : CalendarDay
             init {
                 //클릭 시
                 view.setOnClickListener{
                     if (day.owner == DayOwner.THIS_MONTH){
+                        var currentSelection = selectedStartDay
                         if(binding.addScheduleStartCalendarCv.visibility == View.VISIBLE){
-                            val currentSelection = selectedStartDay
                             //이미 클릭된 날짜일 때
                             if(currentSelection == day.date){
-                                selectedStartDay = null
-                                binding.addScheduleStartCalendarCv.notifyDateChanged(currentSelection)
                             } else {
                                 selectedStartDay = day.date
-                                if(selectedStartDay!! > selectedEndDay){
-                                    selectedEndDay = selectedStartDay
-                                    binding.addScheduleEndDayTv.text = getDate(day.date)
-                                    checkTime(binding.addScheduleStartTimeTv)
-                                }
                                 binding.addScheduleStartDayTv.text = getDate(day.date)
                                 binding.addScheduleStartCalendarCv.notifyDateChanged(day.date)
                                 if (currentSelection != null){
                                     binding.addScheduleStartCalendarCv.notifyDateChanged(currentSelection)
                                 }
+                                if(selectedStartDay!! > selectedEndDay){
+                                    val beforeSelectedDate = selectedEndDay
+                                    selectedEndDay = selectedStartDay
+                                    binding.addScheduleEndCalendarCv.notifyDateChanged(day.date)
+                                    binding.addScheduleEndCalendarCv.notifyDateChanged(beforeSelectedDate!!)
+                                    binding.addScheduleEndDayTv.text = getDate(day.date)
+                                    checkTime(binding.addScheduleStartTimeTv)
+                                }
                             }
                         }
                         else{
-                            val currentSelection = selectedEndDay
+                            currentSelection = selectedEndDay
                             if(currentSelection == day.date){
                                 selectedEndDay = null
                                 binding.addScheduleEndCalendarCv.notifyDateChanged(currentSelection)
                             } else {
                                 selectedEndDay = day.date
-                                if(selectedStartDay!! > selectedEndDay){
-                                    selectedStartDay = selectedEndDay
-                                    binding.addScheduleStartDayTv.text = getDate(day.date)
-                                    Log.d("time","${startHour}:${startMinute}, ${endHour}:${endMinute}")
-                                    checkTime(binding.addScheduleStartTimeTv)
-                                }
                                 binding.addScheduleEndDayTv.text = getDate(day.date)
                                 binding.addScheduleEndCalendarCv.notifyDateChanged(day.date)
                                 if (currentSelection != null){
                                     binding.addScheduleEndCalendarCv.notifyDateChanged(currentSelection)
+                                }
+                                if(selectedStartDay!! > selectedEndDay){
+                                    val beforeSelectedDate = selectedStartDay
+                                    selectedStartDay = selectedEndDay
+                                    binding.addScheduleStartCalendarCv.notifyDateChanged(day.date)
+                                    binding.addScheduleStartCalendarCv.notifyDateChanged(beforeSelectedDate!!)
+                                    binding.addScheduleStartDayTv.text = getDate(day.date)
+                                    checkTime(binding.addScheduleStartTimeTv)
                                 }
                             }
                         }
@@ -232,6 +239,35 @@ class AddScheduleFragment : Fragment() {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.container, CalendarFragment()).commit()
         }
+        binding.addScheduleWriteScheduleEt.setText("dasd")
+        binding.addScheduleWriteScheduleEt.addTextChangedListener(object : TextWatcher{
+            var text = binding.addScheduleWriteScheduleEt.text.toString()
+            override fun afterTextChanged(p0: Editable?) {
+                //처음이랑 일치할 때, 처음과 다를 때,
+                if(text == ""){
+                    when(binding.addScheduleWriteScheduleEt.text.toString()){
+                        text -> binding.addScheduleSaveTv.setText("no")
+                        else -> binding.addScheduleSaveTv.setText("저장")
+                    }
+                } else {
+                    when(binding.addScheduleWriteScheduleEt.text.toString()){
+                        text -> binding.addScheduleSaveTv.setText("no")
+                        "" -> binding.addScheduleSaveTv.setText("no")
+                        else -> binding.addScheduleSaveTv.setText("저장")
+                    }
+                }
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
+
 
         binding.addScheduleStartTimeTv.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
@@ -253,7 +289,7 @@ class AddScheduleFragment : Fragment() {
                 clickedCalendarView(binding.addScheduleEndCalendarCv, binding.addScheduleEndDayTv)
             }
         }
-        binding.addScheduleAlarmTv.setOnClickListener {
+        binding.addScheduleAlarmLo.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
                 clickedNumberPicker(binding.addScheduleAlarmNp, binding.addScheduleAlarmTv)
             }
@@ -568,30 +604,29 @@ class AddScheduleFragment : Fragment() {
         when(timeText){
             binding.addScheduleStartTimeTv -> {
                 if (startHour > endHour) {
-                    startHour = endHour
-                    if (startMinute > endMinute) {
-                        startMinute = endMinute
-                    }
+                    endHour = startHour
+                    endMinute = startMinute
                 } else if (startHour == endHour) {
                     if (startMinute > endMinute) {
-                        startMinute = endMinute
+                        endMinute = startMinute
                     }
                 }
+                binding.addScheduleEndTimeTv.text = "${timeZoneArray[binding.addScheduleEndTimeZonePickerNp.value]} ${hourToString(endHour)}:${minuteToString(endMinute)}"
                 timeText.text = "${timeZoneArray[binding.addScheduleStartTimeZonePickerNp.value]} ${hourToString(startHour)}:${minuteToString(startMinute)}"
             }
             else -> {
+                println("check")
+                println("${startHour}, ${endHour}")
                 if (startHour > endHour) {
-                    endHour = startHour
-                    if (startMinute > endMinute) {
-                        endMinute = startMinute
-                        binding.addScheduleEndMinutePickerNp.value = binding.addScheduleStartMinutePickerNp.value
-                    }
+                    startHour = endHour
+                    startMinute = endMinute
                 } else if (startHour == endHour) {
                     if (startMinute > endMinute) {
-                        endMinute = startMinute
+                        startMinute = endMinute
                     }
                 }
-                timeText.text = "${timeZoneArray[binding.addScheduleStartTimeZonePickerNp.value]} ${hourToString(endHour)}:${minuteToString(endMinute)}"
+                binding.addScheduleStartTimeTv.text = "${timeZoneArray[binding.addScheduleStartTimeZonePickerNp.value]} ${hourToString(startHour)}:${minuteToString(startMinute)}"
+                timeText.text = "${timeZoneArray[binding.addScheduleEndTimeZonePickerNp.value]} ${hourToString(endHour)}:${minuteToString(endMinute)}"
             }
         }
     }

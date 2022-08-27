@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_exit"
         android:background="@android:color/transparent"
-        app:tint="@color/line_grey"
+        app:tint="@color/inactive"
         android:scaleType="center"
         android:layout_marginStart="17dp"
         app:layout_constraintTop_toTopOf="@id/add_schedule_date_tv"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:text="일정추가"
-        android:fontFamily="@font/spoqa_han_sans_neo_medium"
+        android:fontFamily="@font/min_sans_medium"
         android:textColor="@color/font_black"
         android:layout_marginTop="40dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="하루종일"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_regular"
         android:textColor="@color/font_black"
         android:layout_marginStart="16sp"
         android:textSize="16sp"
@@ -117,7 +117,7 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:text="시작일"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_regular"
         android:textColor="@color/font_black"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_all_day_tv"
@@ -129,7 +129,7 @@
         android:layout_marginStart="44dp"
         android:gravity="center"
         android:text="2022.05.03(화)"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_regular"
         android:textSize="14dp"
         android:textColor="@color/font_black"
         app:layout_constraintTop_toTopOf="@id/add_schedule_start_tv"
@@ -138,7 +138,7 @@
         android:id="@+id/add_schedule_start_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_regular"
         android:textSize="14sp"
         android:textColor="@color/line_grey"
         android:text="오전 06:00"
@@ -195,6 +195,7 @@
             android:layout_height="30dp"
             android:name="com.example.sandiary.ui.calendar.FragmentCalendarDate"
             android:visibility="gone"
+            android:layout_marginHorizontal="20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -207,7 +208,8 @@
             app:cv_outDateStyle="endOfRow"
             app:cv_scrollMode="paged"
             app:cv_hasBoundaries="true"
-            app:cv_dayViewResource="@layout/item_calendar_day"
+            app:cv_dayViewResource="@layout/item_add_schedule_day"
+            android:layout_marginHorizontal="20dp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/add_schedule_start_calendar_date_container"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -220,7 +222,7 @@
         android:textSize="16sp"
         android:text="종료일"
         android:textColor="@color/font_black"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_regular"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_start_lo"
         app:layout_constraintStart_toStartOf="@id/add_schedule_start_tv"/>
@@ -232,7 +234,7 @@
         android:gravity="center"
         android:text="2022.05.03(화)"
         android:textSize="14dp"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_regular"
         android:textColor="@color/font_black"
         app:layout_constraintTop_toTopOf="@id/add_schedule_end_tv"
         app:layout_constraintStart_toEndOf="@id/add_schedule_end_tv"/>
@@ -240,7 +242,7 @@
         android:id="@+id/add_schedule_end_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_regular"
         android:textSize="14sp"
         android:textColor="@color/line_grey"
         android:text="오전 06:00"
@@ -273,7 +275,7 @@
             app:cv_outDateStyle="endOfRow"
             app:cv_scrollMode="paged"
             app:cv_hasBoundaries="true"
-            app:cv_dayViewResource="@layout/item_calendar_day"
+            app:cv_dayViewResource="@layout/item_add_schedule_day"
             android:layout_marginHorizontal="20dp"
             android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/add_schedule_end_calendar_date_container"
@@ -326,32 +328,44 @@
         android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@id/add_schedule_end_lo"
         app:layout_constraintStart_toStartOf="parent"/>
-    <ImageView
-        android:id="@+id/add_schedule_alarm_iv"
-        android:layout_width="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_schedule_alarm_lo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_alarm"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="@id/add_schedule_clock_iv"
-        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_tv"
-        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_tv"/>
+        android:paddingBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_divider2_iv">
+        <ImageView
+            android:id="@+id/add_schedule_alarm_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_alarm"
+            android:scaleType="fitCenter"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
     <TextView
         android:id="@+id/add_schedule_alarm_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:fontFamily="@font/min_sans_regular"
         android:text="알림"
         android:textSize="16sp"
         android:textColor="@color/font_black"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_divider2_iv"
-        app:layout_constraintStart_toStartOf="@id/add_schedule_all_day_tv"/>
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_iv"
+        app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_iv"
+        app:layout_constraintStart_toEndOf="@id/add_schedule_alarm_iv"/>
     <TextView
         android:id="@+id/add_schedule_alarm_minute_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:text="0"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_medium"
         android:textColor="@color/active"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/add_schedule_alarm_before_minute_tv"
@@ -364,7 +378,7 @@
         android:layout_marginEnd="16dp"
         android:textSize="14sp"
         android:text="분 전"
-        android:fontFamily="@font/spoqa_han_sans_neo_regular"
+        android:fontFamily="@font/min_sans_medium"
         android:visibility="gone"
         android:textColor="@color/active"
         app:layout_constraintEnd_toEndOf="parent"
@@ -376,8 +390,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="70dp"
         android:visibility="gone"
-        android:theme="@style/AppTheme.Picker"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_tv"
+        android:theme="@style/AppTheme.Picker_16sp"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_iv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
     <androidx.appcompat.widget.AppCompatImageView
@@ -394,7 +408,8 @@
         android:id="@+id/add_schedule_alarm_number_picker_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="16sp"
+        android:fontFamily="@font/min_sans_medium"
         android:textColor="@color/line_black"
         android:text="분 전"
         android:visibility="gone"
@@ -403,41 +418,13 @@
         app:layout_constraintBottom_toBottomOf="@id/add_schedule_alarm_np"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-    <ImageView
-        android:id="@+id/add_schedule_divider3_iv"
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/gray_line"
-        android:layout_marginTop="15dp"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_np"
-        app:layout_constraintStart_toStartOf="parent"/>
-    <ImageView
-        android:id="@+id/add_schedule_memo_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_memo"
-        android:scaleType="fitCenter"
-        android:layout_marginStart="2dp"
-        app:layout_constraintStart_toStartOf="@id/add_schedule_clock_iv"
-        app:layout_constraintTop_toTopOf="@id/add_schedule_memo_tv"
-        app:layout_constraintBottom_toBottomOf="@id/add_schedule_memo_tv"/>
-    <TextView
-        android:id="@+id/add_schedule_memo_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="메모"
-        android:textSize="16sp"
-        android:textColor="@color/font_black"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_divider3_iv"
-        app:layout_constraintStart_toStartOf="@id/add_schedule_all_day_tv"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ddasdsadasdaaaaaaaaaaaaaaaa"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/add_schedule_memo_tv"
-        app:layout_constraintStart_toStartOf="@id/add_schedule_memo_tv"
-        />
+        android:src="@color/background_white"
+        app:layout_constraintTop_toBottomOf="@id/add_schedule_alarm_lo"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

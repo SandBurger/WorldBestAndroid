@@ -135,8 +135,6 @@ class CalendarFragment : Fragment() {
 
         class DayViewContainer(view : View) : ViewContainer(view) {
             val textView = ItemCalendarDayBinding.bind(view).itemCalendarDayTv
-            val imageView = ItemCalendarDayBinding.bind(view).itemCalendarDayIv
-            val selector = ItemCalendarDayBinding.bind(view).itemCalendarDaySelectorIv
             val indicator = ItemCalendarDayBinding.bind(view).itemCalendarDayIndicatorIv
 
             lateinit var day : CalendarDay
@@ -178,23 +176,19 @@ class CalendarFragment : Fragment() {
                         if(scheduleList!=null){
                             for(i in scheduleList!!){
                                 if(i.startMonth == day.date.monthValue && i.startDay == day.date.dayOfMonth){
-                                    container.imageView.visibility = View.VISIBLE
                                     container.indicator.visibility = View.VISIBLE
-                                    container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.background_white))
                                 }
                             }
                         } else {
-                            if(container.imageView.visibility == View.VISIBLE){
-                                container.imageView.visibility = View.INVISIBLE
+                            if(container.indicator.visibility == View.VISIBLE){
                                 container.indicator.visibility = View.INVISIBLE
                             }
                         }
                         when {
                             day.date == selectedDay -> {
-                                if (container.imageView.visibility == View.VISIBLE) {
-                                    container.imageView.visibility = View.INVISIBLE
+                                if (container.indicator.visibility == View.VISIBLE) {
+                                    container.indicator.visibility = View.INVISIBLE
                                 }
-                                container.selector.visibility = View.VISIBLE
 
                                 dayScheduleList.clear()
                                 if (scheduleList != null) {
@@ -202,6 +196,11 @@ class CalendarFragment : Fragment() {
                                         if (schedule.startDay.toString() == container.textView.text) {
                                             dayScheduleList.add(schedule)
                                         }
+                                    }
+                                    if(dayScheduleList.isEmpty()){
+                                        binding.calendarEmptyTv.visibility = View.VISIBLE
+                                    } else {
+                                        binding.calendarEmptyTv.visibility = View.GONE
                                     }
                                 }
                                 scheduleRVAdapter.notifyDataSetChanged()
@@ -211,7 +210,6 @@ class CalendarFragment : Fragment() {
                                 Log.d("date", "${day.date.month}")
                             }
                             else -> {
-                                container.selector.visibility = View.INVISIBLE
                                 //container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
                             }
                         }

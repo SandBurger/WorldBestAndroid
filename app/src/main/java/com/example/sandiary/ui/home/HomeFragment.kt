@@ -2,19 +2,11 @@ package com.example.sandiary.ui.home
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.WindowCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -47,7 +39,8 @@ class HomeFragment : Fragment() {
         }
 
         checkWriting()
-        val intent = Intent(activity, WriteActivity::class.java)
+
+        val intent = Intent(activity, DiaryActivity::class.java)
 
         binding.homeWritingBox1Iv.setOnClickListener {
             intent.putExtra("diary", diaryList[0].diary)
