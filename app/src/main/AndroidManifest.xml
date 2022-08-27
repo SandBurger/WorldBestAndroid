@@ -26,14 +26,10 @@
             android:exported="true"
             android:label="@string/app_name">
         </activity>
-        <activity
-            android:name=".WriteActivity"
-            android:exported="true">
-        </activity>
         <activity android:name=".SeeAllActivity"
             android:exported="true">
         </activity>
-        <activity android:name=".ReadDiaryActivity"
+        <activity android:name=".DiaryActivity"
             android:exported="true">
         </activity>
     </application>

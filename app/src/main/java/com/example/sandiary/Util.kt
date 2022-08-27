@@ -6,7 +6,9 @@ import android.os.Build
 import android.view.View
 import android.view.WindowManager
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.Fragment
 import com.example.sandiary.Util.setWindowFlag
+import com.example.sandiary.ui.settings.SettingsFragment
 
 object Util{
     fun Activity.hideStatusBar(){

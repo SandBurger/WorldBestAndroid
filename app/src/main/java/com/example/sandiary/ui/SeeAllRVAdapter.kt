@@ -13,7 +13,7 @@ class SeeAllRVAdapter(val diaryList : ArrayList<Diary>) : RecyclerView.Adapter<S
     private lateinit var itemClickListener : ItemClickListener
     interface ItemClickListener{
         fun onRemove(diary: Diary)
-        fun onClick(position: Int)
+        fun onClick(position: Int, diary : String?)
     }
 //    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
 //        super.onAttachedToRecyclerView(recyclerView)
@@ -35,7 +35,7 @@ class SeeAllRVAdapter(val diaryList : ArrayList<Diary>) : RecyclerView.Adapter<S
             itemClickListener.onRemove(diaryList[position])
         }
         holder.binding.itemDiaryBackgroundCv.setOnClickListener {
-            itemClickListener.onClick(position)
+            itemClickListener.onClick(position, diaryList[position].diary)
         }
     }
     inner class ViewHolder(val binding : ItemDiaryBinding) : RecyclerView.ViewHolder(binding.root){

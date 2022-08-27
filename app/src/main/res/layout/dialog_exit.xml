@@ -19,10 +19,11 @@
             android:id="@+id/dialog_exit_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/min_sans_medium"
             android:textColor="@color/line_black"
-            android:textStyle="bold"
             android:textSize="14sp"
             android:text="@string/dialog_write_title"
+            android:includeFontPadding="false"
             android:layout_marginTop="24dp"
             android:layout_marginStart="24dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,37 +32,41 @@
             android:id="@+id/dialog_exit_message_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/min_sans_regular"
+            android:includeFontPadding="false"
             android:textColor="@color/inactive"
             android:textSize="14sp"
             android:text="@string/dialog_write_message"
-            android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/dialog_exit_title_tv"
             app:layout_constraintStart_toStartOf="@id/dialog_exit_title_tv" />
+            <TextView
+                android:id="@+id/dialog_exit_negative_button_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:fontFamily="@font/min_sans_medium"
+                android:textSize="14sp"
+                android:textColor="@color/dialog_inactive"
+                app:layout_constraintTop_toTopOf="@id/dialog_exit_positive_button_tv"
+                app:layout_constraintEnd_toEndOf="@id/dialog_exit_message_tv"/>
             <TextView
                 android:id="@+id/dialog_exit_positive_button_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="19dp"
                 android:text="@string/exit"
-                android:fontFamily="@font/spoqa_han_sans_neo_medium"
+                android:fontFamily="@font/min_sans_medium"
+                android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="@color/error"
+                android:layout_marginStart="32dp"
                 android:paddingEnd="24dp"
                 android:paddingBottom="17dp"
                 app:layout_constraintTop_toBottomOf="@id/dialog_exit_message_tv"
-                app:layout_constraintStart_toEndOf="@id/dialog_exit_message_tv"/>
-            <TextView
-                android:id="@+id/dialog_exit_negative_button_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:text="@string/cancel"
-                android:fontFamily="@font/spoqa_han_sans_neo_medium"
-                android:textSize="14sp"
-                android:textColor="@color/dialog_inactive"
-                app:layout_constraintTop_toTopOf="@id/dialog_exit_positive_button_tv"
-                app:layout_constraintEnd_toStartOf="@id/dialog_exit_positive_button_tv"/>
+                app:layout_constraintStart_toEndOf="@id/dialog_exit_negative_button_tv"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
