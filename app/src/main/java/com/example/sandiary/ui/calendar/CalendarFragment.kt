@@ -1,5 +1,6 @@
 package com.example.sandiary.ui.calendar
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sandiary.Schedule
@@ -41,7 +43,7 @@ class CalendarFragment : Fragment() {
     private lateinit var invisibleImageView: ImageView
     private var _binding: FragmentCalendarBinding? = null
     private var scheduleDB : ScheduleDatabase? = null
-    private var selectedDay : LocalDate? = null
+    private var selectedDay : LocalDate? = LocalDate.now()
     private var year : Int = 0
     private var month : Int = 0
     var scheduleList : List<Schedule>? = null
@@ -177,6 +179,10 @@ class CalendarFragment : Fragment() {
                             for(i in scheduleList!!){
                                 if(i.startMonth == day.date.monthValue && i.startDay == day.date.dayOfMonth){
                                     container.indicator.visibility = View.VISIBLE
+                                    if(container.day.date < LocalDate.now()){
+                                        ImageViewCompat.setImageTintList(container.indicator,
+                                            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.line_grey)))
+                                    }
                                 }
                             }
                         } else {
