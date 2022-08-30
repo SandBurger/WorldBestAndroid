@@ -3,12 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="account"
     android:background="@color/background_grey">
+    <TextView
+        android:id="@+id/settings_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/min_sans_medium"
+        android:text="설정"
+        android:textColor="@color/line_black"
+        android:textSize="20sp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/settings_exit_ib"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_left_arrow"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/settings_title_tv"
+        app:layout_constraintBottom_toBottomOf="@id/settings_title_tv"/>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/settings_divider_iv"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_grey"
+        android:layout_marginTop="14dp"
+        app:layout_constraintTop_toBottomOf="@id/settings_title_tv"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/settings_divider_iv">
         <TextView
             android:id="@+id/settings_account_logout_tv"
             android:layout_width="match_parent"
