@@ -43,7 +43,8 @@ class CalendarFragment : Fragment() {
     private lateinit var invisibleImageView: ImageView
     private var _binding: FragmentCalendarBinding? = null
     private var scheduleDB : ScheduleDatabase? = null
-    private var selectedDay : LocalDate? = LocalDate.now()
+    private var selectedDay : LocalDate? = null
+    private var beforeDay : LocalDate? = null
     private var year : Int = 0
     private var month : Int = 0
     var scheduleList : List<Schedule>? = null
@@ -67,7 +68,7 @@ class CalendarFragment : Fragment() {
         val localDate = LocalDate.now()
         year = localDate.year
         month = localDate.month.value
-
+        selectedDay = localDate
         val daysOfWeek = arrayOf(
             DayOfWeek.SUNDAY,
             DayOfWeek.MONDAY,
@@ -152,10 +153,10 @@ class CalendarFragment : Fragment() {
                             scheduleRVAdapter.notifyDataSetChanged()
                         } else {
                             selectedDay = day.date
-                            //binding.calendarDateTv.text = day.date.toString()
                             binding.calendarCalendarCv.notifyDateChanged(day.date)
                             if (currentSelection != null){
                                 binding.calendarCalendarCv.notifyDateChanged(currentSelection)
+
                             }
                         }
                     }
@@ -211,12 +212,9 @@ class CalendarFragment : Fragment() {
                                 }
                                 scheduleRVAdapter.notifyDataSetChanged()
                                 container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.indicator_active))
-                                Log.d("date", "${day.date}")
-                                Log.d("date", "${day.date.dayOfMonth}")
-                                Log.d("date", "${day.date.month}")
                             }
                             else -> {
-                                //container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
+                                container.textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.line_black))
                             }
                         }
                     } else {
@@ -234,7 +232,6 @@ class CalendarFragment : Fragment() {
             binding.calendarCollapsedDateTv.text = "${calendarMonth.year}년 ${calendarMonth.month}월"
             year = calendarMonth.year
             month = calendarMonth.month
-            selectedDay = null
             dayScheduleList.clear()
             scheduleRVAdapter.notifyDataSetChanged()
         }
